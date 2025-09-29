@@ -1,0 +1,145 @@
+
+<div class="edit-user-container">
+  <section class="edit-user">
+    <div class="edit-user-panel">
+      <h2 class="edit-user-title">Editar usuario. Sin implementar</h2>
+      <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()" class="edit-user-form">
+
+
+        <div class="form-grid-layout">
+
+            <div class="input-group">
+                <label for="name" class="input-label">Nombre</label>
+                <input type="text" id="name" formControlName="name" class="input-field" placeholder="Tu nombre"
+                    [ngClass]="{
+                      'input-error': editUserForm.get('name')?.invalid && editUserForm.get('name')?.touched
+                    }">
+                <div *ngIf="editUserForm.get('name')?.invalid && editUserForm.get('name')?.touched" class="text-red-600 text-sm input-error-message">
+                    El nombre es obligatorio.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="surname" class="input-label">Apellidos</label>
+                <input type="text" id="surname" formControlName="surname" class="input-field" placeholder="Tus apellidos"
+                    [ngClass]="{
+                      'input-error': editUserForm.get('surname')?.invalid && editUserForm.get('surname')?.touched
+                    }">
+                <div *ngIf="editUserForm.get('surname')?.invalid && editUserForm.get('surname')?.touched" class="text-red-600 text-sm input-error-message">
+                    Los apellidos son obligatorios.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="email" class="input-label">Correo Electrónico</label>
+                <input type="email" id="email" formControlName="email" class="input-field" placeholder="Tu correo"
+                    [ngClass]="{
+                      'input-error': editUserForm.get('email')?.invalid && editUserForm.get('email')?.touched
+                    }">
+                <div *ngIf="editUserForm.get('email')?.errors?.['emailTaken']" class="text-red-600 text-sm input-error-message">
+                    El email ya está en uso.
+                </div>
+                <div *ngIf="editUserForm.get('email')?.errors?.['required'] && editUserForm.get('email')?.touched" class="text-red-600 text-sm input-error-message">
+                    El email es obligatorio.
+                </div>
+                <div *ngIf="editUserForm.get('email')?.errors?.['email'] && editUserForm.get('email')?.touched" class="text-red-600 text-sm input-error-message">
+                    El email no tiene formato de correo.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="username" class="input-label">Nombre de usuario</label>
+                <input type="text" id="username" formControlName="username" class="input-field" placeholder="Elige un nombre de usuario"
+                    [ngClass]="{
+                      'input-error': editUserForm.get('username')?.invalid && editUserForm.get('username')?.touched
+                    }">
+                <div *ngIf="editUserForm.get('username')?.errors?.['required'] && editUserForm.get('username')?.touched" class="text-red-600 text-sm input-error-message">
+                    El nombre de usuario es obligatorio.
+                </div>
+                <div *ngIf="editUserForm.get('username')?.errors?.['usernameTaken'] && editUserForm.get('username')?.value" class="text-red-600 text-sm input-error-message">
+                    El nombre de usuario ya está en uso.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password" class="input-label">Contraseña</label>
+                <input type="password" id="password" formControlName="password" class="input-field" placeholder="Escribe una contraseña"
+                    [ngClass]="{
+                      'input-error': editUserForm.get('password')?.invalid && editUserForm.get('password')?.touched
+                    }">
+                <div *ngIf="editUserForm.get('password')?.errors?.['required'] && editUserForm.get('password')?.touched" class="text-red-600 text-sm input-error-message">
+                    La contraseña es obligatoria.
+                </div>
+                <div *ngIf="editUserForm.get('password')?.errors?.['minlength'] && editUserForm.get('password')?.touched" class="text-red-600 text-sm input-error-message">
+                    La contraseña debe tener al menos 6 caracteres.
+                </div>
+                
+                <div *ngIf="!editUserForm.get('password')?.errors?.['minlength'] &&
+                editUserForm.get('password')?.errors?.['pattern'] &&
+                editUserForm.get('password')?.touched" class="text-red-600 text-sm input-error-message">
+                    La contraseña debe tener al menos 1 letra, 1 número y 1 carácter especial (*?¿!).
+                </div>
+            </div>
+
+            <!-- Columna 2 / Fila 3: Repetir Contraseña -->
+         <!--    <div class="input-group">
+                <label for="confirmPassword" class="input-label">Repetir contraseña</label>
+                <input type="password" id="confirmPassword" formControlName="confirmPassword" class="input-field" placeholder="Escribe otra vez la contraseña"
+                    [ngClass]="{
+                      'input-error': editUserForm.get('confirmPassword')?.invalid && editUserForm.get('confirmPassword')?.touched
+                    }">
+                <div *ngIf="editUserForm.get('confirmPassword')?.errors?.['required'] && editUserForm.get('confirmPassword')?.touched" class="text-red-600 text-sm input-error-message">
+                    Debes validar la contraseña escribiéndola de nuevo.
+                </div>
+                <div *ngIf="editUserForm.hasError('nonEquals') && editUserForm.get('confirmPassword')?.touched" class="text-red-600 text-sm input-error-message">
+                    Las contraseñas no coinciden.
+                </div>
+            </div> -->
+
+                    
+        <div class="input-group">
+          <label for="birthdate" class="input-label">Fecha de nacimiento</label>
+          <input type="date" id="birthdate" formControlName="birthDate" class="input-field"
+            [ngClass]="{
+              'input-error': editUserForm.get('birthDate')?.invalid && editUserForm.get('birthDate')?.touched
+            }">
+          <div *ngIf="editUserForm.get('birthDate')?.invalid && editUserForm.get('birthDate')?.touched" class="text-red-600 text-sm input-error-message">
+            La fecha de nacimiento es obligatoria.
+          </div>
+        </div>
+            
+            <div class="input-group radio-wrapper">
+                <p class="radio-title">Género</p>
+                <div class="radio-container">
+                    <input type="radio" id="male" formControlName="gender" value="masculino" />
+                    <label for="male">MASCULINO</label>
+                    <input type="radio" id="female" formControlName="gender" value="femenino" checked/>
+                    <label for="female">FEMENINO</label>
+                </div>
+                <div *ngIf="editUserForm.get('gender')?.invalid && editUserForm.get('gender')?.touched" class="text-red-600 text-sm input-error-message">
+                    Debes seleccionar un género.
+                </div>
+            </div>
+
+            
+            <div class="input-group">
+                <label for="city" class="input-label">Ciudad</label>
+                <input type="text" id="city" formControlName="address" class="input-field" placeholder="Tu ciudad"
+                    [ngClass]="{
+                      'input-error': editUserForm.get('address')?.invalid && editUserForm.get('address')?.touched
+                    }">
+                <div *ngIf="editUserForm.get('address')?.invalid && editUserForm.get('address')?.touched" class="text-red-600 text-sm input-error-message">
+                    La ciudad es obligatoria.
+                </div>
+            </div>
+
+        </div>
+        
+
+
+
+        <button type="submit" class="login-button">Actualizar</button>
+      </form>
+    </div>
+  </section>
+</div>

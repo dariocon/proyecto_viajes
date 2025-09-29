@@ -1,0 +1,159 @@
+<div class="register-container">
+  <section class="register">
+    <div class="register-panel">
+      <h2 class="register-title">Regístrate</h2>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+
+        
+        <div class="input-group">
+          <label for="name" class="input-label">Nombre</label>
+          <input type="text" id="name" formControlName="name" class="input-field" placeholder="Tu nombre"     [ngClass]="{
+      'input-error': registerForm.get('name')?.invalid && registerForm.get('name')?.touched
+    }">
+          <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-red-600 text-sm input-error-message">
+            El nombre es obligatorio.
+          </div>
+        </div>
+
+        
+        <div class="input-group">
+          <label for="surname" class="input-label">Apellidos</label>
+          <input type="text" id="surname" formControlName="surname" class="input-field" placeholder="Tus apellidos"     [ngClass]="{
+      'input-error': registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched
+    }">
+          <div *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched" class="text-red-600 text-sm input-error-message">
+            Los apellidos son obligatorios.
+          </div>
+        </div>
+
+
+
+
+
+        <div class="input-group">
+        <label for="email" class="input-label">Correo Electrónico</label>
+        <input type="email" id="email" formControlName="email" class="input-field"  placeholder="Tu correo"   [ngClass]="{
+            'input-error': registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+            }">
+        <div *ngIf="registerForm.get('email')?.errors?.['emailTaken']" class="text-red-600 text-sm input-error-message">    
+            El email ya está en uso
+        </div>
+        <div *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched" class="text-red-600 text-sm input-error-message">
+            El email es obligatorio.
+        </div>
+        <div *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched" class="text-red-600 text-sm input-error-message">
+            El email no tiene formato de correo.
+        </div>
+        </div>
+
+        
+        <div class="input-group">
+          <label for="username" class="input-label">Nombre de usuario</label>
+          <input type="text" id="username" formControlName="username" class="input-field" placeholder="Elige un nombre de usuario"    [ngClass]="{
+      'input-error': registerForm.get('username')?.invalid && registerForm.get('username')?.touched
+    }">
+            <div *ngIf="registerForm.get('username')?.errors?.['required'] && registerForm.get('username')?.touched" class="text-red-600 text-sm input-error-message" >
+                El nombre de usuario es obligatorio.
+            
+            </div>
+            <div *ngIf="registerForm.get('username')?.errors?.['usernameTaken'] && registerForm.get('username')?.value" class="text-red-600 text-sm input-error-message">
+            El nombre de usuario ya está en uso
+            </div>
+
+        </div>
+
+        
+      <div class="input-group">
+        <label for="password" class="input-label">Contraseña</label>
+        <input type="password" id="password" formControlName="password" class="input-field" placeholder="Escribe una contraseña"  
+          [ngClass]="{
+            'input-error': registerForm.get('password')?.invalid && registerForm.get('password')?.touched
+          }">
+
+        <!-- Error por campo obligatorio -->
+        <div *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched" 
+            class="text-red-600 text-sm input-error-message">
+          La contraseña es obligatoria.
+        </div>
+
+        <!-- Error por longitud mínima -->
+        <div *ngIf="registerForm.get('password')?.errors?.['minlength'] && registerForm.get('password')?.touched" 
+            class="text-red-600 text-sm input-error-message">
+          La contraseña debe tener al menos 6 caracteres.
+        </div>
+
+        <!-- Error por complejidad -->
+        <div *ngIf="!registerForm.get('password')?.errors?.['minlength'] &&
+                    registerForm.get('password')?.errors?.['pattern'] &&
+                    registerForm.get('password')?.touched"  
+            class="text-red-600 text-sm input-error-message">
+          La contraseña debe tener al menos 1 letra, 1 número y 1 carácter especial (*?¿!).
+        </div>
+      </div>
+
+
+       
+        <div class="input-group">
+          <label for="confirmPassword" class="input-label">Repetir contraseña</label>
+          <input type="password" id="confirmPassword" formControlName="confirmPassword" class="input-field"  placeholder="Escribe otra vez la contraseña "   [ngClass]="{
+      'input-error': registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched
+    }">
+          <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required'] && registerForm.get('confirmPassword')?.touched" class="text-red-600 text-sm input-error-message" >
+                Debes validar la contraseña escribiéndola de nuevo.
+            
+          </div>
+          <div *ngIf="registerForm.hasError('nonEquals') && registerForm.get('confirmPassword')?.touched" class="text-red-600 text-sm input-error-message">
+            Las contraseñas no coinciden.
+          </div>
+        </div>
+
+       
+
+        <div class="input-group radio-wrapper">
+          <p class="radio-title">Género</p>
+          <div class="radio-container">
+
+
+            <input type="radio" id="male" formControlName="gender" value="masculino" />
+            <label for="male">MASCULINO</label>
+
+            <input type="radio" id="female" formControlName="gender" value="femenino" checked/>
+            <label for="female">FEMENINO</label>
+          </div>
+
+          <div *ngIf="registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched" 
+              class="text-red-600 text-sm input-error-message">
+            Debes seleccionar un género.
+          </div>
+        </div>
+
+                
+        <div class="input-group">
+          <label for="city" class="input-label">Ciudad</label>
+          <input type="text" id="city" formControlName="address" class="input-field" placeholder="Tu ciudad"     [ngClass]="{
+      'input-error': registerForm.get('address')?.invalid && registerForm.get('address')?.touched
+    }">
+          <div *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched" class="text-red-600 text-sm input-error-message">
+            La ciudad es obligatoria.
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="birthdate" class="input-label">Fecha de nacimiento</label>
+          <input type="date" id="birthdate" formControlName="birthDate" class="input-field"     [ngClass]="{
+            'input-error': registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched
+            }">
+          <div *ngIf="registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched" class="text-red-600 text-sm input-error-message">
+            La fecha de nacimiento es obligatoria.
+          </div>
+        </div>
+
+        <button type="submit" class="login-button" >Enviar</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="left-panel">
+    <img src="assets/registerpanel.png" alt="registro-foto-fondo" class="left-image">
+  </section>
+</div>

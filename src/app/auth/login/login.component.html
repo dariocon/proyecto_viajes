@@ -1,0 +1,66 @@
+<div class="login-container">
+      <section class="left-panel">
+        <img src="assets/Heading.png" class="left-image" alt="Imagen decorativa de login">
+      </section>
+
+               
+      <section class="login">
+        <div class="login-panel">
+          <h2 class="login-title">Entra en tu cuenta</h2>
+          <form
+            (ngSubmit)="onSubmit()"
+            #loginForm="ngForm"
+            class="login-form"
+          >
+            <div class="input-group">
+              <label for="username" class="input-label"
+                >Nombre de usuario</label
+              >
+              <input
+                type="text"
+                id="username"
+                class="input-field"
+                [(ngModel)]="username"
+                name="username"
+                [ngClass]="{'input-error': notValid('username')}"
+                required
+              />
+              <div *ngIf="notValid('username')" class="text-red-600 text-sm input-error-message">
+                  <div *ngIf="loginForm.controls['username']?.errors?.['required']">
+                    Introduce un nombre de usuario.
+                  </div>
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="password" class="input-label">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                class="input-field"
+                [(ngModel)]="password"
+                name="password"
+                [ngClass]="{'input-error': notValid('password')}"
+                required
+              />
+              <div *ngIf="notValid('password')" class="text-red-600 text-sm input-error-message">
+                  <div *ngIf="loginForm.controls['password']?.errors?.['required']">
+                    Introduce una contraseña.
+                  </div>
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="login-button"
+              
+            >
+              Entrar
+            </button>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
+          </form>
+        </div>
+      </section>
+</div>
+
+

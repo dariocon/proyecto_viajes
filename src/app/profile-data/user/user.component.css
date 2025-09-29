@@ -1,0 +1,190 @@
+        .edit-user-container {
+            display: flex;
+            min-height: calc(100vh - 48px); /* Restaurado: Altura de la pantalla menos el nav */
+            width: 100%;
+            padding: 0;
+        }
+
+        /* Panel principal: ahora ocupa el 100% del ancho y centra el contenido */
+        .edit-user {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            align-items: center; /* Centrado vertical */
+            justify-content: center; /* Centrado horizontal */
+            padding: 20px; /* Padding para evitar que toque los bordes en móvil */
+        }
+
+        .edit-user-panel {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px; /* Incrementado para acomodar las dos columnas */
+            text-align: center;
+        }
+        
+        @media (min-width: 640px) {
+            .edit-user-panel {
+                max-width: 800px;
+            }
+        }
+
+        /* ========================================
+        ESTILOS DEL FORMULARIO Y COMPONENTES
+        ========================================
+        */
+
+        .edit-user-title {
+            margin-bottom: 24px;
+            font-size: 30px;
+            font-weight: 600;
+            letter-spacing: -0.05em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #F95596, #FE7079);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Estilos de Radio Buttons (Género) */
+        div.radio-wrapper {
+            text-align: left;
+            font-size: 0.6em;
+            font-weight: bolder;
+            color: #64748b;
+        }
+        .radio-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 1.1em;
+        }
+        div.radio-container {
+            display: inline-block;
+            border-radius: 1em;
+            overflow: hidden;
+        }
+        div.radio-container input[type=radio] {
+            opacity: 0;
+            display: none;
+            margin: 0;
+            outline: none;
+        }
+        div.radio-container input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #F95596, #FE7079);
+            color: white;
+            animation-name: radio-active;
+            animation-duration: 0.2s;
+        }
+        @keyframes radio-active {
+            from { transform: scale(0.6, 0.6); }
+            to { transform: scale(1, 1); }
+        }
+        div.radio-container label {
+            padding: 0.8em 1.2em;
+            cursor: pointer;
+            display: inline-block;
+            outline: none;
+            letter-spacing: 0.1em;
+            background-color: white;
+            color: #64748b;
+            border-radius: 1em;
+            transition: all ease-in-out 0.2s;
+           
+        }
+
+        /* Estilos de Campos de Entrada */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px; /* Espaciado por defecto para móvil (columna única) */
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+        .input-field::placeholder { color: #a0aec0; opacity: 1; }
+        .input-field:focus { outline: none; border-color: #F95596; }
+
+        
+        /* Para navegadores basados en WebKit (Chrome, Safari, Edge) */
+        .input-field[type="date"]::-webkit-datetime-edit-text,
+        .input-field[type="date"]::-webkit-datetime-edit-month-field,
+        .input-field[type="date"]::-webkit-datetime-edit-day-field,
+        .input-field[type="date"]::-webkit-datetime-edit-year-field {
+        color: #a0aec0;
+        }
+
+        .input-field[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(40%) sepia(20%) saturate(200%) hue-rotate(180deg) brightness(80%) contrast(90%);
+        color: #a0aec0;
+        }
+        
+        /* Estilos de error (compatibilidad con Angular) */
+        .input-error { border: 1px solid #dc3545 !important; outline: none; }
+        .input-error-message { color: #dc3545 !important; font-size: 0.875rem; /* text-sm de Tailwind */ }
+
+        /* Estilo del botón */
+        .login-button {
+            width: 100%;
+            max-width: 300px; /* Limita el ancho en pantallas grandes */
+            display: block; /* Asegura el comportamiento de bloque para que margin: auto funcione */
+            margin-left: auto; /* Centrar horizontalmente */
+            margin-right: auto; /* Centrar horizontalmente */
+            padding: 12px;
+            margin-top: 20px; /* Aumentado ligeramente para mejor separación */
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #F95596, #FE7079);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(254, 112, 121, 0.4);
+        }
+        .login-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* NUEVA IMPLEMENTACIÓN DE LA CUADRÍCULA (CSS PURO) */
+        @media (min-width: 640px) {
+            .form-grid-layout {
+                display: flex;
+                flex-wrap: wrap;
+                margin: 0 -12px; /* Margen negativo para compensar el padding de los input-groups y crear el gap */
+            }
+            .form-grid-layout .input-group {
+                width: 50%; /* Cada columna ocupa la mitad del espacio */
+                padding: 0 12px; /* Espaciado interno para crear un gap de 24px entre columnas */
+                box-sizing: border-box;
+                margin-bottom: 20px; /* Espaciado entre filas */
+            }
+            /* Asegurar que los elementos fuera de la cuadrícula sigan teniendo su margen inferior */
+            .edit-user-form > .input-group {
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Media Query para asegurar la estética en dispositivos móviles */
+        @media (max-width: 768px) {
+             .edit-user-panel {
+                margin: 10px;
+                padding: 25px;
+                max-width: 100%;
+            }
+        }

@@ -1,1 +1,813 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.inicio {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: white;
+    overflow: hidden;
+}
+
+.web-frame {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+}
+
+.header {
+    display: grid;
+    /* Usa un grid dinámico basado en el estado del usuario.
+       Por defecto, el grid tendrá 4 columnas. */
+    grid-template-columns: auto 1fr auto auto; /* 👈 Nuevo: Cuatro columnas */
+    align-items: center;
+    padding: 12px 28px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    background: white;
+    border-bottom: 1px solid #f1f5f9;
+    gap: 20px;
+}
+
+.logo {
+    height: 30px;
+    width: auto;
+}
+
+.nav-desktop {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: center;
+    gap: 21px;
+    align-items: center;
+}
+
+.nav-link {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    cursor: pointer;
+    color: #475569;
+    text-decoration: none;
+}
+
+.search-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+/*     margin-right: 139px;
+ */    
+}
+
+
+
+.search-input {
+    padding: 12px 40px 12px 12px;
+    height: 44px;
+    font-size: 14px;
+    background: white;
+    border-radius: 60px;
+    
+    color: #475569;
+    width: 100%;
+   
+    border: 1px solid rgb(210, 210, 210);
+}
+
+/* Si NO hay sesión, más ancho */
+.wide-search .search-container {
+  width: 530px; 
+  margin-right: 139px;
+  margin-left: 20px;
+}
+
+/* logueado */
+.logged-in .search-container {
+    width: 414px; 
+    margin-right: 105px; 
+    margin-left: 5px;
+}
+
+.user-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 14px; 
+}
+
+.profile-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    stroke: #F95596;
+    stroke-width: 2px;
+}
+
+.globe-icon {
+    width: 18px;
+    height: 18px;
+    stroke: #545F71;
+    stroke-width: 2px;
+}
+
+.btn-login {
+    padding: 8px 8px;
+    width: 90px;
+    height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    /* background: #eff3f7; */
+    background: #e0e5ea;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    color: #475569;
+    display: grid;
+    place-items: center;
+}
+
+.btn-register {
+    padding: 8px 8px;
+    width: 90px;
+    height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    display: grid;
+    place-items: center;
+}
+
+.btn-logout {
+    padding: 8px 8px;
+    width: 102px;
+    height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    background: #e0e5ea;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    color: #475569;
+    display: grid;
+    place-items: center;
+}
+
+.menu-mobile {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #475569;
+}
+
+.left-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    padding: 0px;
+}
+
+.left-image {
+    width: 100%;
+    height: auto;
+}
+
+.footer {
+    position: relative;
+    width: 100%;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    padding: 60px 28px 40px;
+    color: white;
+    overflow: hidden;
+}
+
+.newsletter-section {
+    position: relative;
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.newsletter-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    color: white;
+}
+
+.newsletter-email-label {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.newsletter-line {
+    width: 300px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+.arrow-right {
+    position: absolute;
+    right: 0;
+    top: -8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.arrow-right:hover {
+    transform: translateX(5px);
+}
+
+.social-media-container {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 16px;
+    margin-bottom: 40px;
+    justify-content: start;
+}
+
+.social-icon-box {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-icon-box:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.social-icon-1, .social-icon-2, .social-icon-3, .social-icon-4, .social-icon-5 {
+    /* Aquí deberían ir los estilos de los iconos si estuvieran definidos. Como no están, los dejamos en blanco. */
+}
+
+.main-footer-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 40px;
+}
+
+.footer-logo {
+    width: 149px;
+    height: 32px;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.footer-description {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 280px;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.footer-nav-inicio {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    cursor: pointer;
+    grid-column: 2;
+    grid-row: 1;
+    transition: color 0.3s ease;
+}
+
+.footer-nav-inicio:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-nav-viajes {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    cursor: pointer;
+    grid-column: 2;
+    grid-row: 2;
+    transition: color 0.3s ease;
+}
+
+.footer-nav-viajes:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-copyright {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.6);
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.footer-terms {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    grid-column: 2;
+    grid-row: 3;
+    transition: color 0.3s ease;
+}
+
+.footer-terms:hover {
+    color: white;
+}
+
+.footer-privacy {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    grid-column: 3;
+    grid-row: 1;
+    transition: color 0.3s ease;
+}
+
+.footer-privacy:hover {
+    color: white;
+}
+
+.footer-credit {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    grid-column: 3;
+    grid-row: 3;
+}
+
+.scroll-up-container {
+    position: absolute;
+    top: 40px;
+    right: 28px;
+    display: grid;
+    place-items: center;
+}
+
+.scroll-up-circle {
+    position: relative;
+    width: 73px;
+    height: 70px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.scroll-up-circle:hover {
+    transform: translateY(-3px);
+}
+
+.scroll-up-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 16px;
+    color: #545F71;
+}
+
+.action-buttons-container {
+    position: absolute;
+    bottom: 40px;
+    right: 28px;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 16px;
+    justify-content: end;
+}
+
+.join-button,
+.contact-button {
+    padding: 12px 24px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    transition: all 0.3s ease;
+    display: grid;
+    place-items: center;
+}
+
+.join-button {
+    background: white;
+    color: #F95596;
+    border: 2px solid white;
+}
+
+.join-button:hover {
+    background: transparent;
+    color: white;
+}
+
+.contact-button {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.contact-button:hover {
+    background: white;
+    color: #F95596;
+}
+
+.join-text,
+.contact-text {
+    font-weight: 700;
+}
+
+.login-container {
+    display: flex;
+    min-height: calc(100vh - 48px); /* La altura de la pantalla menos el nav */
+    width: 100%;
+    padding: 0;
+}
+
+/* Panel de la izquierda con la imagen */
+.left-panel {
+    flex: 1;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 0px;
+}
+
+.left-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Panel de la derecha con el formulario */
+.login {
+    flex: 1;
+    width: 50%;
+    display: flex;
+    align-items: center; /* Alineación vertical del formulario */
+    justify-content: center; /* Alineación horizontal del formulario */
+    padding: 0px;
+}
+
+.login-panel {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Estilos del Formulario y Botones */
+.login-title {
+    margin-bottom: 24px;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #F95596;
+}
+
+.login-button {
+    width: 30%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(249, 85, 150, 0.3);
+}
+
+.forgot-password {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.forgot-password:hover {
+    color: #F95596;
+}
+
+/* Separador y Botones de Redes Sociales */
+.social-login-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.social-login-separator hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #e2e8f0;
+}
+
+.social-login-separator span {
+    padding: 0 10px;
+}
+
+.social-login-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.google-button {
+    background-color: #4285f4;
+    color: white;
+}
+
+.google-button:hover {
+    background-color: #357ae8;
+}
+
+.facebook-button {
+    background-color: #3b5998;
+    color: white;
+}
+
+.facebook-button:hover {
+    background-color: #2d4373;
+}
+/* Para el borde rojo del input */
+.input-error {
+  border: 1px solid #dc3545 !important; /* rojo Bootstrap */
+  outline: none;
+  
+}
+
+/* Para el texto rojo del mensaje de error */
+.input-error-message {
+  color: #dc3545 !important;
+  font-size: small;
+}
+
+.register {
+    flex: 1;
+    width: 50%;
+    display: flex;
+    align-items: center; /* Alineación vertical del formulario */
+    justify-content: center; /* Alineación horizontal del formulario */
+   
+}
+.register-container {
+    display: flex;
+    min-height: calc(100vh - 48px); /* La altura de la pantalla menos el nav */
+    width: 100%;
+    padding: 0;
+}
+.register-panel {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Estilos del Formulario y Botones */
+.register-title {
+    margin-bottom: 24px;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #F95596;
+}
+@media (max-width: 768px) {
+    .header {
+        grid-template-columns: auto 1fr;
+        padding: 12px 20px;
+        justify-items: end;
+    }
+
+    .nav-desktop {
+        display: none;
+    }
+
+    .menu-mobile {
+        display: block;
+        grid-column: 2 / 3;
+    }
+
+    .main-footer-section {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 16px;
+        justify-items: center;
+    }
+
+    .footer-logo {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: center;
+    }
+
+    .footer-description {
+        grid-column: 1;
+        grid-row: auto;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .footer-nav-inicio,
+    .footer-nav-viajes,
+    .footer-privacy,
+    .footer-terms,
+    .footer-credit {
+        grid-column: 1;
+        grid-row: auto;
+        text-align: center;
+    }
+
+    .scroll-up-container {
+        position: static;
+        display: grid;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .action-buttons-container {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .social-media-container {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 30px 16px 20px;
+    }
+
+    .newsletter-line {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .action-buttons-container {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .join-button,
+    .contact-button {
+        width: 100%;
+        text-align: center;
+    }
+}

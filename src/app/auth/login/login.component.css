@@ -1,0 +1,181 @@
+.login-container {
+    display: flex;
+    min-height: calc(100vh - 48px); /* La altura de la pantalla menos el nav */
+    width: 100%;
+    padding: 0;
+}
+
+/* Panel de la izquierda con la imagen */
+.left-panel {
+    flex: 1;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 0px;
+}
+
+.left-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Panel de la derecha con el formulario */
+.login {
+    flex: 1;
+    width: 50%;
+    display: flex;
+    align-items: center; /* Alineación vertical del formulario */
+    justify-content: center; /* Alineación horizontal del formulario */
+    padding: 0px;
+}
+
+.login-panel {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Estilos del Formulario y Botones */
+.login-title {
+    margin-bottom: 24px;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #F95596;
+}
+
+.login-button {
+    width: 30%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(249, 85, 150, 0.3);
+}
+
+.forgot-password {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.forgot-password:hover {
+    color: #F95596;
+}
+
+/* Separador y Botones de Redes Sociales */
+.social-login-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.social-login-separator hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #e2e8f0;
+}
+
+.social-login-separator span {
+    padding: 0 10px;
+}
+
+.social-login-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.google-button {
+    background-color: #4285f4;
+    color: white;
+}
+
+.google-button:hover {
+    background-color: #357ae8;
+}
+
+.facebook-button {
+    background-color: #3b5998;
+    color: white;
+}
+
+.facebook-button:hover {
+    background-color: #2d4373;
+}
+
+
+@media (max-width: 768px) {
+    .left-panel {
+        display: none;
+    }
+
+    .login {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+}
