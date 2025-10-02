@@ -2,7 +2,7 @@
 <div class="edit-user-container">
   <section class="edit-user">
     <div class="edit-user-panel">
-      <h2 class="edit-user-title">Editar usuario. Sin implementar</h2>
+      <h2 class="edit-user-title">Editar usuario</h2>
       <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()" class="edit-user-form">
 
 
@@ -62,7 +62,7 @@
             </div>
 
             <div class="input-group">
-                <label for="password" class="input-label">Contraseña</label>
+                <label for="password" class="input-label">Nueva contraseña</label>
                 <input type="password" id="password" formControlName="password" class="input-field" placeholder="Escribe una contraseña"
                     [ngClass]="{
                       'input-error': editUserForm.get('password')?.invalid && editUserForm.get('password')?.touched
@@ -81,20 +81,7 @@
                 </div>
             </div>
 
-            <!-- Columna 2 / Fila 3: Repetir Contraseña -->
-         <!--    <div class="input-group">
-                <label for="confirmPassword" class="input-label">Repetir contraseña</label>
-                <input type="password" id="confirmPassword" formControlName="confirmPassword" class="input-field" placeholder="Escribe otra vez la contraseña"
-                    [ngClass]="{
-                      'input-error': editUserForm.get('confirmPassword')?.invalid && editUserForm.get('confirmPassword')?.touched
-                    }">
-                <div *ngIf="editUserForm.get('confirmPassword')?.errors?.['required'] && editUserForm.get('confirmPassword')?.touched" class="text-red-600 text-sm input-error-message">
-                    Debes validar la contraseña escribiéndola de nuevo.
-                </div>
-                <div *ngIf="editUserForm.hasError('nonEquals') && editUserForm.get('confirmPassword')?.touched" class="text-red-600 text-sm input-error-message">
-                    Las contraseñas no coinciden.
-                </div>
-            </div> -->
+
 
                     
         <div class="input-group">
@@ -107,13 +94,28 @@
             La fecha de nacimiento es obligatoria.
           </div>
         </div>
+
+                    <!-- Columna 2 / Fila 3: Repetir Contraseña -->
+            <div class="input-group">
+                <label for="confirmPassword" class="input-label">Repetir contraseña</label>
+                <input type="password" id="confirmPassword" formControlName="confirmPassword" class="input-field" placeholder="Escribe otra vez la contraseña"
+                    [ngClass]="{
+                      'input-error': editUserForm.get('confirmPassword')?.invalid && editUserForm.get('confirmPassword')?.touched
+                    }">
+                <div *ngIf="editUserForm.get('confirmPassword')?.errors?.['required'] && editUserForm.get('confirmPassword')?.touched" class="text-red-600 text-sm input-error-message">
+                    Debes validar la contraseña escribiéndola de nuevo.
+                </div>
+                <div *ngIf="editUserForm.hasError('nonEquals') && editUserForm.get('confirmPassword')?.touched" class="text-red-600 text-sm input-error-message">
+                    Las contraseñas no coinciden.
+                </div>
+            </div> 
             
             <div class="input-group radio-wrapper">
                 <p class="radio-title">Género</p>
                 <div class="radio-container">
-                    <input type="radio" id="male" formControlName="gender" value="masculino" />
+                    <input type="radio" id="male" formControlName="gender" value="Masculino" />
                     <label for="male">MASCULINO</label>
-                    <input type="radio" id="female" formControlName="gender" value="femenino" checked/>
+                    <input type="radio" id="female" formControlName="gender" value="Femenino" checked/>
                     <label for="female">FEMENINO</label>
                 </div>
                 <div *ngIf="editUserForm.get('gender')?.invalid && editUserForm.get('gender')?.touched" class="text-red-600 text-sm input-error-message">

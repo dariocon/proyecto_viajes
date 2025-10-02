@@ -32,7 +32,7 @@ export class RegisterComponent {
         Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[*?¿!]).+$/)
       ]],
     confirmPassword: ['', Validators.required],
-    gender: ['femenino', Validators.required]
+    gender: ['Femenino', Validators.required]
   }, { validators: this.equalFields('password', 'confirmPassword') });
 
 

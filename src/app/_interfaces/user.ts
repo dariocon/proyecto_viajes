@@ -62,8 +62,19 @@ export interface UserRegister {
     gender: string,
     birthDate: string,
     address: string
-
 }
+
+export interface UserEdit {
+    username: string,
+    name: string,
+    surname: string,
+    email: string,
+    password: string,
+    gender: string,
+    birthDate: string,
+    address: string
+}
+
 export interface RegisterResponse{
     message: string;
 }
