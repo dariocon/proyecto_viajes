@@ -5,6 +5,8 @@ import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UserEdit } from '../../_interfaces/user';
+import { EmailValidatorService } from '../../_services/email-validator.service';
+import { UsernameValidatorService } from '../../_services/username-validator-service';
 
 @Component({
   selector: 'app-user',
@@ -18,6 +20,8 @@ export class UserComponent implements OnInit{
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
+  private emailValidator: EmailValidatorService = inject(EmailValidatorService); 
+  private userValidator: UsernameValidatorService = inject(UsernameValidatorService); 
 
 
   editUserForm: FormGroup = this.fb.group({
@@ -140,8 +144,8 @@ export class UserComponent implements OnInit{
         const emailControl = this.editUserForm.get('email')!;
 
         // 1. Añadimos el validador condicional de edición
-        usernameControl.setAsyncValidators(this.authService.userTakenOnEditValidator(user.username));
-        emailControl.setAsyncValidators(this.authService.emailTakenOnEditValidator(user.email));
+        usernameControl.setAsyncValidators(this.userValidator.userTakenOnEditValidator(user.username));
+        emailControl.setAsyncValidators(this.emailValidator.emailTakenOnEditValidator(user.email));
 
         // 2. Reseteamos el formulario con los datos
         this.editUserForm.reset({

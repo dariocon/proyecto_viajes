@@ -5,6 +5,8 @@ import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UserRegister } from '../../_interfaces/user';
+import { EmailValidatorService } from '../../_services/email-validator.service';
+import { UsernameValidatorService } from '../../_services/username-validator-service';
 
 @Component({
   selector: 'app-register',
@@ -17,15 +19,17 @@ export class RegisterComponent {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
+  private emailValidator: EmailValidatorService = inject(EmailValidatorService); 
+  private userValidator: UsernameValidatorService = inject(UsernameValidatorService); 
 
 
   registerForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
     surname: ['', Validators.required], 
-    username: ['', [Validators.required],[this.authService.userTakenValidator()]],
+    username: ['', [Validators.required],[this.userValidator]],
     birthDate: ['', Validators.required],
     address: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email],[this.authService.emailTakenValidator()]],
+    email: ['', [Validators.required, Validators.email], [this.emailValidator]],
     password: ['', [
         Validators.required,
         Validators.minLength(6),

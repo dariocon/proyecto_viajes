@@ -5,5 +5,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideHttpClient(withInterceptors([jwtInterceptor])), provideRouter(routes, withComponentInputBinding()), provideHttpClient()]
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
+  provideHttpClient(withInterceptors([jwtInterceptor])), 
+  provideRouter(routes, withComponentInputBinding()), provideHttpClient()]
 };
