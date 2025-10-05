@@ -30,7 +30,7 @@ export class UserComponent implements OnInit{
   username: ['', [Validators.required]],
   birthDate: ['', Validators.required],
   address: ['', Validators.required],
-  email: ['', [Validators.required, Validators.email]],
+  email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
   password: ['', [ 
     Validators.minLength(6),
     Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[*?¿!]).+$/)

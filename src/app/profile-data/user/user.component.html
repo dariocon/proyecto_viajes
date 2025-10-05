@@ -42,8 +42,8 @@
                 <div *ngIf="editUserForm.get('email')?.errors?.['required'] && editUserForm.get('email')?.touched" class="text-red-600 text-sm input-error-message">
                     El email es obligatorio.
                 </div>
-                <div *ngIf="editUserForm.get('email')?.errors?.['email'] && editUserForm.get('email')?.touched" class="text-red-600 text-sm input-error-message">
-                    El email no tiene formato de correo.
+                <div *ngIf="(editUserForm.get('email')?.errors?.['email'] || editUserForm.get('email')?.errors?.['pattern']) && editUserForm.get('email')?.touched" class="text-red-600 text-sm input-error-message">
+                    El email no tiene un formato válido.
                 </div>
             </div>
 
