@@ -103,18 +103,52 @@ body {
 }
 
 .user-profile-container {
-    display: flex;
+    position: relative; 
+    display: flex; /* Mantiene la alineación flexible */
     align-items: center;
-    gap: 14px; 
+    gap: 14px; /* Mantiene el espacio entre el icono y el botón de cerrar sesión */
 }
 
 .profile-icon {
-    width: 22px;
-    height: 22px;
+    width: 22px; /* Mantiene el ancho */
+    height: 22px; /* Mantiene la altura */
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer; /* Añadido para la interactividad */
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%; 
+    right: 0; 
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #e0e5ea;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+    border-radius: 5px;
+    min-width: 150px;
+    display: block;
 }
 
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #475569;
+    transition: background-color 0.2s;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f1f5f9;
+}
 .search-icon {
     position: absolute;
     right: 12px;

@@ -25,7 +25,14 @@
     
     @if (authService.isLogged()) {
     <div class="user-profile-container">
-        <img src="assets/user-regular-full.svg" alt="Perfil" class="profile-icon" [routerLink]="['/usuarios', authService.username]">
+        <img src="assets/user-regular-full.svg" alt="Perfil" class="profile-icon" (click)="toggleDropdown()">
+        <div *ngIf="isDropdownVisible" class="dropdown-menu">
+          <ul>
+            <li [routerLink]="['/usuarios', authService.username]" (click)="toggleDropdown()">
+              Editar Perfil
+            </li>
+          </ul>
+        </div>
         <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
     </div>
     } @else {
