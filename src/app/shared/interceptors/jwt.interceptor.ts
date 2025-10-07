@@ -48,7 +48,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
                         // Si el refresco falló (refresh token expirado o inválido), forzar logout
                         authService.logout();
                         router.navigate(['/login']);
-                        return throwError(() => refreshError); // Propagar el error
+                        return throwError(() => refreshError); 
                     })
                 );
             }

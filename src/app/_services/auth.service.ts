@@ -109,13 +109,13 @@ login(personaLogin: UserLogin) {
 }
 
 
-refreshAccessToken(): Observable<any> {
+/*refreshAccessToken(): Observable<any> {
     const refreshToken = this.getRefreshToken();
     const url = `${this.apiUrl}/refresh`;
 
     if (!refreshToken) {
         this.logout();
-        return throwError(() => new Error('No refresh token available.'));
+        return throwError(() => new Error('no hay refresh token disponible.'));
     }
 
     return this.http.post<{ accessToken: string, refreshToken: string }>(url, { refreshToken })
@@ -130,7 +130,29 @@ refreshAccessToken(): Observable<any> {
                 return throwError(() => error);
             })
         );
+}*/
+
+refreshAccessToken(): Observable<any> {
+  const refreshToken = this.getRefreshToken();
+  const url = `${this.apiUrl}/refresh`;
+
+  if (!refreshToken) {
+    this.logout();
+    return of(null); 
+  }
+
+  return this.http.post<{ accessToken: string; refreshToken: string }>(url, { refreshToken }).pipe(
+    tap(response => {
+      this.saveTokens(response.accessToken, response.refreshToken);
+      this.refreshTokenSubject.next(response.refreshToken);
+    }),
+    catchError(() => { // Si falla el refresco (token expirado o inválido)
+      this.logout();
+      return of(null); 
+    })
+  );
 }
+
 logout() {
   localStorage.removeItem('username')
   localStorage.removeItem('accessToken'); 

@@ -63,7 +63,7 @@ export class UserComponent implements OnInit{
   }
 
     onSubmit() {
-    this.editUserForm.markAllAsTouched(); // Asegura que se marquen todos para mostrar errores
+    this.editUserForm.markAllAsTouched(); 
 
     if (this.editUserForm.valid) {
 
