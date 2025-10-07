@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { LoginResponse, RegisterResponse, Token,User,UserEdit,UserLogin,UserLoginResponse, UserRegister, VerifiedResponse } from '../_interfaces/user';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
@@ -20,6 +20,9 @@ http: HttpClient = inject(HttpClient);
 private isLoggedSignal = signal<boolean>(false)
 private _username: string = '';
 
+private isRefreshing = new BehaviorSubject<boolean>(false);
+private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+
 private router: Router = inject(Router);
     constructor(){
     let username = localStorage.getItem('username');
@@ -28,7 +31,7 @@ private router: Router = inject(Router);
       this.isLoggedSignal.set(true);
     }
     
-   this.validateToken().subscribe();
+   //this.validateToken().subscribe();
   }
 
 getDecodedAccessToken(token: string): Token | null {
@@ -39,29 +42,23 @@ getDecodedAccessToken(token: string): Token | null {
   }
 }
 
+getAccessToken(): string | null {
+    return localStorage.getItem('accessToken');
+}
 
-  
-validateToken(){
-  const url = `${this.apiUrl}/verify`;
-  const headers = new HttpHeaders()
-    .set('Authorization', `Bearer ${localStorage.getItem('token') || ''}`);
+getRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
+}
 
-    return this.http.get<LoginResponse>(url, {headers})
-    .pipe(
-      map( response => {
-        const token = this.getDecodedAccessToken(response.token);
-          console.log('Token:' , token)
-          if (token) {
-            this._username = token?.username;
-            localStorage.setItem('username', token.username)
-            localStorage.setItem('token', response.token);
-            this.isLoggedSignal.set(true);
-          }
-        return true;
-      }),
-      catchError(err => of(false))
-    )
-
+private saveTokens(accessToken: string, refreshToken: string) {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    const tokenInfo = this.getDecodedAccessToken(accessToken);
+    if (tokenInfo) {
+        this._username = tokenInfo.username;
+        localStorage.setItem('username', tokenInfo.username);
+        this.isLoggedSignal.set(true);
+    }
 }
 
 
@@ -98,30 +95,46 @@ return this.http.post<any>(`${this.apiUrl}/register`, userRegister);
 }
 
 login(personaLogin: UserLogin) {
-return this.http.post<LoginResponse>(`${this.apiUrl}/login`, 
-  {  
-    username: personaLogin.username,
-    password: personaLogin.password }).pipe(
-  tap({
-      next: response => {
-        const token = this.getDecodedAccessToken(response.token);
-        if (token) {
-          this._username = token?.username;
-          localStorage.setItem('username', token.username)
-          localStorage.setItem('token', response.token);
-          this.isLoggedSignal.set(true);
-        }
-
-      }
-
-  }
-  )
-);
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, {  
+        username: personaLogin.username,
+        password: personaLogin.password 
+    }).pipe(
+        tap({
+            next: response => {
+                this.saveTokens(response.accessToken, response.refreshToken); 
+                this.refreshTokenSubject.next(response.refreshToken);
+            }
+        })
+    );
 }
 
+
+refreshAccessToken(): Observable<any> {
+    const refreshToken = this.getRefreshToken();
+    const url = `${this.apiUrl}/refresh`;
+
+    if (!refreshToken) {
+        this.logout();
+        return throwError(() => new Error('No refresh token available.'));
+    }
+
+    return this.http.post<{ accessToken: string, refreshToken: string }>(url, { refreshToken })
+        .pipe(
+            tap(response => {
+                this.saveTokens(response.accessToken, response.refreshToken);
+                this.refreshTokenSubject.next(response.refreshToken);
+            }),
+            catchError(error => {
+                // Si falla el refresco (token expirado o inválido)
+                this.logout();
+                return throwError(() => error);
+            })
+        );
+}
 logout() {
   localStorage.removeItem('username')
-  localStorage.removeItem('token')
+  localStorage.removeItem('accessToken'); 
+  localStorage.removeItem('refreshToken');
   this._username = '';
   this.isLoggedSignal.set(false);
   this.router.navigateByUrl('/login')

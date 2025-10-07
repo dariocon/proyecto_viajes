@@ -9,12 +9,16 @@ export const loginGuard: CanMatchFn = (route, segments) => {
   const authService: AuthService = inject(AuthService);
   const router: Router = inject(Router);
 
-  const token = authService.getToken(); 
+  //const token = authService.getToken(); 
 
-  if (!token) {
+  const accessToken = authService.getAccessToken();
+
+  if (!accessToken) {
    
     router.navigateByUrl('/login');
     return of(false); 
+  }else {
+    return of(true);
   }
 
 /*     if (authService.isLogged){
@@ -33,7 +37,7 @@ export const loginGuard: CanMatchFn = (route, segments) => {
    * expirado, sido revocado o alterado, protegiendo las rutas privadas y la sesión del usuario.
    * Si el token es inválido, el usuario es redirigido a la página de login.
    */
-  return authService.validateToken()
+/*  return authService.validateToken()
   .pipe(
     tap(isValid => {
       console.log('Validación de Token: ', isValid);
@@ -42,7 +46,7 @@ export const loginGuard: CanMatchFn = (route, segments) => {
       }
     }),
   
-  );
+  );*/
 };
 
 

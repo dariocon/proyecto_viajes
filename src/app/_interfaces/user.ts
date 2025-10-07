@@ -43,7 +43,8 @@ export interface VerifiedResponse {
 
 export interface LoginResponse{
     message: string;
-    token: string;
+    accessToken: string; 
+    refreshToken: string; 
 }
 
 export interface Token {

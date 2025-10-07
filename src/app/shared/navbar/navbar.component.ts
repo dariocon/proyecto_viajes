@@ -6,7 +6,7 @@ import { AuthService } from '../../_services/auth.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink,AsyncPipe, CommonModule, NgClass],
+  imports: [RouterLink, CommonModule, NgClass],
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {
