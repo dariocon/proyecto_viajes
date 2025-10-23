@@ -5,30 +5,37 @@
     
 
     <div class="search-container" [ngClass]="{ 'wide-search': !(authService.isLogged()) }">
-        <input type="text" placeholder="Buscar viajes" class="search-input">
+        <input type="text" placeholder="Buscar viajes" class="search-input" #searchInput (keyup.enter)="onSearch(searchInput)">
+<button class="search-btn" (click)="onSearch(searchInput)">
         <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 19L13 13M15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z" stroke="#F95596" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
+    </button>
     </div>
 
     @if (authService.isLogged()) {
     <div class="nav-item">
-        <a class="nav-link" [routerLink]="['/mis-viajes']">Mis viajes</a>
+        <a class="nav-link" [routerLink]="['/mis-viajes']" routerLinkActive="active-link" >Mis viajes</a>
     </div>
     <div class="nav-item">
-        <a class="nav-link" [routerLink]="['/create']">Crear viajes</a>
+        <a class="nav-link" [routerLink]="['/create-trip']" routerLinkActive="active-link" >Crear viajes</a>
     </div>
     }
+    <div class="nav-item">    
+        <a class="nav-link" [routerLink]="['/viajes']" routerLinkActive="active-link" >Viajes</a>
+    </div>
+
+    <div class="nav-item">
+        <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="active-link" >Contacto</a>
+    </div>
     
-    <a class="nav-link" [routerLink]="['/viajes']">Viajes</a>
-    <a class="nav-link" [routerLink]="['/contact']">Contacto</a>
     
     @if (authService.isLogged()) {
     <div class="user-profile-container">
         <img src="assets/user-regular-full.svg" alt="Perfil" class="profile-icon" (click)="toggleDropdown()">
         <div *ngIf="isDropdownVisible" class="dropdown-menu">
           <ul>
-            <li [routerLink]="['/usuarios', authService.username]" (click)="toggleDropdown()">
+            <li [routerLink]="['/usuarios', authService.username]" (click)="toggleDropdown()" routerLinkActive="active-link" >
               Editar Perfil
             </li>
           </ul>
@@ -37,8 +44,8 @@
     </div>
     } @else {
     
-        <button class="btn-login" [routerLink]="['/login']">Inicia sesión</button>
-        <button class="btn-register" [routerLink]="['/register']">Registro</button>
+        <button class="btn-login" [routerLink]="['/login']"  >Inicia sesión</button>
+        <button class="btn-register" [routerLink]="['/register']"  >Registro</button>
     
     }
 

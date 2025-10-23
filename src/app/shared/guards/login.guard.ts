@@ -5,7 +5,7 @@ import { map, of, tap } from 'rxjs';
 
 
 export const loginGuard: CanMatchFn = (route, segments) => {
-  console.log('Guardián')
+  console.log('Guardián de login')
   const authService: AuthService = inject(AuthService);
   const router: Router = inject(Router);
 
@@ -16,9 +16,9 @@ export const loginGuard: CanMatchFn = (route, segments) => {
   if (!accessToken) {
    
     router.navigateByUrl('/login');
-    return of(false); 
+    return false; 
   }else {
-    return of(true);
+    return true;
   }
 
 /*     if (authService.isLogged){

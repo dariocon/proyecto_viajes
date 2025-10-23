@@ -10,7 +10,7 @@
             flex: 1;
             width: 100%;
             display: flex;
-            align-items: center; /* Centrado vertical */
+            align-items: flex-start; /* Centrado vertical */
             justify-content: center; /* Centrado horizontal */
             padding: 20px; /* Padding para evitar que toque los bordes en móvil */
         }

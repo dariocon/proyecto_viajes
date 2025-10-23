@@ -1,0 +1,156 @@
+<div class="web-frame">
+    <section class="hero">
+
+    <div class="hero-text-content"> 
+
+        @if (!authService.isLogged()) {
+<h1 class="hero-title">
+    <span>Abre la puerta a tu</span>
+    <span>próxima gran </span>
+    <span><span class="gradient-text">aventura</span>.</span>
+</h1>
+        }
+        @if (authService.isLogged()) {
+            <h1 class="hero-title">
+                <span>Tu próxima <span class="gradient-text">aventura</span></span>
+                <span>te está esperando. </span>
+                <span><span class="gradient-text">Únete</span></span>
+            </h1>
+
+        }
+        <div class="hero-actions">
+            
+            @if (!authService.isLogged()) {
+                <button class="cta-button cta-main" [routerLink]="['/register']">Crea tu cuenta</button>
+                
+                <button class="cta-button cta-secondary" [routerLink]="['/login']">Inicia sesión</button>
+            }
+
+            @if (authService.isLogged()) {
+                <button class="cta-button cta-main" [routerLink]="['/create-trip']">Crea tu propio viaje</button>
+                
+            }
+        </div>
+    </div>
+    <div class="hero-image">
+        <img src="assets\Famous-cityscape-view-of-St-Peters-basilica-in-Rome-at-sunset-Italy (1).jpg" alt="Music Trip" class="hero-img">
+    </div>
+</section>
+
+<section class="categories-carousel">
+    <div class="categories-content">
+        <h2 class="category-title">Viajes disponibles</h2>
+        <div class="carousel-container">
+        <app-categories [reset]="resetCategories" (categorySelected)="handleCategoryChange($event)"></app-categories>
+        </div>
+    </div>
+</section>
+<!--     
+<section class="categories-carousel">
+    <div class="categories-content">
+        <h2 class="category-title">Viajes disponibles</h2>
+        <div class="carousel-container">
+
+                <div 
+            class="category-item" 
+            [class.active]="selectedCategory === 'Todos'"
+            (click)="filterTrips('Todos')" 
+        >
+            <div class="icon-box">
+                    <svg viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter-icon all-icon">
+                        <path d="M4 13H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>                       
+                        <path d="M4 17H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>        
+                        <path d="M4 21H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+            </div>
+            <span class="category-name">Todos</span>
+        </div>
+        
+        @for (category of tripCategories; track category.idCategory) { 
+            <div 
+                class="category-item" 
+                [class.active]="selectedCategory === category.name"
+                (click)="filterTrips(category.name, category.idCategory)" >
+                <div class="icon-box">
+                    <img 
+                        [src]="'assets/' + category.iconClass" 
+                        [alt]="category.name + ' icon'" 
+                        class="filter-icon"
+                    />
+                </div>
+                <span class="category-name">{{ category.name }}</span>
+            </div>
+        }
+
+
+    </div>
+
+
+    </div>
+    
+
+</section>
+
+-->
+    <section class="trips-section">
+        
+<div class="trips-grid">
+  @if (isLoading) {
+      <p class="empty-message">Cargando viajes...</p>
+  }
+  @if (!isLoading && paginatedTrips.length === 0) {
+      <p class="empty-message">No hay viajes disponibles en este momento.</p>
+  }
+  @if (!isLoading && paginatedTrips.length > 0) {
+      @for (trip of paginatedTrips; track trip.idTrip) { 
+          <div class="trip-card">
+              <div class="trip-image-container">
+                  <img 
+                      [src]="trip.images?.[0]" 
+                      [alt]="'Imagen principal del viaje: ' + trip.title" 
+                      [attr.title]="'Imagen principal del viaje: ' + trip.title" 
+                      class="trip-image"
+                  >                
+              </div>
+              <div class="trip-content">
+                  <h3 class="trip-title">{{ trip.title }}</h3>
+                  <p class="trip-time">
+                      {{ trip.startDate }} - {{ trip.endDate }}
+                  </p>
+                  <button class="trip-btn">Ver viaje</button>
+              </div>
+          </div>
+      }
+  }
+</div>
+
+        @if (totalPages > 1) {
+            <div class="pagination-controls">
+                <button 
+                    class="page-btn nav-btn"
+                    [disabled]="currentPage === 1"
+                    (click)="changePage(currentPage - 1)">
+                    &larr; Anterior
+                </button>
+
+                @for (page of getPageNumbers(); track page) {
+                    <button
+                        class="page-btn"
+                        [class.active]="page === currentPage"
+                        (click)="changePage(page)">
+                        {{ page }}
+                    </button>
+                }
+
+                <button 
+                    class="page-btn nav-btn"
+                    [disabled]="currentPage === totalPages"
+                    (click)="changePage(currentPage + 1)">
+                    Siguiente &rarr;
+                </button>
+            </div>
+        }
+    </section>
+
+
+</div>

@@ -1,0 +1,99 @@
+<div class="inicio">
+    <div class="web-frame">
+
+<div class="sidebar">
+  @for (group of filterGroups; track group.title) {
+    <div class="filter-group">
+      <div class="filter-group-title">{{ group.title }}</div>
+      <div class="filter-suboptions">
+        @for (option of group.options; track option) {
+          <div
+            class="filter-item"
+            [class.active]="activeFilter === (group.title + ' - ' + option)"
+            (click)="setActiveFilter(group.title, option)">
+            {{ option }}
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+
+        <section class="trips-section">
+            <div class="trips-header">
+                <h2 class="trips-title">Mis viajes</h2>
+                
+                @if (filteredTrips.length > 0) {
+                   <!--  <div class="view-all">
+                       <span>Ver todos</span>
+                        <svg class="chevron-right" width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L8 8L1 15" stroke="#545F71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </div>-->
+                }
+            </div>
+
+            <div class="trips-grid">
+                @if (isLoading) {
+                    <p class="empty-message">Cargando.</p>
+                }
+
+                @if (!isLoading) {
+                @for (trip of paginatedTrips; track trip.idTrip) { 
+                    
+                    <div class="trip-card">
+                        <div class="trip-image-container">
+                            <img 
+                                [src]="trip.images?.[0]" 
+                                [alt]="'Imagen principal del viaje: ' + trip.title" 
+                                [attr.title]="'Imagen principal del viaje: ' + trip.title" 
+                                class="trip-image"
+                            >
+                        </div>
+                        <div class="trip-content">
+                            <h3 class="trip-title">{{ trip.title }}</h3>
+                            <p class="trip-time">
+                                {{ trip.startDate }} - {{ trip.endDate }}
+                            </p>
+                            <button class="trip-btn">Ver viaje</button>
+                        </div>
+                    </div>
+                } 
+                @empty {
+                    <p class="empty-message">No hay viajes disponibles en este momento.</p>
+                }
+                }
+                
+
+            </div>
+            
+      @if (totalPages > 1) {
+        <div class="pagination-controls">
+          <button
+            class="page-btn nav-btn"
+            [disabled]="currentPage === 1"
+            (click)="changePage(currentPage - 1)">
+            &larr; Anterior
+          </button>
+
+          @for (page of getPageNumbers(); track page) {
+            <button
+              class="page-btn"
+              [class.active]="page === currentPage"
+              (click)="changePage(page)">
+              {{ page }}
+            </button>
+          }
+
+          <button
+            class="page-btn nav-btn"
+            [disabled]="currentPage === totalPages"
+            (click)="changePage(currentPage + 1)">
+            Siguiente &rarr;
+          </button>
+        </div>
+      }
+        </section>
+    </div>
+</div>

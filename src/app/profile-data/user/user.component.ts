@@ -21,13 +21,13 @@ export class UserComponent implements OnInit{
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
   private emailValidator: EmailValidatorService = inject(EmailValidatorService); 
-  private userValidator: UsernameValidatorService = inject(UsernameValidatorService); 
+  //private userValidator: UsernameValidatorService = inject(UsernameValidatorService); 
 
 
   editUserForm: FormGroup = this.fb.group({
   name: ['', Validators.required],
   surname: ['', Validators.required], 
-  username: ['', [Validators.required]],
+  //username: ['', [Validators.required]],
   birthDate: ['', Validators.required],
   address: ['', Validators.required],
   email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
@@ -140,18 +140,18 @@ export class UserComponent implements OnInit{
         /*No podemos crear el validador condicional en el FormGroup porque
          el valor de referencia (user.username, user.email) solo está disponible después
           de la llamada asíncrona dentro del ngOnInit*/
-        const usernameControl = this.editUserForm.get('username')!;
+        //const usernameControl = this.editUserForm.get('username')!;
         const emailControl = this.editUserForm.get('email')!;
 
         // 1. Añadimos el validador condicional de edición
-        usernameControl.setAsyncValidators(this.userValidator.userTakenOnEditValidator(user.username));
+        //usernameControl.setAsyncValidators(this.userValidator.userTakenOnEditValidator(user.username));
         emailControl.setAsyncValidators(this.emailValidator.emailTakenOnEditValidator(user.email));
 
         // 2. Reseteamos el formulario con los datos
         this.editUserForm.reset({
             name: user.name,
             surname: user.surname,
-            username: user.username,
+           // username: user.username,
             birthDate: user.birthDate,
             address: user.address,
             email: user.email,
@@ -160,7 +160,7 @@ export class UserComponent implements OnInit{
         
         // 3. Forzar la re-evaluación de los nuevos validadores asíncronos. 
         //  El propósito de updateValueAndValidity() es forzar al control a recalcular su estado
-        usernameControl.updateValueAndValidity();
+       // usernameControl.updateValueAndValidity();
         emailControl.updateValueAndValidity();
        
 

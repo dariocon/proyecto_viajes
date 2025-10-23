@@ -1,0 +1,416 @@
+/* Base Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    overflow-x: hidden;
+    background-color: #f8fafc; /* Fondo para que se vea el margen del contenedor */
+}
+
+/* ------------------------------------- */
+/* LAYOUT DE 4 COLUMNAS (Desktop) */
+/* ------------------------------------- */
+
+.inicio {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: white; /* Tu fondo es blanco */
+    overflow: hidden;
+    padding: 64px 28px; /* Padding exterior */
+}
+
+.web-frame {
+    /* 1 columna de 250px (sidebar) y 3 columnas de igual tamaño para el contenido */
+    display: grid;
+    grid-template-columns: 250px repeat(3, 1fr); 
+    gap: 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* ------------------------------------- */
+/* ESTILOS DEL SIDEBAR */
+/* ------------------------------------- */
+.sidebar {
+    background-color: #f1f1f1; /* Color de fondo claro según la imagen */
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    align-self: start; 
+    padding: 10px 0;
+    width: 100%;
+    grid-column: 1 / 2; /* Sigue ocupando la primera columna (el sidebar) */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-group-title {
+    /* Estilo para el título del grupo (ej. Creados, Asistente) */
+    font-size: 14px;
+    font-weight: 700;
+    color: #475569; /* Color de texto más oscuro para el título */
+    padding: 5px 20px;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-suboptions {
+    /* Contenedor para las opciones (ej. Todos, Próximos, Pasados) */
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-item {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #888; /* Texto gris por defecto */
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+.filter-suboptions .filter-item {
+    /* padding-left: 35px; o un valor similar para crear sangría */
+    padding: 10px 20px 10px 35px; /* Mantiene 10px arriba/abajo, pero añade sangría a la izquierda */
+}
+
+.filter-item.active {
+    background-color: #e3e3e3; /* Fondo más oscuro para el elemento activo */
+    color: #008080; /* Color turquesa para el texto activo (simulación) */
+    font-weight: 700;
+}
+
+.filter-item:hover:not(.active) {
+    background-color: #ededed;
+    color: #666;
+}
+
+/* ------------------------------------- */
+/* Trips Section (Ahora en las 3 columnas de la derecha) */
+/* ------------------------------------- */
+
+.trips-section {
+    /* Quitamos el padding interior aquí para que el grid sea fluido */
+    padding: 0; 
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    /* Ocupa desde la segunda columna hasta el final (4ª columna) */
+    grid-column: 2 / 5; 
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+
+/* Tus estilos originales para el resto de elementos */
+
+.trips-header {
+    /* Desktop: Cambiamos a Grid con 3 columnas (una para cada columna de tarjeta) */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Dividimos el espacio de la sección de viajes en 3 partes */
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 0 20px; /* Mantenemos el padding para separar de los bordes laterales */
+}
+
+.trips-title {
+    /* Centrado en la columna del medio */
+    grid-column: 2 / 3; /* Ocupa la segunda columna de las tres */
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    color: #475569;
+    text-align: center; 
+}
+
+.view-all {
+    /* Alineado a la derecha en la tercera columna */
+    grid-column: 3 / 4; /* Ocupa la tercera columna de las tres */
+    display: grid;
+    grid-auto-flow: column;
+    gap: 8px;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    cursor: pointer;
+    color: #475569;
+    /* Aseguramos que el contenido esté a la derecha */
+    justify-self: end;
+    /* Quitamos el padding-right ya que ahora está en trips-header */
+    padding-right: 0; 
+    /* Aseguramos que esté por encima del título si se superponen */
+    z-index: 1; 
+}
+
+.chevron-right {
+    width: 14px;
+    height: 7px;
+    stroke: #545F71;
+    stroke-width: 2px;
+}
+
+.trips-grid {
+    /* IMPORTANTE: Esto asegura que los viajes se muestren en 3 columnas dentro de la trips-section */
+    display: grid;
+    gap: 32px;
+    grid-template-columns: repeat(3, 1fr); /* Cambio a 3 columnas fijas para PC */
+    justify-items: center;
+    padding: 0 20px;
+}
+
+.trip-image-container {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    background: #f1f5f9;
+    height: 110px;
+    overflow: hidden;
+}
+
+.trip-image {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.trip-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    border-radius: 8px;
+    height: 240px;
+    background-color: white; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); 
+}
+
+.trip-content {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 8px;
+    padding: 11px;
+    text-align: center;
+    align-items: start;
+    justify-items: center;
+}
+
+.trip-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+.trip-time {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: #475569;
+}
+
+.trip-btn {
+    padding: 3px 13px;
+    margin-top: 2px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    justify-self: center;
+    align-self: end;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    color: #475569;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 40px; /* Ancho mínimo para números */
+    text-align: center;
+}
+
+.page-btn:hover:not([disabled]) {
+    border-color: #F95596;
+    color: #F95596;
+}
+
+.page-btn.active {
+    background: linear-gradient(to right, #F95596, #FE7079);
+    color: white;
+    border-color: transparent;
+    cursor: default;
+    pointer-events: none; /* Asegura que no se pueda hacer clic en el activo */
+}
+
+.page-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border-color: #e2e8f0;
+}
+
+.nav-btn {
+    min-width: 100px; /* Más ancho para los botones Anterior/Siguiente */
+}
+
+
+/* ------------------------------------- */
+/* RESPONSIVE DESIGN (Menos de 768px) */
+/* ------------------------------------- */
+
+@media (max-width: 768px) {
+    /* EL LAYOUT PRINCIPAL PASA A 1 COLUMNA */
+    .web-frame {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .sidebar, .trips-section {
+        grid-column: 1 / -1; /* Ocupan todo el ancho */
+    }
+    
+    .inicio {
+        padding: 40px 20px;
+    }
+    
+    /* El sidebar se muestra arriba del contenido, en formato horizontal (flex) */
+    .sidebar {
+        padding: 5px 0;
+        display: flex; 
+        flex-direction: row; /* Vuelve a ser horizontal */
+        justify-content: space-around;
+        gap: 10px;
+    }
+
+        .filter-group-title {
+        display: none; 
+    }
+    
+    .filter-group {
+        display: contents; /* Desaparece el contenedor del grupo */
+    }
+
+    /* Las subopciones se vuelven un elemento flexible y alineado en móvil */
+    .filter-suboptions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-grow: 1;
+    }
+        .filter-suboptions .filter-item {
+        /* Eliminamos la sangría en móvil para usar todo el espacio */
+        padding: 8px 15px; 
+        font-size: 16px;
+        flex-grow: 1; 
+        text-align: center;
+    }
+    
+    .filter-item {
+        padding: 8px 15px;
+        font-size: 16px;
+        flex-grow: 1; 
+        text-align: center;
+    }
+    
+    .trips-section {
+        padding: 0;
+    }
+
+    .trips-header {
+        /* Volvemos a un flujo normal en móvil (el título encima de 'Ver todos') */
+        position: relative; 
+        display: grid; /* Mantener grid para poder controlar los elementos */
+        grid-template-columns: 1fr; /* Una sola columna para apilar */
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        justify-items: center;
+        padding: 0; 
+        height: auto; /* Altura automática en móvil */
+    }
+
+    .trips-title {
+        /* Estilos de título normal en móvil */
+        position: static;
+        transform: none;
+        width: 100%;
+        text-align: center; /* Centrado dentro de su 100% de ancho */
+        
+        font-size: 20px;
+        line-height: 28px;
+        grid-column: 1 / -1; /* Ocupa todo el ancho en móvil */
+    }
+
+    .view-all {
+        font-size: 16px;
+        line-height: 24px;
+        padding-right: 0; 
+        justify-self: center; /* Centramos el botón "Ver todos" bajo el título */
+        grid-column: 1 / -1; /* Ocupa todo el ancho en móvil */
+    }
+
+    /* En móvil, volvemos a un grid flexible para los viajes */
+    .trips-grid {
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        justify-items: center;
+        padding: 0 10px;
+    }
+
+    .trip-image-container {
+        height: 100px;
+    }
+
+    .trip-card {
+        height: auto;
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .trip-content {
+        padding: 8px;
+    }
+
+    .trip-title {
+        font-size: 14px;
+        line-height: 20px;
+    }
+}

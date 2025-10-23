@@ -10,6 +10,7 @@ body {
     margin: 0;
     overflow-x: hidden;
     min-height: 100vh;
+    
 }
 
 .inicio {
@@ -65,29 +66,49 @@ body {
 }
 
 .search-container {
-    position: relative;
-    display: grid;
+    position: relative; 
+    display: grid; 
     grid-template-columns: 1fr;
     align-items: center;
-/*     margin-right: 139px;
- */    
 }
 
 
 
 .search-input {
-    padding: 12px 40px 12px 12px;
+    padding: 12px 40px 12px 12px; /* deja espacio para el botón */
     height: 44px;
     font-size: 14px;
-    background: white;
+    background: #ffffff;
     border-radius: 60px;
-    
     color: #475569;
     width: 100%;
-   
     border: 1px solid rgb(210, 210, 210);
 }
+.search-btn {
+    /* 1. Resetear el estilo predeterminado del botón */
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 
+    /* 2. Posicionamiento ABSOLUTO sobre el Grid */
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    /* 3. Definir el área clicable al tamaño del ícono (20x20 del HTML) */
+    width: 20px;
+    height: 20px;
+
+    /* 4. Centrar el SVG dentro de este botón de 20x20 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 5. Asegurar que esté encima del input */
+    z-index: 10;
+}
 /* Si NO hay sesión, más ancho */
 .wide-search .search-container {
   width: 530px; 
@@ -150,8 +171,7 @@ body {
     background-color: #f1f5f9;
 }
 .search-icon {
-    position: absolute;
-    right: 12px;
+    /* Ya no necesita posicionamiento */
     width: 18px;
     height: 18px;
     stroke: #F95596;
@@ -199,6 +219,14 @@ body {
     display: grid;
     place-items: center;
 }
+.active-link {
+    font-weight: bold;
+    color: #F95596; /* ejemplo de color */
+    border-bottom: 1px solid #F95596;
+    padding-bottom: 7px;
+}
+
+
 
 .btn-logout {
     padding: 8px 8px;

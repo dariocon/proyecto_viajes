@@ -1,0 +1,813 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+
+/* 🚀 Hero Section CORREGIDA 🚀 */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Texto y botones (1fr) | Imagen (1fr) */
+    align-items: center;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    margin-bottom: 60px;
+ 
+}
+
+/* 🆕 NUEVO CONTENEDOR: Agrupa Titulo y Botones */
+.hero-text-content {
+    display: flex;
+    flex-direction: column; /* Apila H1 y Actions verticalmente */
+    /* REMOVIDO: align-items: center; -> Esto hacía que el H1 se centrara como bloque */
+    gap: 30px; /* Espacio entre el título y las acciones */
+    /* REMOVIDO: text-align: center; -> Hacía que las líneas se pegaran */
+}
+
+/* 🔑 CORRECCIÓN CLAVE: Esto permite que los <span> internos salten de línea */
+.hero-title {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 36px;
+    color: #475569;
+    /* Para centrar el texto dentro del H1 */
+    text-align: center; 
+    /* El H1 debe ser un bloque para que el texto-align funcione */
+    display: block; 
+}
+
+/* 🔑 CLAVE ADICIONAL: Asegura que cada <span> interno sea un bloque centrado */
+.hero-title > span {
+    display: block;
+    text-align: center;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 🆕 CONTENEDOR DE BOTONES (flex en fila para escritorio) */
+.hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center; /* Centra los botones en el espacio */
+    width: 100%; /* Permite que el justify-content funcione bien */
+}
+
+.cta-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none; /* Asegura que no haya subrayado si es un [routerLink] */
+    display: grid; 
+    place-items: center; /* Centra el texto */
+}
+
+
+
+/* 🆕 BOTÓN PRINCIPAL */
+.cta-main {
+    color: white;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    box-shadow: 0 4px 15px rgba(249, 85, 150, 0.4);
+}
+
+.cta-main:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* 🆕 BOTÓN SECUNDARIO */
+.cta-secondary {
+    background: white;
+    color: #F95596;
+    border: 2px solid #F95596;
+}
+
+.cta-secondary:hover {
+    background: #fdf2f8; 
+    border-color: #FE7079;
+}
+
+.auth-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 220px;
+    grid-column: 2 / 3;
+    justify-self: end;
+    align-items: center;
+}
+
+/*
+|--------------------------------------------------
+| CATEGORIES CAROUSEL (CARRUSEL DE FILTROS)
+|--------------------------------------------------
+*/
+
+.categories-carousel {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    
+    margin-bottom: 10px; /* reducido de 20px a 10px */
+    overflow: hidden;
+    padding-left: 28px;
+    padding-right: 28px;
+    margin-bottom:30px ;
+}
+
+.categories-content {
+    width: 100%;
+    padding: 0;
+    
+}
+
+.carousel-container {
+    display: flex; 
+    flex-wrap: nowrap; 
+    gap: 12px; 
+    overflow-x: auto; 
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;   
+    max-height: 150px;
+    box-sizing: border-box;
+    padding-bottom: 0px; 
+    
+    margin-bottom: 5px;
+    margin-bottom: 5px; 
+}
+
+/* Scrollbar */
+.carousel-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.carousel-container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+    background-color: #F95596;
+    border-radius: 4px;
+    border: 2px solid #f0f0f0;
+}
+
+.carousel-container::-webkit-scrollbar-thumb:hover {
+    background-color: #d13a71;
+}
+
+.category-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    color: #475569;
+    margin-left: 16px;
+    margin-bottom: 30px; /* reducido de 5px a 3px */
+    text-align: left;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    width: 80px;
+    
+    
+}
+
+
+
+.category-item:hover {
+    opacity: 1;
+}
+
+.category-item.active {
+    opacity: 1;
+    font-weight: 600;
+}
+
+.category-item.active .icon-box {
+    box-shadow: 0 0 0 2px #F95596;
+}
+
+
+
+/* Estilo base para la caja del icono (ahora contiene la etiqueta <img>) */
+.icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    padding-top: 4px;
+    display: grid; 
+    /* 🔑 CLAVE: Centra en AMBOS ejes */
+    place-items: center; 
+    
+    margin-bottom: 2px;
+    transition: box-shadow 0.2s ease;
+}
+/* El .filter-icon NO necesita cambios, solo define su tamaño */
+.filter-icon {
+    width: 40px;
+    height: auto;
+}
+
+/* Estilo específico para el SVG de "Todos" */
+.all-icon {
+    width: 29px;
+    height: 29px;
+    stroke: #475569; 
+    stroke-width: 2;
+}
+.all-icon path {
+    stroke: #F95596; 
+}
+
+
+.category-name {
+    font-size: 12px;
+    color: #475569;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.hero-image {
+    grid-column: 2 / 3;
+    justify-self: end;
+}
+
+.hero-img {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    height: auto;
+    width: 600px;
+}
+
+/* Trips Section */
+.trips-section {
+    padding: 35px 28px 64px 28px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid #e2e8f0;
+}
+
+.trips-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+.trips-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    color: #475569;
+}
+
+.view-all {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 8px;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    cursor: pointer;
+    color: #475569;
+}
+
+.chevron-right {
+    width: 14px;
+    height: 7px;
+    stroke: #545F71;
+    stroke-width: 2px;
+}
+
+.trips-grid {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    justify-items: center;
+    padding: 0 20px;
+    margin-bottom: 30px; /* Añadido espacio entre la grilla y la paginación */
+}
+
+.trip-image-container {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    background: #f1f5f9;
+    height: 110px; /* Mantener una altura fija para la imagen */
+    overflow: hidden; /* Asegurar que la imagen no se desborde */
+}
+
+.trip-image {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.trip-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* Imagen (auto), Contenido (1fr), Botón (auto) */
+    overflow: hidden;
+    border-radius: 8px;
+    height: 240px; /* Altura fija para todas las tarjetas */
+}
+
+.trip-content {
+    display: grid;
+    grid-template-rows: auto auto 1fr; /* Título (auto), Tiempo (auto), espacio expandible (1fr) */
+    gap: 8px;
+    padding: 11px;
+    text-align: center;
+    align-items: start;
+    justify-items: center;
+}
+
+.trip-title {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: grid; /* Asegura display grid */
+    place-items: center; /* Centra el texto */
+    text-align: center;
+}
+
+.trip-time {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: #475569;
+}
+
+.trip-btn {
+    padding: 3px 13px;
+    margin-top: 2px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    justify-self: center;
+    align-self: end;
+}
+
+/* ---------------------------------------------------------------------- */
+/* |--------------------------------------------------
+| PAGINATION CONTROLS
+|--------------------------------------------------
+*/
+
+.pagination-controls {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    color: #475569;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 40px; /* Ancho mínimo para números */
+    text-align: center;
+}
+
+.page-btn:hover:not([disabled]) {
+    border-color: #F95596;
+    color: #F95596;
+}
+
+.page-btn.active {
+    background: linear-gradient(to right, #F95596, #FE7079);
+    color: white;
+    border-color: transparent;
+    cursor: default;
+    pointer-events: none; /* Asegura que no se pueda hacer clic en el activo */
+}
+
+.page-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border-color: #e2e8f0;
+}
+
+.nav-btn {
+    min-width: 100px; /* Más ancho para los botones Anterior/Siguiente */
+}
+
+
+/* ---------------------------------------------------------------------- */
+
+/* CTA Section */
+.cta-section {
+    display: grid;
+    padding: 80px 28px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    background: #f9fafb;
+    height: 60vh;
+    place-items: center;
+    gap: 16px;
+}
+
+.cta-title {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 36px;
+    text-align: center;
+    color: black;
+    max-width: 504px;
+}
+
+/* Nota: .cta-button está definido dos veces. Mantenemos el más reciente */
+/* .cta-button { ... } (Mantenido en Hero Section) 
+*/
+
+/* Scroll Up Button */
+.scroll-up-container {
+    position: absolute;
+    top: 40px;
+    right: 28px;
+    display: grid;
+    place-items: center;
+}
+
+.scroll-up-circle {
+    position: relative;
+    width: 73px;
+    height: 70px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.scroll-up-circle:hover {
+    transform: translateY(-3px);
+}
+
+.scroll-up-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 16px;
+    color: #545F71;
+}
+
+/* Action Buttons */
+.action-buttons-container {
+    position: absolute;
+    bottom: 40px;
+    right: 28px;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 16px;
+    justify-content: end;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* Header */
+    .header {
+        grid-template-columns: auto 1fr;
+        padding: 12px 20px;
+        justify-items: end;
+    }
+
+    .nav-desktop,
+    .search-and-auth {
+        display: none;
+    }
+
+    .menu-mobile {
+        display: block;
+        grid-column: 2 / 3;
+    }
+
+    /* 🚀 Hero Section CORREGIDA (Móvil) 🚀 */
+    .hero {
+        grid-template-columns: 1fr; /* Una sola columna en móvil */
+        gap: 30px;
+        padding: 40px 20px;
+        padding-left: 20px; /* Asegurar padding en móvil */
+    }
+    
+    .hero-text-content { /* Contenido de texto y botones */
+        order: 1; /* Para que aparezca debajo de la imagen */
+        gap: 20px; /* Ajuste de espacio */
+        /* Eliminamos el centrado que interfería en el layout */
+        align-items: center;
+    }
+    
+    .hero-actions { /* Botones */
+        flex-direction: column; /* Apila los botones */
+        gap: 10px;
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .cta-button {
+        width: 100%;
+    }
+
+    .hero-title {
+        grid-column: 1 / -1;
+        text-align: center;
+        font-size: 26px;
+        line-height: 32px;
+        justify-self: center;
+        display: block;
+    }
+
+    .auth-buttons {
+        grid-column: 1 / -1;
+        width: 100%;
+        max-width: 220px;
+        margin: 0 auto;
+        justify-self: center;
+    }
+
+    .hero-image {
+        order: -1;
+        grid-column: 1 / -1;
+        justify-self: center;
+    }
+
+    .hero-img {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+    }
+
+    /* Trips Section */
+    .trips-section {
+        padding: 40px 20px;
+    }
+
+    .trips-header {
+        grid-template-columns: 1fr;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        justify-items: center;
+    }
+
+    .trips-title {
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    .view-all {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .trips-grid {
+        display: grid;
+        gap: 20px; /* Ajusta el gap para una mejor distribución */
+        /* Controla el ancho de las columnas, permitiendo 1fr pero con un máximo */
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        justify-items: center; /* Centra los elementos dentro de las celdas de la cuadrícula */
+        padding: 0 10px;
+    }
+
+    .trip-image-container {
+        height: 100px;
+        overflow: hidden;
+    }
+
+    .trip-image {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .trip-card {
+        display: grid;
+        grid-template-rows: auto auto auto;
+        overflow: hidden;
+        border-radius: 8px;
+        height: auto; /* Permitir que la altura se ajuste al contenido */
+        width: 100%; /* Ocupa el ancho disponible de su columna */
+        max-width: 250px; /* **NUEVO: Limita el ancho máximo de la tarjeta** */
+    }
+
+    .trip-content {
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 8px;
+        padding: 8px;
+        text-align: center;
+        align-items: start;
+        justify-items: center;
+    }
+
+    .trip-title {
+        font-size: 14px;
+        line-height: 20px;
+        place-items: center;
+    }
+
+    /* Pagination controls for mobile */
+    .pagination-controls {
+        gap: 5px;
+        margin-top: 15px;
+        /* Reduce el padding para pantallas muy pequeñas */
+        padding: 0 10px; 
+    }
+
+    .page-btn {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+
+    .nav-btn {
+        min-width: 80px;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: 60px 20px;
+        height: auto;
+    }
+
+    .cta-title {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .cta-button {
+        width: 160px;
+        font-size: 18px;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 30px 20px;
+        height: auto;
+    }
+
+    .stat-item {
+        gap: 16px;
+    }
+
+    .stat-text {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .stat-number {
+        font-size: 30px;
+    }
+
+    .divider {
+        display: none;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 40px 20px 30px;
+    }
+
+    .newsletter-title {
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    .main-footer-section {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 16px;
+        justify-items: center;
+    }
+
+    .footer-logo {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: center;
+    }
+
+    .footer-description {
+        grid-column: 1;
+        grid-row: auto;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .footer-nav-inicio,
+    .footer-nav-trips,
+    .footer-privacy,
+    .footer-terms,
+    .footer-credit {
+        grid-column: 1;
+        grid-row: auto;
+        text-align: center;
+    }
+
+    .scroll-up-container {
+        position: static;
+        display: grid;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .action-buttons-container {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .social-media-container {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 30px 16px 20px;
+    }
+
+    .newsletter-line {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .action-buttons-container {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .join-button,
+    .contact-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .trips-grid {
+        /* Ajuste adicional para pantallas muy pequeñas si es necesario */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .trip-card {
+        max-width: 220px; /* **Ajuste aún más el max-width para pantallas muy pequeñas** */
+    }
+}

@@ -12,9 +12,6 @@ providedIn: 'root'
 export class AuthService {
 
 private apiUrl = 'http://localhost:8080';
-
-
-
 http: HttpClient = inject(HttpClient);
 //private isLoggedSubject = new BehaviorSubject<boolean>(false)
 private isLoggedSignal = signal<boolean>(false)

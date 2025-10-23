@@ -15,6 +15,15 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
       });
   };
 
+    const publicUrls = ['/login', '/register', '/refresh', '/categorias', '/verify', '/register/check-email', '/register/check-username'];
+
+  const isPublic = publicUrls.some(url => req.url.includes(url));
+
+  // Si es ruta pública, pasa la petición tal cual
+  if (isPublic) {
+      return next(req);
+  }
+  
   // Evitar interceptar el endpoint de refresh para prevenir bucles infinitos
   if (req.url.includes('/login') || req.url.includes('/register') || req.url.includes('/refresh')) {
     // Si es una de estas rutas, simplemente pasa la petición sin modificarla.
