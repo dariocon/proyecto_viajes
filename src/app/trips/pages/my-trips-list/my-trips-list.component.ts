@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { TripDto } from '../../../_interfaces/trip';
 import { TripsService } from '../../../_services/trips.service';
 import { AuthService } from '../../../_services/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-my-trips-list',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './my-trips-list.component.html',
   styleUrl: './my-trips-list.component.css'
 })
@@ -30,6 +31,7 @@ export class MyTripsListComponent implements OnInit{
   itemsPerPage: number = 12;
   currentPage: number = 1;
   isLoading: boolean = true;
+  searchTerm: string = ''; 
   currentUserId = this.authService.username; 
   private dataLoads = { allTripsLoaded: false, participatedTripsLoaded: false };
 
@@ -70,8 +72,11 @@ export class MyTripsListComponent implements OnInit{
         }
     }
 
-
-
+  onSearch(inputValue: string): void {
+    this.searchTerm = inputValue.trim().toLowerCase();
+    this.currentPage = 1;
+    this.applyPagination();
+  }
 
   get filteredTrips(): TripDto[] {
     const now = new Date();
@@ -89,22 +94,37 @@ export class MyTripsListComponent implements OnInit{
       return []; 
     }
 
+    let filtered = baseTrips;
     // Ahora aplicamos el filtro de fecha (Próximos, Pasados, Todos)
     switch (option) {
-      case 'Todos':
-        return baseTrips;
-
+    /* case 'Todos':
+        break;*/
+       // return filtered;
+        
       case 'Próximos':
         //fecha de inicio posterior a la hora actual
-        return baseTrips.filter(trip => new Date(trip.startDate).getTime() > now.getTime());
+        filtered = baseTrips.filter(trip => new Date(trip.startDate).getTime() > now.getTime());
+        break;
+       // return baseTrips.filter(trip => new Date(trip.startDate).getTime() > now.getTime());
 
       case 'Pasados':
         // fecha de INICIO anterior a la hora actual
-        return baseTrips.filter(trip => new Date(trip.startDate).getTime() < now.getTime());
+        filtered = baseTrips.filter(trip => new Date(trip.startDate).getTime() < now.getTime());
+        break;
+        //return baseTrips.filter(trip => new Date(trip.startDate).getTime() < now.getTime());
 
-      default:
-        return baseTrips; 
+     // default:
+     //   return baseTrips; 
     }
+
+    if (this.searchTerm) {
+        const term = this.searchTerm.toLowerCase();
+        filtered = filtered.filter(trip =>
+            trip.title.toLowerCase().includes(term) ||
+            trip.description?.toLowerCase().includes(term)
+        );
+    }
+    return filtered;
   }
 
   

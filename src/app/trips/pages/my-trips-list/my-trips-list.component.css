@@ -190,14 +190,14 @@ body {
     grid-template-rows: auto 1fr auto;
     overflow: hidden;
     border-radius: 8px;
-    height: 240px;
+    height: auto;
     background-color: white; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); 
 }
 
 .trip-content {
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto auto;
     gap: 8px;
     padding: 11px;
     text-align: center;
@@ -207,7 +207,7 @@ body {
 
 .trip-title {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.025em;
     line-height: 24px;
     background: linear-gradient(135deg, #F95596, #FE7079);
@@ -291,6 +291,21 @@ body {
     min-width: 100px; /* Más ancho para los botones Anterior/Siguiente */
 }
 
+.search-bar {
+  width: 100%;
+  margin: 10px 0;
+  display: flex;
+  justify-content: left;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 260px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
 
 /* ------------------------------------- */
 /* RESPONSIVE DESIGN (Menos de 768px) */
