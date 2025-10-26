@@ -28,7 +28,7 @@ export class UserComponent implements OnInit{
   name: ['', Validators.required],
   surname: ['', Validators.required], 
   //username: ['', [Validators.required]],
-  birthDate: ['', Validators.required],
+  birthDate: ['', [Validators.required, this.minimumOneYearAgeValidator()]],
   address: ['', Validators.required],
   email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
   password: ['', [ 
@@ -61,6 +61,22 @@ export class UserComponent implements OnInit{
     };
 
   }
+
+minimumOneYearAgeValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+
+    const [year, month, day] = control.value.split('-').map(Number);
+    const birthDate = new Date(year, month - 1, day); // month-1 porque JS usa 0-11
+    const today = new Date();
+    const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+
+    return birthDate > oneYearAgo ? { minAgeOneYear: true } : null;
+  };
+}
+
+
+
 
     onSubmit() {
     this.editUserForm.markAllAsTouched(); 

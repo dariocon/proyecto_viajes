@@ -90,9 +90,15 @@
             [ngClass]="{
               'input-error': editUserForm.get('birthDate')?.invalid && editUserForm.get('birthDate')?.touched
             }">
-          <div *ngIf="editUserForm.get('birthDate')?.invalid && editUserForm.get('birthDate')?.touched" class="text-red-600 text-sm input-error-message">
+            <div *ngIf="editUserForm.get('birthDate')?.hasError('required') && editUserForm.get('birthDate')?.touched" class="text-red-600 text-sm input-error-message">
             La fecha de nacimiento es obligatoria.
-          </div>
+            </div>
+            <div *ngIf="editUserForm.get('birthDate')?.hasError('minAgeOneYear') && editUserForm.get('birthDate')?.touched" class="text-red-600 text-sm input-error-message">
+            La fecha de nacimiento debe ser al menos hace un año.
+            </div>
+
+
+
         </div>
 
                     <!-- Columna 2 / Fila 3: Repetir Contraseña -->

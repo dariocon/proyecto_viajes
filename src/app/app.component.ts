@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { AuthService } from './_services/auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,13 @@ import { AuthService } from './_services/auth.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'proyecto_viajes';
+  constructor(private titleService: Title) {
+    this.setTitle('Rutalix');
+  }
 
-  authService: AuthService = inject(AuthService);
+  setTitle(newTitle: string) {
+    this.titleService.setTitle(newTitle);
+  }
 
 
 
