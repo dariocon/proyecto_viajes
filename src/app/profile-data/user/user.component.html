@@ -86,7 +86,7 @@
                     
         <div class="input-group">
           <label for="birthdate" class="input-label">Fecha de nacimiento</label>
-          <input type="date" id="birthdate" formControlName="birthDate" class="input-field"
+          <input type="date" id="birthdate" formControlName="birthDate" class="input-field" [ngStyle]="{'color': editUserForm.get('birthDate')?.value ? '#333' : '#a0aec0'}"
             [ngClass]="{
               'input-error': editUserForm.get('birthDate')?.invalid && editUserForm.get('birthDate')?.touched
             }">

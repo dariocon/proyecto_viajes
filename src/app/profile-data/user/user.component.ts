@@ -1,4 +1,4 @@
-import { NgClass, NgIf, CommonModule } from '@angular/common';
+import { NgClass, NgIf, CommonModule, NgStyle } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControl, Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../_services/auth.service';
@@ -10,7 +10,7 @@ import { UsernameValidatorService } from '../../_services/username-validator-ser
 
 @Component({
   selector: 'app-user',
-  imports: [CommonModule,ReactiveFormsModule, NgIf, NgClass],
+  imports: [CommonModule,ReactiveFormsModule, NgIf, NgClass, NgStyle],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })

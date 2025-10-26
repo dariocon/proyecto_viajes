@@ -167,17 +167,7 @@ div.radio-container label {
 }
 
 /* Para navegadores basados en WebKit (Chrome, Safari, Edge) */
-.input-field[type="date"]::-webkit-datetime-edit-text,
-.input-field[type="date"]::-webkit-datetime-edit-month-field,
-.input-field[type="date"]::-webkit-datetime-edit-day-field,
-.input-field[type="date"]::-webkit-datetime-edit-year-field {
-  color: #a0aec0;
-}
 
-.input-field[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(40%) sepia(20%) saturate(200%) hue-rotate(180deg) brightness(80%) contrast(90%);
-  color: #a0aec0;
-}
 
 /* Para el borde rojo del input */
 .input-error {

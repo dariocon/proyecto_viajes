@@ -58,7 +58,7 @@
           <!-- Fecha de Inicio -->
           <div class="input-group">
             <label for="startDate" class="input-label">Fecha de Inicio*</label>
-            <input type="date" id="startDate" formControlName="startDate" class="input-field"
+            <input type="date" id="startDate" formControlName="startDate" class="input-field" [ngStyle]="{'color': createTripForm.get('startDate')?.value ? '#333' : '#a0aec0'}"
               [ngClass]="{'input-error': createTripForm.get('startDate')?.invalid && createTripForm.get('startDate')?.touched}">
             
             @if (createTripForm.get('startDate')?.invalid && createTripForm.get('startDate')?.touched) {
@@ -69,7 +69,7 @@
           <!-- Fecha de Fin -->
           <div class="input-group">
             <label for="endDate" class="input-label">Fecha de Fin*</label>
-            <input type="date" id="endDate" formControlName="endDate" class="input-field"
+            <input type="date" id="endDate" formControlName="endDate" class="input-field" [ngStyle]="{'color': createTripForm.get('endDate')?.value ? '#333' : '#a0aec0'}"
               [ngClass]="{'input-error': createTripForm.get('endDate')?.invalid && createTripForm.get('endDate')?.touched}">
             
             @if (createTripForm.get('endDate')?.invalid && createTripForm.get('endDate')?.touched) {
@@ -152,7 +152,7 @@
                 <!-- Fecha -->
                 <div class="input-group">
                   <label for="date-{{i}}" class="input-label">Fecha</label>
-                  <input type="date" id="date-{{i}}" formControlName="date" class="input-field"
+                  <input type="date" id="date-{{i}}" formControlName="date" class="input-field" [ngStyle]="{'color': actividadGroup.get('date')?.value ? '#333' : '#a0aec0'}"
                     [ngClass]="{'input-error': actividadGroup.get('date')?.invalid && actividadGroup.get('date')?.touched}">
                   
                   @if (actividadGroup.get('date')?.invalid && actividadGroup.get('date')?.touched) {
@@ -163,6 +163,7 @@
                       Algunas actividades tienen fechas fuera del rango del viaje.
                     </div>
                   }
+                  
                 </div>
 
                 <!-- Hora -->

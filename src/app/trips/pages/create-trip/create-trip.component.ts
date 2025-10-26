@@ -1,4 +1,4 @@
-import { NgClass, NgForOf } from '@angular/common';
+import { NgClass, NgForOf, NgStyle } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-trip',
-  imports: [ReactiveFormsModule, FormsModule, NgClass, NgForOf],
+  imports: [ReactiveFormsModule, FormsModule, NgClass, NgForOf, NgStyle],
   templateUrl: './create-trip.component.html',
   styleUrl: './create-trip.component.css'
 })

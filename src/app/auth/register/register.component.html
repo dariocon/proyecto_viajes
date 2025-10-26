@@ -140,7 +140,7 @@
 
         <div class="input-group">
           <label for="birthdate" class="input-label">Fecha de nacimiento</label>
-          <input type="date" id="birthdate" formControlName="birthDate" class="input-field"     [ngClass]="{
+          <input type="date" id="birthdate" formControlName="birthDate" class="input-field" [ngStyle]="{'color': registerForm.get('birthDate')?.value ? '#333' : '#a0aec0'}"    [ngClass]="{
             'input-error': registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched
             }">
           <div *ngIf="registerForm.get('birthDate')?.hasError('required') && registerForm.get('birthDate')?.touched" class="text-red-600 text-sm input-error-message">

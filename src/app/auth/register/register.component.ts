@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass, NgIf, NgStyle } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AbstractControl, Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../_services/auth.service';
@@ -10,7 +10,7 @@ import { UsernameValidatorService } from '../../_services/username-validator-ser
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, NgIf, NgClass],
+  imports: [ReactiveFormsModule, NgIf, NgClass, NgStyle],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
