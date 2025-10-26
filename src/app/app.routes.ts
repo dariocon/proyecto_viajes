@@ -10,6 +10,7 @@ import { MyTripsListComponent } from './trips/pages/my-trips-list/my-trips-list.
 import { TripsListComponent } from './trips/pages/trips-list/trips-list.component';
 import { loggedGuard } from './shared/guards/logged.guard';
 import { roleGuard } from './shared/guards/role.guard';
+import { VerifyComponent } from './profile-data/verify/verify.component';
 export const routes: Routes = [
     { path:'', component: HomeComponent },
     { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
@@ -17,7 +18,9 @@ export const routes: Routes = [
     { path: 'usuarios/:username', component: UserComponent, canMatch: [loginGuard], canActivate: [usernameGuard]},
     { path: 'create-trip', component: CreateTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
     { path: 'mis-viajes', component: MyTripsListComponent, canMatch: [loginGuard] },
-    { path: 'viajes', component: TripsListComponent }
+    { path: 'viajes', component: TripsListComponent },
+    { path: 'confirm', component: VerifyComponent }
+
 
 
 ];

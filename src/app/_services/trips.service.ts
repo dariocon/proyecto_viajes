@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Categoria } from '../_interfaces/categoria';
 import { TripAdd, TripDto } from '../_interfaces/trip';
+import { AuthService } from './auth.service';
 
 @Injectable({
 providedIn: 'root'
@@ -17,6 +18,7 @@ private apiUrl = 'http://localhost:8080';
 http: HttpClient = inject(HttpClient);
 private searchTermSubject = new BehaviorSubject<string>('');
 public currentSearchTerm: Observable<string> = this.searchTermSubject.asObservable();
+public authService = inject(AuthService);
 
 setSearchTerm(term: string): void {
     this.searchTermSubject.next(term.toLowerCase()); 
@@ -93,16 +95,20 @@ addTrip(formData: FormData): Observable<any> {
   );
   }
 
-
-  getTripParticipationsByUser(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/viajes/mis-viajes-participados`).pipe(
-      // Opcional: para manejar errores de forma centralizada
+  //El objetivo de este método es usarlo tanto en mytrips como en un ver participaciones de x user por parte de un admin.
+  getTripParticipationsByUser(targetUsername?: string): Observable<any> {
+    let url = `${this.apiUrl}/viajes/mis-viajes-participados`;
+    if (targetUsername) {
+      url += `?username=${targetUsername}`;
+    }
+    return this.http.get<any>(url).pipe(
       catchError(error => {
         console.error('Error al obtener la lista de viajes en los que ha participado:', error);
         return throwError(() => new Error('No se pudo cargar la lista de viajes en los que participa.'));
       })
     );
   }
+
 
 /*addTrip(trip: TripAdd, image?: File): Observable<any> {
   const formData = new FormData();

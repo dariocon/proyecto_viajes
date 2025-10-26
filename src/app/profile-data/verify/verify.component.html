@@ -1,0 +1,17 @@
+<div class="verify-container">
+  <h2>Verificación de cuenta</h2>
+
+  @if(statusMessage) {
+    <p [class.success]="isSuccess" [class.error]="!isSuccess">
+      {{ statusMessage }}
+    </p>
+
+    @if(!isSuccess && token) {
+      <button (click)="resendCode()" class="resend-btn">
+        Reenviar código
+      </button>
+    }
+  } @else {
+    <p>Verificando tu cuenta, por favor espera...</p>
+  }
+</div>

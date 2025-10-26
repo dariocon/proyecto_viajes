@@ -66,7 +66,7 @@ export class MyTripsListComponent implements OnInit{
         }
       });
     } else if (group === 'Asistente') {
-      this.tripsService.getTripParticipationsByUser().subscribe({
+      this.tripsService.getTripParticipationsByUser(this.authService.username).subscribe({
         next: (trips) => {
           this.participatedTrips = Array.isArray(trips) ? trips : [];
           this.dataLoads.participatedTripsLoaded = true;
@@ -179,7 +179,7 @@ export class MyTripsListComponent implements OnInit{
       }
     });
   } else if (group === 'Asistente') {
-    this.tripsService.getTripParticipationsByUser().subscribe({
+    this.tripsService.getTripParticipationsByUser(this.authService.username).subscribe({
       next: (trips) => {
         this.participatedTrips = Array.isArray(trips) ? trips : [];
         this.applyPagination();

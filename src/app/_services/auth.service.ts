@@ -185,6 +185,15 @@ editUser(user : UserEdit):Observable<UserEdit>{
 return this.http.put<UserEdit>(`${this.apiUrl}/usuarios/${this._username}`, user)
 }
 
+confirmAccount(token: string):Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/register/confirm`, token);
+}
+
+resendVerification(token: string): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/register/resend`, token);
+}
+
+
 editUserWithPasswordVerification(userEdit: UserEdit, currentPassword: string): Observable<UserEdit> {
 const url = `${this.apiUrl}/usuarios/${this._username}`;
 return this.http.put<UserEdit>(url, {
