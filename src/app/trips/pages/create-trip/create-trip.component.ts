@@ -60,13 +60,18 @@ export class CreateTripComponent implements OnInit {
     return this.createTripForm.get('itineraryActivities') as FormArray;
   }
 
-  onFilesSelected(event: any) {
-    const files = event.target.files;
-    if (files && files.length) {
-      this.selectedImages = Array.from(files);
-      this.coverImageIndex = 0;
-    }
-  }
+onFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+    const files: File[] = Array.from(input.files); // forzamos a File[]
+    
+    // Agregamos los archivos al array existente
+    this.selectedImages.push(...files);
+
+    // Si no hay portada seleccionada, asignamos la primera
+    if (this.coverImageIndex === null) this.coverImageIndex = 0;
+}
+
 
   setCoverImage(index: number) {
     this.coverImageIndex = index;
