@@ -27,7 +27,7 @@
                     type="text" 
                     placeholder="Buscar por título..." 
                     [(ngModel)]="searchTerm"
-                    (input)="onSearch(searchTerm)"
+                    (keyup.enter)="onSearch(searchTerm)"
                     class="search-input">
                 </div>
                 <h2 class="trips-title">Mis viajes</h2>

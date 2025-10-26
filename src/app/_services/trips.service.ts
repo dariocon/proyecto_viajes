@@ -85,6 +85,14 @@ addTrip(formData: FormData): Observable<any> {
       })
     );
   }
+  
+  searchMyTrips(term: string, type: string): Observable<TripDto[]> {
+  const finalTerm = (term || '').trim();
+  return this.http.get<TripDto[]>(
+    `${this.apiUrl}/viajes/mis-viajes/buscar?termino=${encodeURIComponent(finalTerm)}&tipo=${encodeURIComponent(type)}`
+  );
+  }
+
 
   getTripParticipationsByUser(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/viajes/mis-viajes-participados`).pipe(

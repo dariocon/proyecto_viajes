@@ -35,48 +35,79 @@ export class MyTripsListComponent implements OnInit{
   currentUserId = this.authService.username; 
   private dataLoads = { allTripsLoaded: false, participatedTripsLoaded: false };
 
-    ngOnInit(): void {
-    // Carga de todos los viajes organizados por el usuario ( para el filtro Creados)
-    this.tripsService.getTripsByOrganizer(this.currentUserId).subscribe({
-        next: (trips) => {            
-            this.allTrips = trips;
-            this.dataLoads.allTripsLoaded = true;
-            this.checkLoadingStatus();
-        },
-        error: (err) => {
-            console.error('Error al cargar todos los viajes:', err);
-            this.dataLoads.allTripsLoaded = true;
-            this.checkLoadingStatus(); 
-        }
-    });
+  ngOnInit(): void {
+    this.loadTripsByGroup('Creados'); 
+    this.loadTripsByGroup('Asistente'); 
+  }
 
-    // Carga de los viajes en los que el usuario participa (filtro Asistente)
-    this.tripsService.getTripParticipationsByUser().subscribe({
-        next: (trips: TripDto[]) => {       
-            this.participatedTrips = trips;
-            this.dataLoads.participatedTripsLoaded = true;
-            this.checkLoadingStatus(); 
-        },
-        error: (err) => {
-            console.error('Error al cargar los viajes participados:', err);
-             this.dataLoads.participatedTripsLoaded = true; 
-             this.checkLoadingStatus(); 
-        }
-    });
-  }
-
-    private checkLoadingStatus(): void {
+  private checkLoadingStatus(): void {
         if (this.dataLoads.allTripsLoaded && this.dataLoads.participatedTripsLoaded) {
             this.isLoading = false;
             this.applyPagination();
         }
     }
 
-  onSearch(inputValue: string): void {
-    this.searchTerm = inputValue.trim().toLowerCase();
+  private loadTripsByGroup(group: string): void {
     this.currentPage = 1;
-    this.applyPagination();
+
+    if (group === 'Creados') {
+      this.tripsService.getTripsByOrganizer(this.currentUserId).subscribe({
+        next: (trips) => {
+          this.allTrips = trips;
+          this.dataLoads.allTripsLoaded = true;
+          this.applyPagination();
+          this.checkLoadingStatus();
+        },
+        error: (err) => {
+          console.error('Error al cargar viajes creados:', err);
+          this.dataLoads.allTripsLoaded = true;
+          this.checkLoadingStatus();
+        }
+      });
+    } else if (group === 'Asistente') {
+      this.tripsService.getTripParticipationsByUser().subscribe({
+        next: (trips) => {
+          this.participatedTrips = trips;
+          this.dataLoads.participatedTripsLoaded = true;
+          this.applyPagination();
+          this.checkLoadingStatus();
+        },
+        error: (err) => {
+          console.error('Error al cargar viajes participados:', err);
+          this.dataLoads.participatedTripsLoaded = true;
+          this.checkLoadingStatus();
+        }
+      });
+    }
   }
+
+  onSearch(inputValue: string): void {
+    this.searchTerm = inputValue.trim();
+    this.currentPage = 1;
+
+    const [group] = this.activeFilter.split(' - '); 
+    const type = group === 'Creados' ? 'creados' : 'participante';
+
+      if (!this.searchTerm) {
+        // Si la búsqueda está vacía, recargamos el grupo correspondiente
+        this.loadTripsByGroup(group);
+        return;
+      }
+
+    // Solo llamamos al backend si hay texto
+    this.tripsService.searchMyTrips(this.searchTerm, type).subscribe({
+      next: (trips: TripDto[]) => {
+        if (type === 'creados') this.allTrips = trips;
+        else this.participatedTrips = trips;
+        this.applyPagination();
+      },
+      error: (err) => {
+        console.error('Error al buscar viajes:', err);
+      }
+    });
+  }
+
+
 
   get filteredTrips(): TripDto[] {
     const now = new Date();
@@ -131,7 +162,25 @@ export class MyTripsListComponent implements OnInit{
   // Para cambiar el filtro activo (se usa cada vez que clickamos en un filtro)
   setActiveFilter(group: string, option: string): void {
     this.activeFilter = `${group} - ${option}`;
+    this.searchTerm = '';
     this.currentPage = 1;
+      if (group === 'Creados') {
+    this.tripsService.getTripsByOrganizer(this.currentUserId).subscribe({
+      next: (trips) => {
+        this.allTrips = trips;
+        this.applyPagination();
+      },
+      error: (err) => console.error('Error al cargar viajes creados:', err)
+    });
+  } else if (group === 'Asistente') {
+    this.tripsService.getTripParticipationsByUser().subscribe({
+      next: (trips) => {
+        this.participatedTrips = trips;
+        this.applyPagination();
+      },
+      error: (err) => console.error('Error al cargar viajes participados:', err)
+    });
+  }
     this.applyPagination();
   }
 
