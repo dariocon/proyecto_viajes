@@ -50,7 +50,7 @@ body {
 .nav-desktop {
     display: grid;
     grid-auto-flow: column;
-    justify-content: center;
+    justify-content: end;
     gap: 21px;
     align-items: center;
 }

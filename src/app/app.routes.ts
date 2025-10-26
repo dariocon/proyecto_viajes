@@ -9,12 +9,13 @@ import { CreateTripComponent } from './trips/pages/create-trip/create-trip.compo
 import { MyTripsListComponent } from './trips/pages/my-trips-list/my-trips-list.component';
 import { TripsListComponent } from './trips/pages/trips-list/trips-list.component';
 import { loggedGuard } from './shared/guards/logged.guard';
+import { roleGuard } from './shared/guards/role.guard';
 export const routes: Routes = [
     { path:'', component: HomeComponent },
     { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [loggedGuard] },
     { path: 'usuarios/:username', component: UserComponent, canMatch: [loginGuard], canActivate: [usernameGuard]},
-    { path: 'create-trip', component: CreateTripComponent, canMatch: [loginGuard] },
+    { path: 'create-trip', component: CreateTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
     { path: 'mis-viajes', component: MyTripsListComponent, canMatch: [loginGuard] },
     { path: 'viajes', component: TripsListComponent }
 

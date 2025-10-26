@@ -20,13 +20,25 @@ private _username: string = '';
 private isRefreshing = new BehaviorSubject<boolean>(false);
 private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
+private roleSubject = new BehaviorSubject<string>('');
+role$ = this.roleSubject.asObservable();
+
 private router: Router = inject(Router);
     constructor(){
-    let username = localStorage.getItem('username');
-    if (username) {
-      this._username = username;
-      this.isLoggedSignal.set(true);
-    }
+        const accessToken = localStorage.getItem('accessToken');
+        const username = localStorage.getItem('username');
+
+        if (username) {
+          this._username = username;
+          this.isLoggedSignal.set(true);
+        }
+
+        if (accessToken) {
+          const tokenInfo = this.getDecodedAccessToken(accessToken);
+          if (tokenInfo?.role) {
+            this.roleSubject.next(tokenInfo.role);
+          }
+        }
     
    //this.validateToken().subscribe();
   }
@@ -45,6 +57,10 @@ getAccessToken(): string | null {
 
 getRefreshToken(): string | null {
     return localStorage.getItem('refreshToken');
+}
+
+setRole(role: string) {
+  this.roleSubject.next(role);
 }
 
 private saveTokens(accessToken: string, refreshToken: string) {
@@ -77,7 +93,9 @@ isLoggedF(): boolean{
 get username(){
   return this._username;
 }
-
+get role(): string {
+  return this.roleSubject.value;
+}
 getUser(): Observable<UserEdit> {
 return this.http.get<UserEdit>(`${this.apiUrl}/usuarios/${this._username}`);
 }
@@ -100,6 +118,8 @@ login(personaLogin: UserLogin) {
             next: response => {
                 this.saveTokens(response.accessToken, response.refreshToken); 
                 this.refreshTokenSubject.next(response.refreshToken);
+                const tokenInfo = this.getDecodedAccessToken(response.accessToken);
+                if (tokenInfo?.role) this.roleSubject.next(tokenInfo.role);
             }
         })
     );
@@ -157,6 +177,7 @@ logout() {
   this._username = '';
   this.isLoggedSignal.set(false);
   this.router.navigateByUrl('/login')
+  this.roleSubject.next('');
 
 }
 

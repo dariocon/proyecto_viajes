@@ -14,11 +14,17 @@ export class NavbarComponent {
   //isAuthenticaded = false;
   constructor(public authService: AuthService, private tripsService: TripsService, private router: Router){}
   isDropdownVisible: boolean = false;
+  role: string = '';
 /*  ngOnInit(): void {
     this.authService.isLogged.subscribe(value => {
       this.isAuthenticaded = value;
     });
   }  */
+  ngOnInit(): void {
+    this.authService.role$.subscribe(role => {
+      this.role = role; 
+    });
+  }
   toggleDropdown(): void {
     this.isDropdownVisible = !this.isDropdownVisible;
   }

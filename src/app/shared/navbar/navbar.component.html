@@ -14,12 +14,15 @@
     </div>
 
     @if (authService.isLogged()) {
-    <div class="nav-item">
-        <a class="nav-link" [routerLink]="['/mis-viajes']" routerLinkActive="active-link" >Mis viajes</a>
-    </div>
-    <div class="nav-item">
-        <a class="nav-link" [routerLink]="['/create-trip']" routerLinkActive="active-link" >Crear viajes</a>
-    </div>
+      <div class="nav-item">
+        <a class="nav-link" [routerLink]="['/mis-viajes']" routerLinkActive="active-link">Mis viajes</a>
+      </div>
+
+      @if (role === 'organizer' || role === 'admin') {
+        <div class="nav-item">
+          <a class="nav-link" [routerLink]="['/create-trip']" routerLinkActive="active-link">Crear viajes</a>
+        </div>
+      }
     }
     <div class="nav-item">    
         <a class="nav-link" [routerLink]="['/viajes']" routerLinkActive="active-link" >Viajes</a>
