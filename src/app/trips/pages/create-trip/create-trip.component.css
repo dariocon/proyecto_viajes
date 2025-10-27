@@ -43,6 +43,7 @@
 
 .new-trip-title {
     margin-bottom: 24px;
+    
     font-size: 30px;
     font-weight: 600;
     letter-spacing: -0.05em;
@@ -52,6 +53,28 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+.new-itinerary-title {
+  margin-bottom: 24px;
+  margin-top: 14px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.new-itinerary-title .title-text {
+  background: linear-gradient(135deg, #F95596, #FE7079);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.new-itinerary-title .icon {
+  color: #475569;
+}
+
 
 /* Nota: Se omite la sección de Radio Buttons para mantener la estructura, 
    pero se mantiene el orden de las secciones siguientes. */
