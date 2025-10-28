@@ -32,15 +32,21 @@
 /* 🔑 CORRECCIÓN CLAVE: Esto permite que los <span> internos salten de línea */
 .hero-title {
     font-size: 30px;
-    font-weight: 600;
-    letter-spacing: -0.05em;
     line-height: 36px;
+    letter-spacing: -0.05em;
     color: #475569;
-    /* Para centrar el texto dentro del H1 */
-    text-align: center; 
-    /* El H1 debe ser un bloque para que el texto-align funcione */
-    display: block; 
+    text-align: center;
+    display: block;
+
+    /* Grosor intermedio usando variable font */
+    font-variation-settings: "wght" 580; /* valor entre 500 y 600 */
+
+    /* Suavizado de fuentes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
+
 
 /* 🔑 CLAVE ADICIONAL: Asegura que cada <span> interno sea un bloque centrado */
 .hero-title > span {
@@ -519,6 +525,37 @@
     justify-content: end;
 }
 
+.empty-message {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  color: #888;
+  margin: 0px 0;
+  grid-column: 1 / -1;
+  letter-spacing: -0.02em;
+  animation: fadeIn 0.3s ease-in-out;
+  
+}
+
+.empty-state-image {
+    /* 1. Controla el tamaño de la imagen */
+    width: 100%; /* Ocupa el 100% del contenedor actual */
+    max-width: 200px; /* Limita el tamaño máximo de la imagen a 300px */
+    height: auto;
+    
+    /* 2. Asegura que la imagen esté centrada */
+    display: block; /* Necesario para que margin: auto funcione */
+    margin: 0px auto 0px auto; /* Centra horizontalmente y añade margen vertical */
+
+    /* 3. Asegura que la imagen ocupe todo el ancho del grid */
+    grid-column: 1 / -1; 
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 
 
 /* Responsive Design */
@@ -812,3 +849,28 @@
         max-width: 220px; /* **Ajuste aún más el max-width para pantallas muy pequeñas** */
     }
 }
+
+@media (min-width: 1200px) {
+  .trips-grid {
+    grid-template-columns: repeat(4, 1fr); /* fijo 4 columnas */
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 900px) {
+  .trips-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 899px) and (min-width: 600px) {
+  .trips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 599px) {
+  .trips-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class MyTripsListComponent implements OnInit{
   private authService: AuthService = inject(AuthService);
   constructor(private tripsService: TripsService) { }
-  filterGroups = [
+ /* filterGroups = [
     {
       title: 'Creados',
       options: ['Todos', 'Próximos', 'Pasados']
@@ -22,9 +22,10 @@ export class MyTripsListComponent implements OnInit{
       title: 'Asistente',
       options: ['Todos', 'Próximos', 'Pasados']
     }
-  ];
+  ];*/
+  filterGroups: { title: string; options: string[] }[] = [];
   // Estado inicial del filtro
-  activeFilter = 'Creados - Todos';
+  activeFilter = '';
   allTrips: TripDto[] = [];
   paginatedTrips: TripDto[] = []; 
   participatedTrips: TripDto[] = [];
@@ -34,11 +35,39 @@ export class MyTripsListComponent implements OnInit{
   searchTerm: string = ''; 
   currentUserId = this.authService.username; 
   private dataLoads = { allTripsLoaded: false, participatedTripsLoaded: false };
+  role: string= '';
 
-  ngOnInit(): void {
-    this.loadTripsByGroup('Creados'); 
-    this.loadTripsByGroup('Asistente'); 
-  }
+ngOnInit(): void {
+  this.authService.role$.subscribe(role => {
+    this.role = role;
+
+    if (this.role === 'organizer') {
+      this.filterGroups = [
+        {
+          title: 'Creados',
+          options: ['Todos', 'Próximos', 'Pasados']
+        },
+        {
+          title: 'Asistente',
+          options: ['Todos', 'Próximos', 'Pasados']
+        }
+      ];
+      this.activeFilter = 'Creados - Todos';
+      this.loadTripsByGroup('Creados');
+    } else {
+      this.filterGroups = [
+        {
+          title: 'Asistente',
+          options: ['Todos', 'Próximos', 'Pasados']
+        }
+      ];
+      this.activeFilter = 'Asistente - Todos';
+    }
+    this.dataLoads.allTripsLoaded = true;
+    this.loadTripsByGroup('Asistente');
+  });
+}
+
 
   private checkLoadingStatus(): void {
         if (this.dataLoads.allTripsLoaded && this.dataLoads.participatedTripsLoaded) {
@@ -116,7 +145,7 @@ export class MyTripsListComponent implements OnInit{
     // Dividir el filtro en grupo (asistente, creados) y opción de fecha (pasados, próximos, todos)
     const [group, option] = this.activeFilter.split(' - '); 
 
-    // la lista base a filtrar (Creados vs. Asistente)
+    // la lista base a filtrar (creados o asistente)
     let baseTrips: TripDto[] = [];
     
     if (group === 'Creados') {     
@@ -128,7 +157,7 @@ export class MyTripsListComponent implements OnInit{
     }
 
     let filtered = baseTrips;
-    // Ahora aplicamos el filtro de fecha (Próximos, Pasados, Todos)
+    // Ahora aplicamos el filtro de fecha (próximos, pasados, todos)
     switch (option) {
     /* case 'Todos':
         break;*/

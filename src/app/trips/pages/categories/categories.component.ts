@@ -1,41 +1,41 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Categoria } from '../../../_interfaces/categoria';
 import { TripsService } from '../../../_services/trips.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-categories',
   imports: [CommonModule],
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css'
+  styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements OnChanges, OnInit {
+export class CategoriesComponent implements OnInit, OnChanges {
 
-@Output() categorySelected = new EventEmitter<{ categoryName: string, idCategory?: number }>();
-@Input() reset: boolean = false;
-constructor(private tripsService: TripsService) { }
-selectedCategory: string = 'Todos';
-tripCategories:Categoria[]= [] 
+  @Output() categorySelected = new EventEmitter<{ categoryName: string, idCategory?: number }>();
+  @Input() reset: boolean = false;
 
+  tripCategories: Categoria[] = [];
+  selectedCategory: string = 'Todos';
 
-onFilter(categoryName: string, idCategory?: number): void {
-        this.selectedCategory = categoryName; 
+  constructor(private tripsService: TripsService) { }
 
-        this.categorySelected.emit({ categoryName, idCategory });
-    }
-
-ngOnInit(): void {
-         this.tripsService.getCategories().subscribe(cats => {
-          this.tripCategories = cats;
-      })
+  ngOnInit(): void {
+    this.tripsService.getCategories().subscribe(cats => {
+      this.tripCategories = cats;
+    });
   }
+
+  onFilter(categoryName: string, idCategory?: number): void {
+    this.selectedCategory = categoryName;
+    this.categorySelected.emit({ categoryName, idCategory });
+  }
+// Cuando busco, se deselecciona la categoría que esté pulsada, y si entro a viajes por búsqueda desde otra página, igual.
 ngOnChanges(changes: SimpleChanges): void {
-  if (changes['reset'] && changes['reset'].currentValue === true) {
+  if (changes['reset'] && this.reset) {
     this.selectedCategory = '';
   }
 }
 
 
+
 }
-
-

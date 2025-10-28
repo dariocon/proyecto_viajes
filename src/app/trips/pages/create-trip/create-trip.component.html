@@ -8,7 +8,7 @@
 
           <!-- Título -->
           <div class="input-group">
-            <label for="title" class="input-label">Título del Viaje*</label>
+            <label for="title" class="input-label">Título del viaje*</label>
             <input type="text" id="title" formControlName="title" class="input-field" placeholder="Ej: Aventura en los Alpes Suizos"
               [ngClass]="{'input-error': createTripForm.get('title')?.invalid && createTripForm.get('title')?.touched}">
             
@@ -46,7 +46,7 @@
 
           <!-- Cupo Máximo -->
           <div class="input-group">
-            <label for="maxCapacity" class="input-label">Cupo Máximo de Personas</label>
+            <label for="maxCapacity" class="input-label">Cupo máximo de personas</label>
             <input type="number" id="maxCapacity" formControlName="maxCapacity" class="input-field" placeholder="Ej: 10" min="1"
               [ngClass]="{'input-error': createTripForm.get('maxCapacity')?.invalid && createTripForm.get('maxCapacity')?.touched}">
             
@@ -57,7 +57,7 @@
 
           <!-- Fecha de Inicio -->
           <div class="input-group">
-            <label for="startDate" class="input-label">Fecha de Inicio*</label>
+            <label for="startDate" class="input-label">Fecha de inicio*</label>
             <input type="date" id="startDate" formControlName="startDate" class="input-field" [ngStyle]="{'color': createTripForm.get('startDate')?.value ? '#333' : '#a0aec0'}"
               [ngClass]="{'input-error': createTripForm.get('startDate')?.invalid && createTripForm.get('startDate')?.touched}">
             
@@ -68,7 +68,7 @@
 
           <!-- Fecha de Fin -->
           <div class="input-group">
-            <label for="endDate" class="input-label">Fecha de Fin*</label>
+            <label for="endDate" class="input-label">Fecha de fin*</label>
             <input type="date" id="endDate" formControlName="endDate" class="input-field" [ngStyle]="{'color': createTripForm.get('endDate')?.value ? '#333' : '#a0aec0'}"
               [ngClass]="{'input-error': createTripForm.get('endDate')?.invalid && createTripForm.get('endDate')?.touched}">
             
@@ -83,7 +83,7 @@
 
           <!-- Presupuesto Estimado -->
           <div class="input-group">
-            <label for="estimatedBudget" class="input-label">Presupuesto Estimado (€)</label>
+            <label for="estimatedBudget" class="input-label">Presupuesto estimado (€)</label>
             <input type="number" id="estimatedBudget" formControlName="estimatedBudget" class="input-field" placeholder="Ej: 1500.50" step="0.01" min="0"
               [ngClass]="{'input-error': createTripForm.get('estimatedBudget')?.invalid && createTripForm.get('estimatedBudget')?.touched}">
             
@@ -93,8 +93,8 @@
           </div>
 
           <div class="input-group">
-            <label for="tripImage" class="input-label">Imágenes del Viaje (Opcional)</label>
-            <label for="tripImage" class="file-upload-button">📎 Seleccionar Imágenes</label>
+            <label for="tripImage" class="input-label">Imágenes del viaje</label>
+            <label for="tripImage" class="file-upload-button">📎 Seleccionar imágenes</label>
             <input id="tripImage" type="file" (change)="onFilesSelected($event)" accept="image/*" multiple class="file-input-hidden">
           </div>
 
@@ -113,7 +113,7 @@
     
     <div class="input-group" >
       <button type="button" (click)="removeSelectedImages()" class="delete-images-button" title="Eliminar todas las imágenes seleccionadas">
-        Eliminar Imágenes 
+        Eliminar imágenes 
       </button>
     </div>
   
@@ -136,7 +136,7 @@
         <div class="full-width-in-grid">
           <h3 class="new-itinerary-title">
             <span class="icon">🗓️</span>
-            <span class="title-text">Itinerario de Actividades</span>
+            <span class="title-text">Itinerario de actividades</span>
           </h3>
 
         </div>
@@ -172,13 +172,13 @@
 
                 <!-- Hora -->
                 <div class="input-group">
-                  <label for="time-{{i}}" class="input-label">Hora (Opcional)</label>
+                  <label for="time-{{i}}" class="input-label">Hora</label>
                   <input type="time" id="time-{{i}}" formControlName="time" class="input-field">
                 </div>
 
                 <!-- Actividad -->
                 <div class="input-group full-width-in-grid">
-                  <label for="activity-{{i}}" class="input-label">Descripción de la Actividad</label>
+                  <label for="activity-{{i}}" class="input-label">Descripción de la actividad</label>
                   <input type="text" id="activity-{{i}}" formControlName="activity" class="input-field"
                     placeholder="Ej: Visita al Museo del Louvre"
                     [ngClass]="{'input-error': actividadGroup.get('activity')?.invalid && actividadGroup.get('activity')?.touched}">
@@ -190,7 +190,7 @@
 
                 <!-- Lugar -->
                 <div class="input-group full-width-in-grid">
-                  <label for="location-{{i}}" class="input-label">Lugar (Opcional)</label>
+                  <label for="location-{{i}}" class="input-label">Lugar</label>
                   <input type="text" id="location-{{i}}" formControlName="location" class="input-field" placeholder="Ej: París, Francia">
                 </div>
               </div>
@@ -200,7 +200,7 @@
 
         <!-- Botón Añadir Actividad -->
         <div class="full-width-in-grid" style="display: flex; justify-content: flex-end; margin-top: 10px; margin-bottom: 20px;">
-          <button type="button" (click)="addActivity()" class="add-activity-btn">+ Añadir Actividad</button>
+          <button type="button" (click)="addActivity()" class="add-activity-btn">+ Añadir actividad</button>
         </div>
 
         <!-- Botón Crear Viaje -->

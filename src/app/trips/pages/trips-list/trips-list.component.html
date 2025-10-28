@@ -41,8 +41,9 @@
     <div class="categories-content">
         <h2 class="category-title">Viajes disponibles</h2>
         <div class="carousel-container">
-        <app-categories [reset]="resetCategories" (categorySelected)="handleCategoryChange($event)"></app-categories>
-        </div>
+      <app-categories [reset]="resetCategories" (categorySelected)="onCategorySelected($event)"></app-categories>
+
+       </div>
     </div>
 </section>
 <!--     
@@ -99,6 +100,11 @@
       <p class="empty-message">Cargando viajes...</p>
   }
   @if (!isLoading && paginatedTrips.length === 0) {
+                        <img 
+                        src="./assets/images/trips-not-available.png" 
+                        alt="trips-not-available"
+                        class="empty-state-image" 
+                    >
       <p class="empty-message">No hay viajes disponibles en este momento.</p>
   }
   @if (!isLoading && paginatedTrips.length > 0) {

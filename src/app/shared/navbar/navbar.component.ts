@@ -11,15 +11,12 @@ import { TripsService } from '../../_services/trips.service';
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {
-  //isAuthenticaded = false;
+
   constructor(public authService: AuthService, private tripsService: TripsService, private router: Router){}
+
   isDropdownVisible: boolean = false;
   role: string = '';
-/*  ngOnInit(): void {
-    this.authService.isLogged.subscribe(value => {
-      this.isAuthenticaded = value;
-    });
-  }  */
+
   ngOnInit(): void {
     this.authService.role$.subscribe(role => {
       this.role = role; 
@@ -28,24 +25,19 @@ export class NavbarComponent {
   toggleDropdown(): void {
     this.isDropdownVisible = !this.isDropdownVisible;
   }
-  onSearch(inputElement: HTMLInputElement): void {
-    const searchTerm = inputElement.value;
-    this.tripsService.setSearchTerm(searchTerm);
+onSearch(inputElement: HTMLInputElement): void {
+  const searchTerm = inputElement.value;
 
-      this.router.navigate(
-        ['/viajes'], // La ruta donde está TripsListComponent
-        {
-            queryParams: { search: searchTerm || null, category: null, categoryName: null }, 
-            queryParamsHandling: 'merge'
-        }
-    );
+ 
+  this.router.navigate(['/viajes'], { queryParams: { term: searchTerm } });
 
-    if (searchTerm) {
-        inputElement.value = '';
-    }
+  if (searchTerm) {
+    inputElement.value = '';
   }
+}
 
-  // Cierra el desplegable cuando el usuario hace clic fuera de él
+
+  // Cierra el desplegable del icono de perfil cuando el usuario hace clic fuera de él
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
       const clickedInside = (event.target as HTMLElement).closest('.user-profile-container');

@@ -83,7 +83,7 @@ export class RegisterComponent {
         next: () => {
           Swal.fire({
               title: "Registro correcto",
-              text: "Se ha registrado correctamente",
+              text: "Te hemos enviado un enlace de confirmación a tu correo.",
               icon: 'success',
               confirmButtonText: 'Aceptar',  
               background: 'linear-gradient(135deg, #F95596, #FE7079)',

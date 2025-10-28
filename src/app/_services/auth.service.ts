@@ -155,7 +155,7 @@ refreshAccessToken(): Observable<any> {
 
   if (!refreshToken) {
     this.logout();
-    return of(null); 
+    return throwError(() => new Error('No refresh token'));
   }
 
   return this.http.post<{ accessToken: string; refreshToken: string }>(url, { refreshToken }).pipe(
@@ -163,9 +163,9 @@ refreshAccessToken(): Observable<any> {
       this.saveTokens(response.accessToken, response.refreshToken);
       this.refreshTokenSubject.next(response.refreshToken);
     }),
-    catchError(() => { // Si falla el refresco (token expirado o inválido)
+    catchError((error) => { // Si falla el refresco (token expirado o inválido)
       this.logout();
-      return of(null); 
+      return throwError(() => error);
     })
   );
 }
