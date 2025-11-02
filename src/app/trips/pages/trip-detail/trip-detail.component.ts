@@ -13,7 +13,7 @@ registerLocaleData(localeEs, 'es');
 
 @Component({
   selector: 'app-trip-detail',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, CommonModule],
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.css',
   providers: [
@@ -84,48 +84,66 @@ export class TripDetailComponent implements OnInit, OnDestroy {
           document.body.style.backgroundColor = ''; 
       }
 
-  onSubmit(): void {
-      const participation: ParticipationAdd = {
-        idTrip: this.id,
-        username: this.authService.username
-      }
-          this.tripsService.addParticipation(participation).subscribe(
-            {
-               next: response => {
-                  Swal.fire({      
-                        title: "¡Participación Registrada!",
-                        text: "Te has unido al viaje con éxito. ¡Prepárate para la aventura!",
-                        icon: 'success',
-                        confirmButtonText: 'Aceptar',
-                        background: 'linear-gradient(135deg, #F95596, #FE7079)',
-                        color: 'white', 
-                        iconColor: 'white', 
-                        confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
-                      }).then(() => {
-                            this.hasParticipated = true;
+onSubmit(): void {
+    const participation: ParticipationAdd = {
+      idTrip: this.id,
+      username: this.authService.username
+    }
 
-                            // cambiamos visualmente el número de plazas disponibles tras reservar
-                              if (this.trip?.participations && response) {
-                                this.trip.participations.push(response); 
-                                this.participationDate = response.participationDate;
-                              }
-                          });
-               },
-                error: error => Swal.fire({
-                    title: '¡Error!',
-                    text: error?.error.message,
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar',
-                    background: 'linear-gradient(135deg, #F95596, #FE7079)', 
-                    color: 'white',
-                    iconColor: 'white',
-                    confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
-                    
-                    }
-                    
-                  )
+    // Confirmación antes de registrar la participación
+    Swal.fire({
+      title: '¿Deseas unirte a este viaje?',
+      text: 'Confirma si quieres reservar tu plaza.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, reservar',
+      cancelButtonText: 'Cancelar',
+      background: 'linear-gradient(135deg, #F95596, #FE7079)',
+      color: 'white',
+      iconColor: 'white',
+      confirmButtonColor: 'rgba(255, 255, 255, 0.3)',
+      cancelButtonColor: '#d33'
+    }).then(result => {
+      if (result.isConfirmed) {
+
+        // llamada al servicio para registrar participación
+        this.tripsService.addParticipation(participation).subscribe(
+          {
+             next: response => {
+                Swal.fire({      
+                      title: "¡Participación Registrada!",
+                      text: "Te has unido al viaje con éxito. ¡Prepárate para la aventura!",
+                      icon: 'success',
+                      confirmButtonText: 'Aceptar',
+                      background: 'linear-gradient(135deg, #F95596, #FE7079)',
+                      color: 'white', 
+                      iconColor: 'white', 
+                      confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
+                    }).then(() => {
+                          this.hasParticipated = true;
+
+                          // cambiamos visualmente el número de plazas disponibles tras reservar
+                            if (this.trip?.participations && response) {
+                              this.trip.participations.push(response); 
+                              this.participationDate = response.participationDate;
+                            }
+                        });
+             },
+              error: error => Swal.fire({
+                  title: '¡Error!',
+                  text: error?.error.message,
+                  icon: 'error',
+                  confirmButtonText: 'Aceptar',
+                  background: 'linear-gradient(135deg, #F95596, #FE7079)', 
+                  color: 'white',
+                  iconColor: 'white',
+                  confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
                 })
-  }
+          });
+      }
+    });
+}
+
 
   nextSlide(): void {
     if (this.trip && this.trip.images && this.trip.images.length > 1) {
@@ -183,5 +201,16 @@ export class TripDetailComponent implements OnInit, OnDestroy {
             }
         });
     }
+
+  isTripInThePast(): boolean {
+    if (!this.trip?.startDate) {
+      return false;
+    }
+
+    const startDate = new Date(this.trip.startDate);
+    const now = new Date();
+    
+    return startDate.getTime() < now.getTime();
+}
 
 }

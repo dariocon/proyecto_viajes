@@ -871,6 +871,24 @@ body {
     font-weight: 500;
 }
 
+.booking-label-soldout {
+    font-weight: 500;
+    color:red
+}
+
+.reserve-button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: scale(1.03);
+}
+
+.reserve-button:disabled,
+.disabled-button {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .booking-value {
     font-weight: 600;
     color: #475569; /* var(--text-color-dark) */

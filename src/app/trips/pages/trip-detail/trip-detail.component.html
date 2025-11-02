@@ -92,16 +92,28 @@
                             </div>
                         </div>
                         <div class="booking-price">
+                        @if (!isTripInThePast()) {
                             @if(trip.maxCapacity) {
-                            <span class="booking-label">PLAZAS LIMITADAS ({{ trip.maxCapacity - trip.participations.length }})</span>
+                                @if(trip.maxCapacity>trip.participations.length) {
+                                    <span class="booking-label">PLAZAS LIMITADAS ({{ trip.maxCapacity - trip.participations.length }})</span>
 
+                                }@else {
+                                    <span class="booking-label-soldout">PLAZAS ACABADAS</span>
+
+                                }
                             }@else {
                             <span class="booking-label">PLAZAS ILIMITADAS</span>
                             }
+                        }@else {
+                            <span class="booking-label-soldout">EL VIAJE YA SE INICIÓ</span>
+                        }
+
 
                         </div>
                         @if (!authService.isLogged()) {
-                            <button [routerLink]="['/login']" class="reserve-button">
+                            <button [routerLink]="['/login']" class="reserve-button"
+                              [disabled]="(trip.maxCapacity <= trip.participations.length) || (isTripInThePast())"
+                              [ngClass]="{ 'disabled-button': (trip.maxCapacity <= trip.participations.length) || (isTripInThePast()) }">
                                 Únete para reservar tu plaza
                             </button>
                         }@else {
@@ -109,11 +121,19 @@
 
                             }
                             @else if(hasParticipated) {
-                                <button (click)="onCancelParticipation()" class="reserve-button">
+                                <button (click)="onCancelParticipation()" class="reserve-button"
+                                    [disabled]="(isTripInThePast())"
+                                    [ngClass]="{ 'disabled-button': (isTripInThePast())}">
                                     Cancelar Viaje
                                 </button>
                             }@else {
-                                <button class="reserve-button" (click)="onSubmit()">Reservar mi viaje</button>
+                                <button 
+                                class="reserve-button" 
+                                [disabled]="(trip.maxCapacity <= trip.participations.length) || (isTripInThePast())"
+                                [ngClass]="{ 'disabled-button': (trip.maxCapacity <= trip.participations.length) || (isTripInThePast()) }"
+                                (click)="onSubmit()">
+                                Reservar mi viaje
+                                </button>
 
                             }
 
@@ -121,6 +141,8 @@
 
                     </div>
 
+                    @if(trip.itineraryActivities!.length>0) {
+                        
                     <div class="trip-itinerary-card">
                         <div class="location-header itinerary-header">
                             <svg class="location-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -151,6 +173,8 @@
                             }
                         </div>
                     </div>
+                    }
+
                 </div>
             </div>
         } @else {
