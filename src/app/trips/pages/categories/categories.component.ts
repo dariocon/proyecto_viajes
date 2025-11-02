@@ -22,12 +22,14 @@ export class CategoriesComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.tripsService.getCategories().subscribe(cats => {
       this.tripCategories = cats;
+      
     });
   }
 
   onFilter(categoryName: string, idCategory?: number): void {
     this.selectedCategory = categoryName;
     this.categorySelected.emit({ categoryName, idCategory });
+    //this.router.navigate(['/viajes'], { queryParams: { term: searchTerm } });
   }
 // Cuando busco, se deselecciona la categoría que esté pulsada, y si entro a viajes por búsqueda desde otra página, igual.
 ngOnChanges(changes: SimpleChanges): void {

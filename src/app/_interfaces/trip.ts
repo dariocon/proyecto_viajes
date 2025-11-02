@@ -26,7 +26,7 @@ export interface TripDto {
   startDate: string; 
   endDate: string; 
   destination: string;
-  id_category: number;
+  categoryId: number;
   maxCapacity: number;
   estimatedBudget: number;
   itineraryActivities: any[]; 

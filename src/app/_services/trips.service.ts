@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
-import { LoginResponse, RegisterResponse, Token,User,UserEdit,UserLogin,UserLoginResponse, UserRegister, VerifiedResponse } from '../_interfaces/user';
+import { LoginResponse, ParticipationAdd, RegisterResponse, Token,User,UserEdit,UserLogin,UserLoginResponse, UserRegister, VerifiedResponse } from '../_interfaces/user';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
@@ -77,13 +77,33 @@ return this.http.post<any>(`${this.apiUrl}/viajes`, trip);
 addTrip(formData: FormData): Observable<any> {
   return this.http.post<any>(`${this.apiUrl}/viajes`, formData);
 }
-
+checkParticipation(idTrip: number): Observable<boolean> {
+    const url = `${this.apiUrl}/participations/check/${idTrip}`;
+    return this.http.get<boolean>(url);
+  }
+addParticipation(formData: ParticipationAdd): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/participations`, formData);
+}
+deleteParticipation(idTrip: number, username: string, participationDate: string): Observable<any> {
+      const url = `${this.apiUrl}/participations/${idTrip}/${username}/${participationDate}`;
+      return this.http.delete<any>(url);
+}
  getTripById(id: number): Observable<TripDto> {
     return this.http.get<TripDto>(`${this.apiUrl}/viajes/${id}`).pipe(
       // Opcional: para manejar errores de forma centralizada
       catchError(error => {
         console.error('Error al obtener el viaje:', error);
-        return throwError(() => new Error('No se pudo cargar el viaje.'));
+        return throwError(() => error);
+      })
+    );
+  }
+
+   getCategoryById(id: number): Observable<Categoria> {
+    return this.http.get<Categoria>(`${this.apiUrl}/categorias/${id}`).pipe(
+      // Opcional: para manejar errores de forma centralizada
+      catchError(error => {
+        console.error('Error al obtener la categoría:', error);
+        return throwError(() => error);
       })
     );
   }

@@ -80,3 +80,8 @@ export interface RegisterResponse{
     message: string;
 }
 
+export interface ParticipationAdd {
+    idTrip: number,
+    username: string
+}
+

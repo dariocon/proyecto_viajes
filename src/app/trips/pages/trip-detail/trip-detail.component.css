@@ -1,0 +1,1352 @@
+/* Variables CSS - ELIMINADAS. VALORES FIJOS SUSTITUIDOS */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    overflow-x: hidden;
+    background-color: #F6F7F8;
+}
+
+.inicio {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: transparent;
+    overflow: hidden;
+}
+
+/* Modificación clave: .web-frame como Grid principal para toda la página */
+.web-frame {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        "header"
+        "main"
+        "footer";
+    width: 100%;
+    min-height: 100vh;
+    align-items: start;
+}
+
+/* Asigna las áreas de grid a los elementos hijos directos de .web-frame */
+.header {
+    grid-area: header;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 28px;
+    width: 100%;
+    max-width: 1280px;
+    background: white;
+    border-bottom: 1px solid #f1f5f9;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* REVISIÓN CLAVE: trip-detail-container para la nueva estructura */
+.trip-detail-container {
+    display: grid;
+    grid-area: main;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 30px;
+    row-gap: 20px;
+    column-gap: 30px;
+    max-width: 1200px;
+    width: 100%;
+    background-color: transparent;
+    padding: 20px;
+    margin: 40px auto;
+    align-items: start;
+}
+
+/* Contenedor para la imagen principal del viaje */
+.trip-header-section {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+/* *** ESTILOS CORREGIDOS DEL CARRUSEL *** */
+.trip-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* ¡ESENCIAL! Oculta las imágenes fuera de vista. */
+    background-color: transparent;
+    display: grid; /* Usamos grid para apilar el blur-layer y el carousel-track */
+    grid-template-areas: "stack";
+    justify-items: center;
+    align-items: center;
+}
+
+/* 1. Capa de Desenfoque (Va por detrás y se extiende) */
+.blur-layer {
+    grid-area: stack;
+    position: relative; /* Cambiado de absolute a relative para funcionar mejor en el stack de grid */
+    z-index: 1; /* Debe estar por debajo del carousel-track */
+    
+    /* Se extiende más allá de los límites del wrapper para que el desenfoque sea sutil */
+    /* Usamos márgenes negativos grandes para empujar los bordes fuera de la vista */
+    margin: -20px; 
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    filter: blur(50px) brightness(0.9); 
+    
+    pointer-events: none;
+    width: calc(100% + 40px); /* Asegura que cubra el ancho extendido */
+    height: calc(100% + 40px); /* Asegura que cubra la altura extendida */
+}
+
+/* 2. Pista de Deslizamiento (Contiene todas las imágenes) */
+.carousel-track {
+    grid-area: stack; /* Posición encima del blur-layer */
+    z-index: 2; /* Debe estar encima de la capa borrosa */
+
+    display: flex; /* Alinea todas las imágenes horizontalmente */
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out; /* Animación de deslizamiento */
+    position: relative; /* Asegura el contexto para los hijos */
+}
+
+/* 3. Contenedor de Slide (Para centrar la imagen) */
+.carousel-slide-content {
+    flex-shrink: 0; /* ¡CRUCIAL! Evita que se encoja. */
+    width: 100%; /* Ocupa el 100% del ancho visible. */
+    height: 100%;
+    display: flex;
+    justify-content: center; /* Centra la imagen horizontalmente */
+    align-items: center; /* Centra la imagen verticalmente */
+    position: relative;
+}
+
+/* 4. Imagen Principal */
+.trip-main-image {
+    /* Mantiene el diseño centrado con 40px de padding virtual */
+    width: calc(100% - 40px); 
+    height: 100%;
+    max-width: 900px;
+    
+    object-fit: cover; 
+    object-position: center;
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    display: block;
+    z-index: 3; /* Sobre el track */
+    position: relative;
+    border-radius: 8px; /* Un poco de redondez a la imagen principal */
+}
+
+/* 5. Flechas de Navegación */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 10; 
+    font-size: 1.5rem;
+    line-height: 1;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.arrow:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.prev {
+    left: 15px;
+}
+
+.next {
+    right: 15px;
+}
+/* ------------------------------------------------------------------ */
+
+
+/* Contenedor para las tarjetas de la derecha (Booking e Itinerario) */
+.trip-right-column {
+    grid-column: 2;
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 30px;
+    padding: 25px;
+    align-content: start;
+}
+
+/* Asignación de áreas/columnas para los elementos dentro de trip-detail-container */
+.trip-description-card {
+    grid-column: 1;
+    grid-row: 2;
+    background-color: #F6F7F8;
+    border-radius: 12px;
+    padding: 25px;
+    /*box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);*/
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto; /* Añadido 'auto' para las categorías */
+    gap: 15px;
+    height: auto;
+    min-height: unset;
+    text-align: left;
+}
+
+.trip-booking-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    width: 100%;
+    max-width: auto;
+
+    margin-right: 0;
+    align-self: start;
+    aspect-ratio: unset;
+    height: auto;
+    min-height: unset;
+}
+
+/* CLASE RENOMBRADA: trip-itinerary-card */
+.trip-itinerary-card {
+    background-color: white;
+    border-radius: 12px;
+    /* Ajuste de padding para la lista de itinerario */
+    padding: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    width: 100%;
+    max-width: auto;
+    /* Empuja la tarjeta a la derecha dentro de su columna */
+    margin-right: 0;
+    align-self: start;
+    height: auto;
+    /* min-height ya no se usa aquí, se maneja por contenido */
+    min-height: unset;
+}
+
+/* Browser Header */
+.browser-header {
+    width: 100%;
+    height: 64px;
+    background: #EEF1F4;
+}
+
+/* Navigation Header */
+.logo {
+    height: 24px;
+    width: 112px;
+}
+
+.nav-desktop {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 50px;
+    align-items: center;
+}
+.nav-link {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    cursor: pointer;
+    color: #475569;
+}
+.search-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}
+
+.search-input {
+    padding: 12px 40px 12px 12px;
+    height: 44px;
+    font-size: 14px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #94a3b8;
+    color: #475569;
+    width: 299px;
+    grid-column: 1 / -1;
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    stroke: #F95596;
+    stroke-width: 2px;
+}
+
+.globe-icon {
+    width: 18px;
+    height: 18px;
+    stroke: #545F71;
+    stroke-width: 2px;
+}
+
+.btn-login {
+    padding: 8px 8px;
+    width: 90px;
+    height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    color: #475569;
+}
+
+.btn-register {
+    padding: 8px 8px;
+    width: 90px;
+    height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #F95596, #FE7079);
+}
+
+.menu-mobile {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #475569;
+}
+
+/* Hero Section */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    padding: 40px 48px;
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-content {
+    display: grid;
+    grid-auto-rows: auto;
+    gap: 40px;
+    justify-items: start;
+    align-content: center;
+    text-align: left;
+}
+
+.hero-title {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 36px;
+    color: #475569;
+    display: grid;
+    grid-auto-rows: auto;
+    text-align: left;
+    width: 100%;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-buttons {
+    display: grid;
+    grid-auto-rows: auto;
+    gap: 16px;
+    justify-items: start;
+    width: 220px;
+}
+
+.btn-google,
+.btn-apple,
+.btn-facebook {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 8px;
+    justify-items: center;
+    align-items: center;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    border-radius: 24px;
+    cursor: pointer;
+    border: none;
+    height: 35px;
+}
+
+.btn-google {
+    color: white;
+    background: #4285f4;
+}
+
+.btn-apple {
+    color: white;
+    background: black;
+}
+
+.btn-facebook {
+    background: white;
+    border: 1px solid #d4d4d8;
+    color: #0a0a0a;
+}
+
+.hero-image {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.hero-img {
+    border-radius: 12px;
+    height: 299px;
+    width: 448px;
+    object-fit: cover;
+}
+
+/* Trips Section */
+.trips-section {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 40px;
+    padding: 64px 28px;
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.trips-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.trips-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    color: #475569;
+}
+
+.view-all {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 8px;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    cursor: pointer;
+    color: #475569;
+}
+
+.chevron-right {
+    width: 14px;
+    height: 7px;
+    stroke: #545F71;
+    stroke-width: 2px;
+}
+
+.trips-grid {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.trip-image-container {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    background: #f1f5f9;
+    height: 110px;
+}
+
+.trip-image {
+    object-fit: cover;
+    height: 108px;
+    width: 100%;
+}
+
+.trip-card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    border-radius: 8px;
+    height: 240px;
+}
+
+.trip-content {
+    display: grid;
+    grid-auto-rows: auto;
+    gap: 8px;
+    padding: 11px;
+    text-align: center;
+    align-content: start;
+}
+
+.trip-title {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: grid;
+    align-items: start;
+    justify-items: center;
+    text-align: center;
+}
+
+.trip-time {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: #475569;
+}
+
+.trip-btn {
+    padding: 3px 13px;
+    margin-top: 2px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #F95596, #FE7079);
+}
+
+/* CTA Section */
+.cta-section {
+    display: grid;
+    padding: 80px 28px;
+    width: 100%;
+    background: #f9fafb;
+    height: 60vh;
+    place-items: center;
+    gap: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1280px;
+}
+
+.cta-title {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 36px;
+    text-align: center;
+    color: black;
+    max-width: 504px;
+}
+
+.cta-button {
+    padding: 10px 14px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 20px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    width: 180px;
+    background: linear-gradient(to right, #F95596, #FE7079);
+}
+
+/* Stats Section */
+.stats-section {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 80px;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 80px;
+    width: 100%;
+    background: #fdf2f8;
+    height: 60vh;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1280px;
+}
+
+.stat-item {
+    display: grid;
+    grid-auto-rows: auto;
+    gap: 24px;
+    justify-items: center;
+    text-align: center;
+}
+
+.stat-image {
+    border-radius: 16px;
+}
+
+.stat-text {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 36px;
+    text-align: center;
+    color: black;
+}
+
+.stat-number {
+    font-size: 36px;
+    color: black;
+}
+
+.divider {
+    stroke: #545F71;
+    stroke-width: 1px;
+}
+
+/* Footer */
+.footer {
+    grid-area: footer;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    position: relative;
+    width: 100%;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    padding: 60px 28px 40px;
+    color: white;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1280px;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    position: relative;
+    margin-bottom: 0;
+}
+
+.newsletter-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 32px;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.newsletter-email-label {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+.newsletter-line {
+    width: 300px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+.arrow-right {
+    position: absolute;
+    right: 0;
+    top: -8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.arrow-right:hover {
+    transform: translateX(5px);
+}
+
+/* Social Media Icons */
+.social-media-container {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 0; /* Asegurar que no haya margen extra */
+}
+
+
+.social-icon-box {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-icon-box:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Placeholder for social icons - you'll need to add actual icons */
+
+/* Main Footer Content */
+.main-footer-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 0;
+}
+
+
+
+/* Scroll Up Button */
+.scroll-up-container {
+    position: absolute;
+    top: 40px;
+    right: 28px;
+}
+
+.scroll-up-circle {
+    position: relative;
+    width: 73px;
+    height: 70px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.scroll-up-circle:hover {
+    transform: translateY(-3px);
+}
+
+.scroll-up-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 16px;
+    color: #545F71;
+}
+
+/* Action Buttons */
+.action-buttons-container {
+    position: absolute;
+    bottom: 40px;
+    right: 28px;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 16px;
+}
+
+.join-button,
+.contact-button {
+    padding: 12px 24px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    transition: all 0.3s ease;
+}
+
+.join-button {
+    background: white;
+    color: #F95596;
+    border: 2px solid white;
+}
+
+.join-button:hover {
+    background: transparent;
+    color: white;
+}
+
+.contact-button {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.contact-button:hover {
+    background: white;
+    color: #F95596;
+}
+
+.join-text,
+.contact-text {
+    font-weight: 700;
+}
+
+
+.booking-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #475569; /* var(--text-color-dark) */
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.booking-info {
+    display: grid;
+    gap: 8px;
+    font-size: 13px;
+    color: #545F71; /* var(--text-color-light) */
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.booking-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.booking-label {
+    font-weight: 500;
+}
+
+.booking-value {
+    font-weight: 600;
+    color: #475569; /* var(--text-color-dark) */
+}
+
+.booking-price {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 5px;
+    align-items: center;
+    text-align: center;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #475569; /* var(--text-color-dark) */
+}
+
+.booking-icons {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.circle-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #fce7f3; /* Rosa claro para plazas disponibles/restantes */
+    border: 1px solid #f95596;
+}
+
+.reserve-button {
+    padding: 8px 25px;
+    height: auto;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 20px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    width: auto;
+    max-width: fit-content;
+    display: block;
+    margin: 0 auto;
+}
+
+.reserve-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(249, 85, 150, 0.3);
+}
+
+.description-card-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #475569; /* var(--text-color-dark) */
+    text-align: left;
+}
+
+.description-subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #545F71; /* var(--text-color-light) */
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+}
+.organizer-info-block {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 15px;
+    /* Esta es la línea que separa el bloque de lo que viene después (las estrellas) */
+    border-bottom: 1px solid #d4d4d8; /* var(--border-color) */
+}
+
+.organizer-header-inline {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.organizer-logo-inline {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #000;
+    padding: 2px;
+    margin-right: 10px;
+}
+
+.organizer-details-inline {
+
+}
+
+.organizer-label-inline,
+.organizer-name-inline {
+    display: block;
+}
+.organizer-label-inline {
+    font-size: 12px;
+    color: #545F71; /* var(--text-color-light) */
+    font-weight: 500;
+}
+
+.organizer-name-inline {
+    font-size: 15px;
+    font-weight: 700;
+    color: #475569; /* var(--text-color-dark) */
+}
+
+.attendees-tag {
+    width: fit-content;
+    background-color: #fee0e0;
+    padding: 6px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569; /* var(--text-color-dark) */
+    border: 1px solid #fdc8c8;
+    white-space: nowrap;
+    margin-top: 10px;
+    margin-left: calc(40px + 10px);
+    display: flex;
+    align-items: center;
+}
+
+.attendees-count-inline {
+
+}
+
+.graph-icon-inline {
+    width: 16px;
+    height: 16px;
+    stroke: #FE7079;
+    stroke-width: 2;
+    margin-left: 8px;
+}
+.rating {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: left;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.star {
+    font-size: 22px;
+    color: #FFD700;
+}
+
+.star.empty {
+    color: #e2e8f0;
+}
+
+.description-text {
+    font-size: 14px;
+    color: #545F71; /* var(--text-color-light) */
+    text-align: justify;
+    /* grid-row: 4; */ /* Esta línea debe ajustarse o eliminarse, ya que añadimos otro elemento */
+}
+
+/* Nuevos estilos para las categorías */
+.trip-categories {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las etiquetas se envuelvan a la siguiente línea si no hay espacio */
+    gap: 8px; /* Espacio entre las etiquetas */
+    margin-top: 15px; /* Espacio encima de las etiquetas */
+    justify-content: left; /* Centrar las etiquetas */
+}
+
+.category-tag {
+    background-color: #f1f5f9; /* Un gris claro para el fondo */
+    color: #475569; /* var(--text-color-dark) */ /* Color de texto oscuro */
+    padding: 6px 12px;
+    border-radius: 20px; /* Borde redondeado para las etiquetas */
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #F95596; /* Borde sutil del color primario */
+    white-space: nowrap; /* Evita que el texto se rompa dentro de la etiqueta */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
+}
+
+.category-tag:hover {
+    background: linear-gradient(135deg, #F95596, #FE7079); /* var(--primary-gradient) */ /* Degradado al pasar el ratón */
+    color: white;
+    border-color: transparent;
+    cursor: pointer;
+}
+
+
+/* --- ESTILOS DE ITINERARIO (REEMPLAZO DE MAPA) --- */
+
+/* 1. Modificación de la tarjeta de itinerario general */
+.trip-itinerary-card {
+    min-height: unset; /* Elimina la altura mínima forzada por el mapa */
+    padding: 15px; /* Ajusta el padding para la lista */
+}
+
+/* 2. Estilos específicos del nuevo encabezado de itinerario */
+.itinerary-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 10px;
+}
+
+.itinerary-header .location-icon {
+    width: 20px;
+    height: 20px;
+    stroke: #FE7079; /* Color de acento para el icono */
+}
+
+.itinerary-header .location-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #475569; /* var(--text-color-dark) */
+}
+
+/* 3. Lista de actividades (Contenedor de desplazamiento) */
+.itinerary-list {
+    display: grid;
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* 4. Item de actividad individual (La clave del timeline) */
+.itinerary-item {
+    display: grid;
+    gap: 4px;
+    padding: 8px 0;
+    border-left: 3px solid #FE7079; /* Línea de tiempo */
+    padding-left: 15px;
+    position: relative;
+}
+
+/* Círculo indicador en la línea de tiempo */
+.itinerary-item::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: -7px; /* Posición del círculo en la línea */
+    width: 12px;
+    height: 12px;
+    background-color: white; /* Fondo blanco para el círculo */
+    border: 3px solid #FE7079; /* Borde del color de acento */
+    border-radius: 50%;
+    z-index: 2;
+}
+
+/* 5. Estilos de contenido del itinerario */
+.itinerary-time-location {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+    color: #545F71; /* var(--text-color-light) */
+}
+
+.itinerary-date {
+    font-weight: 700;
+    color: #475569;
+}
+
+.itinerary-time {
+    font-weight: 600;
+    color: #F95596; /* Color de acento para la hora */
+}
+
+.itinerary-activity-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569; /* var(--text-color-dark) */
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+.itinerary-destination {
+    font-size: 13px;
+    color: #545F71; /* var(--text-color-light) */
+    font-weight: 400;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .header {
+        max-width: none;
+    }
+    .nav-desktop {
+        display: none;
+    }
+    .menu-mobile {
+        display: block;
+    }
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 30px 20px;
+    }
+    .hero-content {
+        align-items: center;
+        text-align: center;
+        justify-items: center;
+    }
+    .hero-title {
+        text-align: center;
+    }
+    .auth-buttons {
+        justify-items: center;
+    }
+    .trips-section,
+    .cta-section,
+    .stats-section,
+    .footer {
+        max-width: none;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .stats-section {
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 40px 20px;
+        gap: 40px;
+    }
+    .divider {
+        display: none;
+    }
+
+    /* Ajustes para la sección de detalles del viaje en móviles */
+    .trip-detail-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        padding: 15px;
+        gap: 20px;
+        row-gap: 20px;
+        column-gap: 0;
+        align-items: start;
+    }
+
+    .trip-header-section {
+        grid-column: 1;
+        grid-row: 1;
+        padding: 0;
+    }
+
+    .trip-image-wrapper {
+        width: 100%;
+        border-radius: 12px;
+        height: 250px; /* Reducir la altura en móvil */
+    }
+
+    /* *** AJUSTES RESPONSIVE DEL CARRUSEL *** */
+    .carousel-slide-content {
+        /* No se centra, ocupa todo el espacio en móvil */
+        display: block; 
+    }
+
+    .trip-main-image {
+        /* Ocupa 100% en móvil, sin espacio para el blur lateral */
+        width: 100%; 
+        height: 100%;
+        object-fit: cover;
+        max-width: none; 
+        margin: 0; 
+        box-shadow: none; /* Quitamos la sombra de la imagen en móvil */
+    }
+    
+    .blur-layer {
+        /* Se adapta al tamaño del wrapper */
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        filter: blur(20px) brightness(0.9); /* Menos blur para móvil */
+    }
+    
+    /* La columna derecha ahora será una fila debajo de la descripción */
+    .trip-right-column {
+        grid-column: 1;
+        grid-row: 3;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        justify-self: stretch; /* En móvil, queremos que ocupe todo el ancho */
+    }
+
+    .trip-booking-card {
+        max-width: none;
+        justify-self: stretch;
+        height: auto;
+        min-height: unset;
+        aspect-ratio: unset;
+    }
+    .trip-description-card,
+    .trip-itinerary-card { 
+        padding: 20px;
+        gap: 10px;
+        height: auto;
+        min-height: unset;
+    }
+
+    .trip-itinerary-card {
+        min-height: unset;
+    }
+
+    .trip-categories {
+        justify-content: center; /* Centrar las etiquetas en móvil */
+    }
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 40px 20px 30px;
+    }
+    .newsletter-title {
+        font-size: 20px;
+        line-height: 28px;
+    }
+    .main-footer-section {
+        grid-template-columns: 1fr; 
+        grid-template-rows: auto;
+        gap: 16px;
+        justify-items: center; 
+        text-align: center; 
+    }
+
+    .social-media-container {
+        justify-content: center; 
+        margin: 20px auto; 
+    }
+
+    .scroll-up-container {
+        position: static; 
+        display: grid;
+        justify-items: center; 
+        margin: 20px 0;
+    }
+    .action-buttons-container {
+        position: static; 
+        justify-items: center;
+        margin-top: 20px;
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+        width: 100%; 
+        align-items: center; 
+    }
+    .join-button,
+    .contact-button {
+        width: 80%; 
+        max-width: 250px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .trip-detail-container {
+        padding: 10px;
+        gap: 15px;
+    }
+    .trip-main-image {
+        height: 180px;
+    }
+    .trip-booking-card,
+    .trip-description-card,
+    .trip-itinerary-card { 
+        padding: 15px;
+        gap: 8px;
+    }
+}

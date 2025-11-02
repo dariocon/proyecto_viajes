@@ -3,10 +3,11 @@ import { TripDto } from '../../../_interfaces/trip';
 import { TripsService } from '../../../_services/trips.service';
 import { AuthService } from '../../../_services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-my-trips-list',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './my-trips-list.component.html',
   styleUrl: './my-trips-list.component.css'
 })

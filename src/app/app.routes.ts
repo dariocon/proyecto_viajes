@@ -12,6 +12,7 @@ import { loggedGuard } from './shared/guards/logged.guard';
 import { roleGuard } from './shared/guards/role.guard';
 import { VerifyComponent } from './profile-data/verify/verify.component';
 import { ErrorComponent } from './errors/error/error.component';
+import { TripDetailComponent } from './trips/pages/trip-detail/trip-detail.component';
 export const routes: Routes = [
     { path:'', component: HomeComponent },
     { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
@@ -20,6 +21,8 @@ export const routes: Routes = [
     { path: 'create-trip', component: CreateTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
     { path: 'mis-viajes', component: MyTripsListComponent, canMatch: [loginGuard] },
     { path: 'viajes', component: TripsListComponent },
+    { path: 'viajes/:id', component: TripDetailComponent },
+    { path: 'viajes/:id', component: TripDetailComponent },
     { path: 'confirm', component: VerifyComponent },
     { path: '**', component: ErrorComponent }
 

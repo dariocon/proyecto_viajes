@@ -65,7 +65,7 @@
                             <p class="trip-time">
                                 {{ trip.startDate }} - {{ trip.endDate }}
                             </p>
-                            <button class="trip-btn">Ver viaje</button>
+                            <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>
                         </div>
                     </div>
                 } 
