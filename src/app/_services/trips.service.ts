@@ -77,9 +77,9 @@ return this.http.post<any>(`${this.apiUrl}/viajes`, trip);
 addTrip(formData: FormData): Observable<any> {
   return this.http.post<any>(`${this.apiUrl}/viajes`, formData);
 }
-checkParticipation(idTrip: number): Observable<boolean> {
+checkParticipation(idTrip: number): Observable<any> {
     const url = `${this.apiUrl}/participations/check/${idTrip}`;
-    return this.http.get<boolean>(url);
+    return this.http.get<any>(url);
   }
 addParticipation(formData: ParticipationAdd): Observable<any> {
   return this.http.post<any>(`${this.apiUrl}/participations`, formData);

@@ -92,7 +92,12 @@
                             </div>
                         </div>
                         <div class="booking-price">
-                            <span class="booking-label">PLAZAS LIMITADAS (Máx: {{ trip.maxCapacity }})</span>
+                            @if(trip.maxCapacity) {
+                            <span class="booking-label">PLAZAS LIMITADAS ({{ trip.maxCapacity - trip.participations.length }})</span>
+
+                            }@else {
+                            <span class="booking-label">PLAZAS ILIMITADAS</span>
+                            }
 
                         </div>
                         @if (!authService.isLogged()) {

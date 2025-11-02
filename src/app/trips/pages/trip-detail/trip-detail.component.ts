@@ -30,6 +30,7 @@ export class TripDetailComponent implements OnInit, OnDestroy {
   categoryName?: String;
   currentImageIndex: number = 0;
   hasParticipated: boolean | null = null;
+  participationDate: string | null = null;
 
   ngOnInit(): void {
       document.body.style.backgroundColor = '#F6F7F8';
@@ -43,11 +44,14 @@ export class TripDetailComponent implements OnInit, OnDestroy {
       this.tripsService.getTripById(this.id).pipe(
         switchMap((trip: TripDto) => {
           this.trip = trip;
+          console.log(trip.participations)
           
           if (this.authService.isLogged()) { 
               return this.tripsService.checkParticipation(this.id).pipe(
-                  tap(isParticipating => {
-                      this.hasParticipated = isParticipating;
+                  tap(participation => {
+                      this.hasParticipated = !!participation;;
+                        this.participationDate = participation ? participation.participationDate : null;
+
                   }),
                   switchMap(() => this.tripsService.getCategoryById(trip.categoryId)) 
               );
@@ -97,10 +101,14 @@ export class TripDetailComponent implements OnInit, OnDestroy {
                         color: 'white', 
                         iconColor: 'white', 
                         confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
-                      }).then(
-                       // () => this.router.navigateByUrl('') 
-                         () => this.hasParticipated =true
-                      )
+                      }).then(() => {
+                            this.hasParticipated = true;
+
+                            // cambiamos visualmente el número de plazas disponibles tras reservar
+                              if (this.trip?.participations && response) {
+                                this.trip.participations.push(response); 
+                              }
+                          });
                },
                 error: error => Swal.fire({
                     title: '¡Error!',
@@ -146,10 +154,10 @@ export class TripDetailComponent implements OnInit, OnDestroy {
             confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
         }).then((result) => {
             if (result.isConfirmed) {
-                const participationDateString = new Date().toISOString().slice(0, 10);
                 
-                this.tripsService.deleteParticipation(this.id, this.authService.username, participationDateString).subscribe({
-                    next: () => {
+                
+                this.tripsService.deleteParticipation(this.id, this.authService.username, this.participationDate!).subscribe({
+                    next: (deletedParticipation) => {
                         Swal.fire({
                             title: "¡Participación Cancelada!",
                             text: "Tu participación ha sido eliminada.",
@@ -160,6 +168,12 @@ export class TripDetailComponent implements OnInit, OnDestroy {
                             confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
                         });
                         this.hasParticipated = false;
+                          if (this.trip?.participations) {
+                            this.trip.participations = this.trip.participations.filter(
+                              p => p.username !== this.authService.username
+                            );
+                          } // cambiamos visualmente el número de plazas disponibles tras cancelar
+
                     },
                     error: error => {
                         Swal.fire('Error', error?.error?.message || 'No se pudo cancelar la participación.', 'error');

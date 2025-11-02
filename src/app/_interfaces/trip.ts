@@ -31,4 +31,5 @@ export interface TripDto {
   estimatedBudget: number;
   itineraryActivities: any[]; 
   images: string[]; 
+  participations: any[]
 }
