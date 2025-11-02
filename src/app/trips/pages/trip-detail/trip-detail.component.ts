@@ -107,6 +107,7 @@ export class TripDetailComponent implements OnInit, OnDestroy {
                             // cambiamos visualmente el número de plazas disponibles tras reservar
                               if (this.trip?.participations && response) {
                                 this.trip.participations.push(response); 
+                                this.participationDate = response.participationDate;
                               }
                           });
                },
