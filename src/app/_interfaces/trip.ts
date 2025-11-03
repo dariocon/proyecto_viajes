@@ -33,3 +33,5 @@ export interface TripDto {
   images: string[]; 
   participations: any[]
 }
+
+

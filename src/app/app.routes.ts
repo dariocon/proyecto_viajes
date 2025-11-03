@@ -20,6 +20,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent, canActivate: [loggedGuard] },
     { path: 'usuarios/:username', component: UserComponent, canMatch: [loginGuard], canActivate: [usernameGuard]},
     { path: 'create-trip', component: CreateTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
+    { path: 'viajes/edit/:id', component: CreateTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
     { path: 'mis-viajes', component: MyTripsListComponent, canMatch: [loginGuard] },
     { path: 'viajes', component: TripsListComponent },
     { path: 'viajes/:id', component: TripDetailComponent },

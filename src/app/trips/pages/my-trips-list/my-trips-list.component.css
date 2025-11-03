@@ -255,10 +255,12 @@ body {
     line-height: 24px;
     color: #475569;
 }
+/* Estilo del contenedor para forzar la pila vertical */
 
 .trip-btn {
-    padding: 3px 13px;
+    padding: 3px 7px;
     margin-top: 2px;
+    margin-right: 10px;
     font-size: 16px;
     font-weight: 700;
     letter-spacing: -0.025em;
@@ -272,6 +274,38 @@ body {
     align-self: end;
 }
 
+.delete-trip-button {
+    padding: 3px 7px;
+    margin-top: 2px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #ff0000, #FE7079);
+    justify-self: center;
+    align-self: end;
+}
+
+.edit-btn {
+    padding: 3px 10px;
+    margin-top: 2px;
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #0999ff, #FE7079);
+    justify-self: center;
+    align-self: end;
+}
 .pagination-controls {
     display: flex;
     justify-content: center; /* Centra horizontalmente */

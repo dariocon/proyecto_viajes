@@ -194,13 +194,22 @@ onSubmit(): void {
                           } // cambiamos visualmente el número de plazas disponibles tras cancelar
 
                     },
-                    error: error => {
-                        Swal.fire('Error', error?.error?.message || 'No se pudo cancelar la participación.', 'error');
-                    }
-                });
-            }
-        });
-    }
+                        error: error => {
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: error?.error?.message || 'No se pudo cancelar la participación.',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar',
+                            background: 'linear-gradient(135deg, #F95596, #FE7079)',
+                            color: 'white',
+                            iconColor: 'white',
+                            confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
+                    });
+                    }
+                });
+            }
+        });
+    }
 
   isTripInThePast(): boolean {
     if (!this.trip?.startDate) {
@@ -211,6 +220,16 @@ onSubmit(): void {
     const now = new Date();
     
     return startDate.getTime() < now.getTime();
+}
+
+getNumberOfDays(): number {
+  // Retorna 0 si las fechas no están definidas
+  if (!this.trip?.startDate || !this.trip?.endDate) return 0; 
+
+  const msPerDay = 86400000;
+  const days = Math.floor((new Date(this.trip.endDate).getTime() - new Date(this.trip.startDate).getTime()) / msPerDay) + 1;
+
+  return days > 0 ? days : 0;
 }
 
 }

@@ -54,7 +54,7 @@
                     <div class="trip-card">
                         <div class="trip-image-container">
                             <img 
-                                [src]="trip.images?.[0]" 
+                                [src]="trip.images.length > 0 ? trip.images[0] : 'assets/images/default-trip.png'"
                                 [alt]="'Imagen principal del viaje: ' + trip.title" 
                                 [attr.title]="'Imagen principal del viaje: ' + trip.title" 
                                 class="trip-image"
@@ -65,7 +65,32 @@
                             <p class="trip-time">
                                 {{ trip.startDate }} - {{ trip.endDate }}
                             </p>
+                            
+                              
+                            @if (isTripCreatable(trip)) {
+                                <div class="trip-management-actions">
+                                  <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">👁️</button>
+                                    <button 
+                                        class="edit-btn" 
+                                        [routerLink]="['/viajes/edit', trip.idTrip]">
+                                        ✎
+                                    </button>
+                                    
+                                    <!--<button 
+                                        class="participants-btn"
+                                        [routerLink]="['/viajes/participantes', trip.idTrip]">
+                                        Participantes ({{ trip.participations!.length || 0 }})
+                                    </button> -->
+                                    
+                                    <button 
+                                        class="delete-trip-button" 
+                                        (click)="deleteTrip(trip)">
+                                        🗑️
+                                    </button>
+                                </div>
+                           }@else {
                             <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>
+                           }
                         </div>
                     </div>
                 } 

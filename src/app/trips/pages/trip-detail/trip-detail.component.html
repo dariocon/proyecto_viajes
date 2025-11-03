@@ -6,33 +6,39 @@
                 
                 <div class="trip-header-section">
                     
-                    <div class="trip-image-wrapper">
-                        
-                        <div 
-                            class="blur-layer"
-                            [style.backgroundImage]="'url(' + trip.images[currentImageIndex] + ')'">
-                            </div>
+<div class="trip-image-wrapper">
+    
+    <div 
+        class="blur-layer"
+        [style.backgroundImage]="trip.images.length > 0 && currentImageIndex < trip.images.length 
+            ? 'url(' + trip.images[currentImageIndex] + ')' 
+            : 'url(assets/images/default-trip.png)'">
+    </div>
 
-                        <div class="carousel-track" 
-                             [style.transform]="'translateX(' + (-currentImageIndex * 100) + '%)'">
-                            
-                            @for (imageUrl of trip.images; track $index) {
-                                <div class="carousel-slide-content">
-                                    <img 
-                                        [src]="imageUrl" 
-                                        alt="Imagen del Viaje {{ $index + 1 }}" 
-                                        class="trip-main-image">
-                                </div>
-                            }
-                        </div>
-
-                        @if (trip.images.length > 1) {
-                            <button class="arrow prev" (click)="prevSlide()">
-                                &#10094; </button>
-                            <button class="arrow next" (click)="nextSlide()">
-                                &#10095; </button>
-                        }
-                    </div>        
+    <div class="carousel-track" 
+         [style.transform]="'translateX(' + (-currentImageIndex * 100) + '%)'">
+        
+        @if (trip.images.length > 0) {
+            @for (imageUrl of trip.images; track $index) {
+                <div class="carousel-slide-content">
+                    <img 
+                        [src]="imageUrl" 
+                        alt="Imagen del Viaje {{ $index + 1 }}" 
+                        class="trip-main-image">
+                </div>
+            }
+        } @else {
+            <div class="carousel-slide-content">
+                <img 
+                    src="assets/images/default-trip.png" 
+                    alt="Imagen por defecto del Viaje" 
+                    class="trip-main-image">
+            </div>
+        }
+        
+    </div>
+    
+    </div>    
                     </div>
                 
                 <div class="trip-description-card">
@@ -40,7 +46,7 @@
 
                     <div class="organizer-info-block">
                         <div class="organizer-header-inline">
-                            <img src="" alt="Logo del Guía Turístico" class="organizer-logo-inline">
+                            <!--<img src="" alt="Logo del Guía Turístico" class="organizer-logo-inline">-->
                             <div class="organizer-details-inline">
                                 <span class="organizer-label-inline">ORGANIZADO POR</span>
                                 <span class="organizer-name-inline">{{ trip.organizerUsername }}</span>
@@ -83,12 +89,18 @@
                                 <span class="booking-value">{{ trip.startDate }}</span>
                             </div>
                             <div class="booking-item">
+                                <span class="booking-label">Fecha de fin:</span>
+                                <span class="booking-value">{{ trip.endDate }}</span>
+                            </div>
+                            <div class="booking-item">
                                 <span class="booking-label">Duración:</span>
-                                <span class="booking-value">3 días / 2 noches</span>
+                                <span class="booking-value">{{getNumberOfDays()}} días</span>
                             </div>
                             <div class="booking-item price-item">
-                                <span class="booking-value price">{{ trip.estimatedBudget  }} €</span>
-                                <span class="booking-label">por persona</span>
+                                <span class="booking-value price">{{ trip.estimatedBudget > 0 ? trip.estimatedBudget + '€' : trip.estimatedBudget === 0 ? '0 €' : '' }}</span>
+                                @if (trip.estimatedBudget > 0) {
+                                    <span class="booking-label">por persona</span>
+                                 }
                             </div>
                         </div>
                         <div class="booking-price">
@@ -112,8 +124,8 @@
                         </div>
                         @if (!authService.isLogged()) {
                             <button [routerLink]="['/login']" class="reserve-button"
-                              [disabled]="(trip.maxCapacity <= trip.participations.length) || (isTripInThePast())"
-                              [ngClass]="{ 'disabled-button': (trip.maxCapacity <= trip.participations.length) || (isTripInThePast()) }">
+                                    [disabled]="(trip.maxCapacity && (trip.maxCapacity <= trip.participations.length)) || (isTripInThePast())"
+                                    [ngClass]="{ 'disabled-button': (trip.maxCapacity && (trip.maxCapacity <= trip.participations.length)) || (isTripInThePast()) }">
                                 Únete para reservar tu plaza
                             </button>
                         }@else {
@@ -129,7 +141,7 @@
                             }@else {
                                 <button 
                                 class="reserve-button" 
-                                [disabled]="(trip.maxCapacity <= trip.participations.length) || (isTripInThePast())"
+                                [disabled]="(trip.maxCapacity && (trip.maxCapacity <= trip.participations.length)) || (isTripInThePast())"
                                 [ngClass]="{ 'disabled-button': (trip.maxCapacity <= trip.participations.length) || (isTripInThePast()) }"
                                 (click)="onSubmit()">
                                 Reservar mi viaje

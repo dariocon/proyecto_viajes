@@ -88,6 +88,18 @@ deleteParticipation(idTrip: number, username: string, participationDate: string)
       const url = `${this.apiUrl}/participations/${idTrip}/${username}/${participationDate}`;
       return this.http.delete<any>(url);
 }
+
+  deleteTrip(idTrip: number): Observable<any> {
+        const url = `${this.apiUrl}/viajes/${idTrip}`;
+        return this.http.delete<any>(url);
+  }
+
+
+    updateTrip(id: number, formData: FormData): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/viajes/${id}`, formData);
+  }
+
+
  getTripById(id: number): Observable<TripDto> {
     return this.http.get<TripDto>(`${this.apiUrl}/viajes/${id}`).pipe(
       // Opcional: para manejar errores de forma centralizada

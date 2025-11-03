@@ -4,6 +4,7 @@ import { TripsService } from '../../../_services/trips.service';
 import { AuthService } from '../../../_services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-my-trips-list',
@@ -223,6 +224,73 @@ ngOnInit(): void {
     });
   }
     this.applyPagination();
+  }
+
+  // Métodos para la gestión de mis viajes (editar, borrar)
+
+  isTripCreatable(trip: TripDto): boolean {
+    // Solo si el usuario es el organizador y está en la vista "Creados"
+    const [group] = this.activeFilter.split(' - ');
+    return group === 'Creados' && trip.organizerUsername === this.currentUserId;
+  }
+
+  editTrip(tripId: number): void {
+    console.log(`Navegando a edición del viaje ID: ${tripId}`);
+  }
+
+deleteTrip(trip: TripDto): void {
+ 
+    const participantCount = trip.participations?.length || 0;
+    let notificationPart = '';
+    if (participantCount > 0) {
+        notificationPart = ` y se notificará a los ${participantCount} inscritos.`;
+    }
+    Swal.fire({
+        title: '¿Estás seguro de eliminar?',
+        text: `Se eliminará el viaje "${trip.title}"${notificationPart}`,
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar viaje',
+        cancelButtonText: 'No, mantener',
+        background: 'linear-gradient(135deg, #F95596, #FE7079)',
+        color: 'white',
+        iconColor: 'white',
+        confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // 1. Llamada al servicio si el usuario confirma
+            this.tripsService.deleteTrip(trip.idTrip).subscribe({
+                next: () => {
+                    // 2. Notificación de éxito
+                    Swal.fire({
+                        title: "¡Viaje Eliminado!",
+                        text: `El viaje "${trip.title}" ha sido eliminado exitosamente.`,
+                        icon: 'success',
+                        background: 'linear-gradient(135deg, #F95596, #FE7079)',
+                        color: 'white',
+                        iconColor: 'white',
+                        confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
+                    });
+
+                    // 3. Actualización local de la lista
+                    this.allTrips = this.allTrips.filter(t => t.idTrip !== trip.idTrip);
+                    this.applyPagination();
+                },
+                error: (err) => {
+                    console.error('Error al eliminar el viaje:', err);
+                    // 4. Notificación de error
+                    Swal.fire('Error', err?.error?.message || 'Hubo un error al intentar eliminar el viaje.', 'error');
+                }
+            });
+        }
+    });
+  }
+
+  // 4. Función para controlar participantes (asumo una ruta '/viajes/participantes/:id')
+  manageParticipants(tripId: number): void {
+    console.log(`Navegando a la gestión de participantes del viaje ID: ${tripId}`);
+    // Ejemplo de navegación: this.router.navigate(['/viajes/participantes', tripId]);
   }
 
 

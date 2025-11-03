@@ -857,7 +857,7 @@ body {
     color: #545F71; /* var(--text-color-light) */
     border-bottom: 1px solid #f1f5f9;
     padding-bottom: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
 }
 
 .booking-item {
@@ -901,8 +901,8 @@ body {
     align-items: center;
     text-align: center;
     border-bottom: 1px solid #f1f5f9;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 9px;
+    margin-bottom: 4px;
     font-size: 14px;
     font-weight: 700;
     color: #475569; /* var(--text-color-dark) */
