@@ -6,47 +6,40 @@
                 
                 <div class="trip-header-section">
                     
-                    <div class="trip-image-wrapper">
-                        
-                        <div 
-                            class="blur-layer"
-                            [style.backgroundImage]="trip.images.length > 0 && currentImageIndex < trip.images.length 
-                                ? 'url(' + trip.images[currentImageIndex] + ')' 
-                                : 'url(assets/images/default-trip.png)'">
-                        </div>
-
-                        <div class="carousel-track" 
-                            [style.transform]="'translateX(' + (-currentImageIndex * 100) + '%)'">
-                            
-                            @if (trip.images.length > 0) {
-                                @for (imageUrl of trip.images; track $index) {
-                                    <div class="carousel-slide-content">
-                                        <img 
-                                            [src]="imageUrl" 
-                                            alt="Imagen del Viaje {{ $index + 1 }}" 
-                                            class="trip-main-image">
-                                    </div>
-                                }
-                            } @else {
-                                <div class="carousel-slide-content">
-                                    <img 
-                                        src="assets/images/default-trip.png" 
-                                        alt="Imagen por defecto del Viaje" 
-                                        class="trip-main-image">
-                                </div>
-                            }
-                            
-                            
-                        </div>
-
-                        @if (trip.images.length > 1) {
-                            <button class="arrow prev" (click)="prevSlide()">
-                                &#10094; </button>
-                            <button class="arrow next" (click)="nextSlide()">
-                                &#10095; </button>
-                        }
+<div class="trip-image-wrapper">
     
-                </div>    
+    <div 
+        class="blur-layer"
+        [style.backgroundImage]="trip.images.length > 0 && currentImageIndex < trip.images.length 
+            ? 'url(' + trip.images[currentImageIndex] + ')' 
+            : 'url(assets/images/default-trip.png)'">
+    </div>
+
+    <div class="carousel-track" 
+         [style.transform]="'translateX(' + (-currentImageIndex * 100) + '%)'">
+        
+        @if (trip.images.length > 0) {
+            @for (imageUrl of trip.images; track $index) {
+                <div class="carousel-slide-content">
+                    <img 
+                        [src]="imageUrl" 
+                        alt="Imagen del Viaje {{ $index + 1 }}" 
+                        class="trip-main-image">
+                </div>
+            }
+        } @else {
+            <div class="carousel-slide-content">
+                <img 
+                    src="assets/images/default-trip.png" 
+                    alt="Imagen por defecto del Viaje" 
+                    class="trip-main-image">
+            </div>
+        }
+        
+        
+    </div>
+    
+    </div>    
                     </div>
                 
                 <div class="trip-description-card">
