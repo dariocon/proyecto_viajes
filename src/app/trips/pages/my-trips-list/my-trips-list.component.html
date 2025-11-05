@@ -69,11 +69,14 @@
                               
                             @if (isTripCreatable(trip)) {
                                 <div class="trip-management-actions">
-                                  <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">👁️</button>
+                                  <button class="view-trip-btn icon-button" [routerLink]="['/viajes/', trip.idTrip]">
+                                    <span class="icon-vision"></span>
+                                  </button>
                                     <button 
-                                        class="edit-btn" 
+                                        class="edit-btn icon-button" 
                                         [routerLink]="['/viajes/edit', trip.idTrip]">
-                                        ✎
+                                        <span class="icon-edit"></span>
+                                        
                                     </button>
                                     
                                     <!--<button 
@@ -83,9 +86,9 @@
                                     </button> -->
                                     
                                     <button 
-                                        class="delete-trip-button" 
+                                        class="delete-trip-button icon-button" 
                                         (click)="deleteTrip(trip)">
-                                        🗑️
+                                        <span class="icon-delete"></span>
                                     </button>
                                 </div>
                            }@else {

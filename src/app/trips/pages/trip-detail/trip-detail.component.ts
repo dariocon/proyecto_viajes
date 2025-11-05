@@ -219,7 +219,7 @@ onSubmit(): void {
     const startDate = new Date(this.trip.startDate);
     const now = new Date();
     
-    return startDate.getTime() < now.getTime();
+    return startDate.getTime() <= now.getTime();
 }
 
 getNumberOfDays(): number {

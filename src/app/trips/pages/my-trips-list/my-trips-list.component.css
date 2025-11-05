@@ -256,7 +256,15 @@ body {
     color: #475569;
 }
 /* Estilo del contenedor para forzar la pila vertical */
-
+/* Nuevo estilo para que los botones de gestión estén en fila */
+.trip-management-actions {
+    display: flex; 
+    justify-content: center;
+    align-items: center;  
+    gap: 1px; 
+    width: 100%;
+    
+}
 .trip-btn {
     padding: 3px 7px;
     margin-top: 2px;
@@ -281,28 +289,87 @@ body {
     font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 24px;
-    color: white;
-    border-radius: 4px;
     cursor: pointer;
     border: none;
-    background: linear-gradient(to right, #ff0000, #FE7079);
     justify-self: center;
     align-self: end;
 }
 
+.view-trip-btn {
+    padding: 3px 7px;
+    margin-top: 2px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    cursor: pointer;
+    border: none;
+    justify-self: center;
+    align-self: end;
+}
+
+
+
+/* Estilo Base para el contenedor de los iconos (el <span>) */
+.icon-edit,
+.icon-delete {
+    display: inline-block;
+    width: 20px; /* Tamaño del icono. AJUSTA si tus PNGs son más grandes. */
+    height: 20px; /* Tamaño del icono. AJUSTA si tus PNGs son más grandes. */
+    background-size: contain; /* Asegura que el PNG se escale dentro del span */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* 1. Icono de EDITAR */
+.icon-edit {
+    /* RUTA CORREGIDA: assets/images/editar.png */
+    background-image: url('/assets/images/editar.png'); 
+}
+
+/* 2. Icono de BORRAR */
+.icon-delete {
+    /* RUTA CORREGIDA: assets/images/borrar.png */
+    background-image: url('/assets/images/borrado.png'); 
+}
+
+.icon-button {
+    background: none;
+    
+    cursor: pointer;
+    padding: 8px; 
+    width: 38px; 
+    height: 38px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+   
+}
+
+
+.icon-vision {
+    display: inline-block;
+    width: 20px; 
+    height: 20px; 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* RUTA CORREGIDA: assets/images/vision.png */
+    background-image: url('/assets/images/vision.png'); 
+}
 .edit-btn {
     padding: 3px 10px;
     margin-top: 2px;
-    margin-right: 10px;
+    
     font-size: 16px;
     font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 24px;
     color: white;
-    border-radius: 4px;
+    
     cursor: pointer;
     border: none;
-    background: linear-gradient(to right, #0999ff, #FE7079);
     justify-self: center;
     align-self: end;
 }
