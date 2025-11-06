@@ -44,8 +44,18 @@ export class TripDetailComponent implements OnInit, OnDestroy {
       this.tripsService.getTripById(this.id).pipe(
         switchMap((trip: TripDto) => {
           this.trip = trip;
-          console.log(trip.participations)
           
+          if (this.trip.images && this.trip.images.length > 0) {
+                // Buscamos el índice de la imagen donde isCover=true. 
+                const coverIndex = this.trip.images.findIndex(image => image.isCover);
+                
+                // Si se encuentra una portada, actualizamos el índice actual.
+                if (coverIndex !== -1) {
+                    this.currentImageIndex = coverIndex;
+                }
+                // Si no se encuentra, currentImageIndex se mantiene en 0, es decir, la primera imagen 
+            }
+            
           if (this.authService.isLogged()) { 
               return this.tripsService.checkParticipation(this.id).pipe(
                   tap(participation => {
@@ -90,7 +100,7 @@ onSubmit(): void {
       username: this.authService.username
     }
 
-    // Confirmación antes de registrar la participación
+    // Confirmación 
     Swal.fire({
       title: '¿Deseas unirte a este viaje?',
       text: 'Confirma si quieres reservar tu plaza.',
@@ -104,9 +114,7 @@ onSubmit(): void {
       confirmButtonColor: 'rgba(255, 255, 255, 0.3)',
       cancelButtonColor: '#d33'
     }).then(result => {
-      if (result.isConfirmed) {
-
-        // llamada al servicio para registrar participación
+      if (result.isConfirmed) { 
         this.tripsService.addParticipation(participation).subscribe(
           {
              next: response => {
@@ -153,7 +161,7 @@ onSubmit(): void {
 
   prevSlide(): void {
     if (this.trip && this.trip.images && this.trip.images.length > 1) {
-      // Calcula el índice anterior de forma circular
+      // SE calcula el índice anterior de forma circular
       this.currentImageIndex = (this.currentImageIndex - 1 + this.trip.images.length) % this.trip.images.length;
     }
   }

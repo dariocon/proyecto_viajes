@@ -258,11 +258,9 @@ deleteTrip(trip: TripDto): void {
         iconColor: 'white',
         confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
     }).then((result) => {
-        if (result.isConfirmed) {
-            // 1. Llamada al servicio si el usuario confirma
+        if (result.isConfirmed) {        
             this.tripsService.deleteTrip(trip.idTrip).subscribe({
                 next: () => {
-                    // 2. Notificación de éxito
                     Swal.fire({
                         title: "¡Viaje Eliminado!",
                         text: `El viaje "${trip.title}" ha sido eliminado exitosamente.`,
@@ -273,13 +271,11 @@ deleteTrip(trip: TripDto): void {
                         confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
                     });
 
-                    // 3. Actualización local de la lista
+                    // Actualización local de la lista
                     this.allTrips = this.allTrips.filter(t => t.idTrip !== trip.idTrip);
                     this.applyPagination();
                 },
-                error: (err) => {
-                    console.error('Error al eliminar el viaje:', err);
-                    // 4. Notificación de error
+                error: (err) => {             
                     Swal.fire('Error', err?.error?.message || 'Hubo un error al intentar eliminar el viaje.', 'error');
                 }
             });
@@ -287,13 +283,33 @@ deleteTrip(trip: TripDto): void {
     });
   }
 
-  // 4. Función para controlar participantes (asumo una ruta '/viajes/participantes/:id')
-  manageParticipants(tripId: number): void {
-    console.log(`Navegando a la gestión de participantes del viaje ID: ${tripId}`);
-    // Ejemplo de navegación: this.router.navigate(['/viajes/participantes', tripId]);
+  // Función para controlar participantes 
+  manageParticipants(tripId: number): void {    
+    //  this.router.navigate(['/viajes/participantes', tripId]);
   }
 
+  getCoverImage(trip: TripDto): string {
+      const defaultImage = 'assets/images/default-trip.png';
 
+      if (!trip.images || trip.images.length === 0) {
+          return defaultImage;
+      }
+
+      // Buscamos la imagen marcada como portada
+      const coverImage = trip.images.find(image => image.isCover);
+      if (coverImage) {
+          return coverImage.imageUrl;
+      }
+
+      // Si no hay portada explícita (iscover=true), se usa la primera imagen
+      if (trip.images.length > 0) {
+          return trip.images[0].imageUrl;
+      }
+
+      // SI no, imagen por defecto
+      return defaultImage;
+  }
+  
   // Métodos de paginación
   get totalPages(): number {
     return Math.ceil(this.filteredTrips.length / this.itemsPerPage);

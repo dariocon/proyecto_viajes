@@ -162,6 +162,28 @@ export class TripsListComponent implements OnChanges, OnInit {
     this.applyPagination();
 }
 
+    getCoverImage(trip: TripDto): string {
+        const defaultImage = 'assets/images/default-trip.png';
+
+        if (!trip.images || trip.images.length === 0) {
+            return defaultImage;
+        }
+
+        // Buscamos la imagen marcada como portada
+        const coverImage = trip.images.find(image => image.isCover);
+        if (coverImage) {
+            return coverImage.imageUrl;
+        }
+
+        // Si no hay portada, usamos la primera imagen
+        if (trip.images.length > 0) {
+            return trip.images[0].imageUrl;
+        }
+
+        // sI no, imagen por defecto
+        return defaultImage;
+    }
+
   // métodos de paginación
 
   applyPagination(): void {

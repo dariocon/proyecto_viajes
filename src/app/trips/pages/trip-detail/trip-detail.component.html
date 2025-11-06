@@ -11,7 +11,7 @@
                         <div 
                             class="blur-layer"
                             [style.backgroundImage]="trip.images.length > 0 && currentImageIndex < trip.images.length 
-                                ? 'url(' + trip.images[currentImageIndex] + ')' 
+                                ? 'url(' + trip.images[currentImageIndex].imageUrl + ')' 
                                 : 'url(assets/images/default-trip.png)'">
                         </div>
 
@@ -19,10 +19,10 @@
                             [style.transform]="'translateX(' + (-currentImageIndex * 100) + '%)'">
                             
                             @if (trip.images.length > 0) {
-                                @for (imageUrl of trip.images; track $index) {
+                                @for (image of trip.images; track $index) {
                                     <div class="carousel-slide-content">
                                         <img 
-                                            [src]="imageUrl" 
+                                            [src]="image.imageUrl" 
                                             alt="Imagen del Viaje {{ $index + 1 }}" 
                                             class="trip-main-image">
                                     </div>

@@ -30,7 +30,7 @@ export interface TripDto {
   maxCapacity: number;
   estimatedBudget: number;
   itineraryActivities: any[]; 
-  images: string[]; 
+  images: any[]; 
   participations: any[]
 }
 

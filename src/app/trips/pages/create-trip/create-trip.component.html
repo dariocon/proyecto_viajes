@@ -1,212 +1,250 @@
 <div class="new-trip-container">
-  <section class="new-trip">
-    <div class="new-trip-panel">
-      <h2 class="new-trip-title">Crear viaje</h2>
-      <form [formGroup]="createTripForm" (ngSubmit)="onSubmit()" class="new-trip-form">
+    <section class="new-trip">
+        <div class="new-trip-panel">
+            <h2 class="new-trip-title">Crear viaje</h2>
+            <form [formGroup]="createTripForm" (ngSubmit)="onSubmit()" class="new-trip-form">
 
-        <div class="form-grid-layout">
+                <div class="form-grid-layout">
 
-          <!-- Título -->
-          <div class="input-group">
-            <label for="title" class="input-label">Título del viaje*</label>
-            <input type="text" id="title" formControlName="title" class="input-field" placeholder="Ej: Aventura en los Alpes Suizos"
-              [ngClass]="{'input-error': createTripForm.get('title')?.invalid && createTripForm.get('title')?.touched}">
-            
-            @if (createTripForm.get('title')?.invalid && createTripForm.get('title')?.touched) {
-              <div class="text-red-600 text-sm input-error-message">El título es obligatorio.</div>
-            }
-          </div>
-
-          <!-- Destino -->
-          <div class="input-group">
-            <label for="destination" class="input-label">Destino*</label>
-            <input type="text" id="destination" formControlName="destination" class="input-field" placeholder="País, ciudad o región principal"
-              [ngClass]="{'input-error': createTripForm.get('destination')?.invalid && createTripForm.get('destination')?.touched}">
-            
-            @if (createTripForm.get('destination')?.invalid && createTripForm.get('destination')?.touched) {
-              <div class="text-red-600 text-sm input-error-message">El destino es obligatorio.</div>
-            }
-          </div>
-
-          <!-- Categoría -->
-          <div class="input-group">
-            <label for="categoryId" class="input-label">Categoría*</label>
-            <select id="categoryId" formControlName="categoryId" class="input-field" [class.placeholder]="createTripForm.get('categoryId')?.value === null"
-              [ngClass]="{'input-error': createTripForm.get('categoryId')?.invalid && createTripForm.get('categoryId')?.touched}">
-              <option [ngValue]="null" disabled>Selecciona una categoría</option>
-              @for (cat of categorias; track cat.id_category) {
-                <option [ngValue]="cat.id_category">{{ cat.name }}</option>
-              }
-            </select>
-
-            @if (createTripForm.get('categoryId')?.invalid && createTripForm.get('categoryId')?.touched) {
-              <div class="text-red-600 text-sm input-error-message">La categoría es obligatoria.</div>
-            }
-          </div>
-
-          <!-- Cupo Máximo -->
-          <div class="input-group">
-            <label for="maxCapacity" class="input-label">Cupo máximo de personas</label>
-            <input type="number" id="maxCapacity" formControlName="maxCapacity" class="input-field" placeholder="Ej: 10" min="1"
-              [ngClass]="{'input-error': createTripForm.get('maxCapacity')?.invalid && createTripForm.get('maxCapacity')?.touched}">
-            
-            @if (createTripForm.get('maxCapacity')?.invalid && createTripForm.get('maxCapacity')?.touched) {
-              <div class="text-red-600 text-sm input-error-message">Debe ser un número entero positivo.</div>
-            }
-          </div>
-
-          <!-- Fecha de Inicio -->
-          <div class="input-group">
-            <label for="startDate" class="input-label">Fecha de inicio*</label>
-            <input type="date" id="startDate" formControlName="startDate" class="input-field" [ngStyle]="{'color': createTripForm.get('startDate')?.value ? '#333' : '#a0aec0'}"
-              [ngClass]="{'input-error': createTripForm.get('startDate')?.invalid && createTripForm.get('startDate')?.touched}">
-            
-            @if (createTripForm.get('startDate')?.invalid && createTripForm.get('startDate')?.touched) {
-              <div class="text-red-600 text-sm input-error-message">La fecha de inicio es obligatoria.</div>
-            }
-          </div>
-
-          <!-- Fecha de Fin -->
-          <div class="input-group">
-            <label for="endDate" class="input-label">Fecha de fin*</label>
-            <input type="date" id="endDate" formControlName="endDate" class="input-field" [ngStyle]="{'color': createTripForm.get('endDate')?.value ? '#333' : '#a0aec0'}"
-              [ngClass]="{'input-error': createTripForm.get('endDate')?.invalid && createTripForm.get('endDate')?.touched}">
-            
-            @if (createTripForm.get('endDate')?.invalid && createTripForm.get('endDate')?.touched) {
-              <div class="text-red-600 text-sm input-error-message">La fecha de fin es obligatoria.</div>
-            }
-
-            @if (createTripForm.errors?.['fechaInvalida'] && createTripForm.get('endDate')?.touched) {
-              <div class="text-red-600 text-sm input-error-message">La fecha de fin debe ser posterior o igual a la de inicio.</div>
-            }
-          </div>
-
-          <!-- Presupuesto Estimado -->
-          <div class="input-group">
-            <label for="estimatedBudget" class="input-label">Presupuesto estimado (€)</label>
-            <input type="number" id="estimatedBudget" formControlName="estimatedBudget" class="input-field" placeholder="Ej: 1500.50" step="0.01" min="0"
-              [ngClass]="{'input-error': createTripForm.get('estimatedBudget')?.invalid && createTripForm.get('estimatedBudget')?.touched}">
-            
-            @if (createTripForm.get('estimatedBudget')?.invalid && createTripForm.get('estimatedBudget')?.touched) {
-              <div class="text-red-600 text-sm input-error-message">Debe ser un valor monetario positivo.</div>
-            }
-          </div>
-
-          <div class="input-group">
-            <label for="tripImage" class="input-label">Imágenes del viaje</label>
-            <label for="tripImage" class="file-upload-button">📎 Seleccionar imágenes</label>
-            <input id="tripImage" type="file" (change)="onFilesSelected($event)" accept="image/*" multiple class="file-input-hidden">
-          </div>
-
-@if (this.selectedImages.length > 0) {
-  
-    
-    <div class="input-group">
-      <label for="coverSelect" class="input-label">Selecciona la portada</label>
-      <select id="coverSelect" class="input-field" [(ngModel)]="coverImageIndex" [ngModelOptions]="{standalone: true}">
-        <option *ngFor="let img of selectedImages; let i = index" [ngValue]="i">
-          {{ img.name }}
-        </option>
-      </select>
-    </div>
-
-    
-    <div class="input-group" >
-      <button type="button" (click)="removeSelectedImages()" class="delete-images-button" title="Eliminar todas las imágenes seleccionadas">
-        Eliminar imágenes 
-      </button>
-    </div>
-  
-}
-
-
-        </div>
-
-        <!-- Descripción -->
-        <div class="input-group full-width-in-grid">
-          <label for="description" class="input-label">Descripción</label>
-          <textarea id="description" formControlName="description" class="input-field" placeholder="Describe tu viaje, qué se incluye, el ambiente esperado, etc." rows="4"
-            [ngClass]="{'input-error': createTripForm.get('description')?.invalid && createTripForm.get('description')?.touched}"></textarea>
-          
-        </div>
-
-        <div class="full-width-in-grid"><hr></div>
-
-        <!-- Itinerario de Actividades -->
-        <div class="full-width-in-grid">
-          <h3 class="new-itinerary-title">
-            <span class="icon">🗓️</span>
-            <span class="title-text">Itinerario de actividades</span>
-          </h3>
-
-        </div>
-
-        <div formArrayName="itineraryActivities" class="itinerary-list full-width-in-grid">
-          @for (actividadGroup of actividades.controls; let i = $index; track i) {
-            <div [formGroupName]="i" class="activity-item">
-
-              <div class="activity-header">
-                <h4 class="activity-title">Actividad #{{ i + 1 }}</h4>
-                <button type="button" (click)="removeActivity(i)" class="remove-activity-btn" title="Eliminar Actividad">
-                  &times;
-                </button>
-              </div>
-
-              <div class="form-grid-layout">
-                <!-- Fecha -->
-                <div class="input-group">
-                  <label for="date-{{i}}" class="input-label">Fecha</label>
-                  <input type="date" id="date-{{i}}" formControlName="date" class="input-field" [ngStyle]="{'color': actividadGroup.get('date')?.value ? '#333' : '#a0aec0'}"
-                    [ngClass]="{'input-error': actividadGroup.get('date')?.invalid && actividadGroup.get('date')?.touched}">
-                  
-                  @if (actividadGroup.get('date')?.invalid && actividadGroup.get('date')?.touched) {
-                    <div class="text-red-600 text-sm input-error-message">La fecha de la actividad es obligatoria.</div>
-                  }
-                  @if (createTripForm.errors?.['actividadFueraDeRango']) {
-                    <div class="text-red-600 text-sm input-error-message">
-                      Algunas actividades tienen fechas fuera del rango del viaje.
+                    <div class="input-group">
+                        <label for="title" class="input-label">Título del viaje*</label>
+                        <input type="text" id="title" formControlName="title" class="input-field" placeholder="Ej: Aventura en los Alpes Suizos"
+                            [ngClass]="{'input-error': createTripForm.get('title')?.invalid && createTripForm.get('title')?.touched}">
+                        
+                        @if (createTripForm.get('title')?.invalid && createTripForm.get('title')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">El título es obligatorio.</div>
+                        }
                     </div>
-                  }
-                  
+
+                    <div class="input-group">
+                        <label for="destination" class="input-label">Destino*</label>
+                        <input type="text" id="destination" formControlName="destination" class="input-field" placeholder="País, ciudad o región principal"
+                            [ngClass]="{'input-error': createTripForm.get('destination')?.invalid && createTripForm.get('destination')?.touched}">
+                        
+                        @if (createTripForm.get('destination')?.invalid && createTripForm.get('destination')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">El destino es obligatorio.</div>
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label for="categoryId" class="input-label">Categoría*</label>
+                        <select id="categoryId" formControlName="categoryId" class="input-field" [class.placeholder]="createTripForm.get('categoryId')?.value === null"
+                            [ngClass]="{'input-error': createTripForm.get('categoryId')?.invalid && createTripForm.get('categoryId')?.touched}">
+                            <option [ngValue]="null" disabled>Selecciona una categoría</option>
+                            @for (cat of categorias; track cat.id_category) {
+                                <option [ngValue]="cat.id_category">{{ cat.name }}</option>
+                            }
+                        </select>
+
+                        @if (createTripForm.get('categoryId')?.invalid && createTripForm.get('categoryId')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">La categoría es obligatoria.</div>
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label for="maxCapacity" class="input-label">Cupo máximo de personas</label>
+                        <input type="number" 
+                            id="maxCapacity" 
+                            formControlName="maxCapacity" 
+                            class="input-field" 
+                            placeholder="Ej: 10" 
+                            min="1"
+                            [ngClass]="{'input-error': createTripForm.get('maxCapacity')?.invalid && createTripForm.get('maxCapacity')?.touched}">
+                        
+                        @if (createTripForm.get('maxCapacity')?.invalid && createTripForm.get('maxCapacity')?.touched) {
+                            
+                            @if (createTripForm.get('maxCapacity')?.hasError('minCapacityRequired')) {
+                                <div class="text-red-600 text-sm input-error-message">
+                                    El cupo máximo no puede ser inferior a la cantidad de participantes actuales 
+                                    (<span class="font-bold">{{ currentParticipantsCount }}</span>).
+                                </div>
+                            }
+                            @else if (createTripForm.get('maxCapacity')?.hasError('min') || 
+                                    createTripForm.get('maxCapacity')?.hasError('pattern')) {
+                                <div class="text-red-600 text-sm input-error-message">
+                                    Debe ser un número entero positivo (mínimo 1).
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label for="startDate" class="input-label">Fecha de inicio*</label>
+                        <input type="date" id="startDate" formControlName="startDate" class="input-field" [ngStyle]="{'color': createTripForm.get('startDate')?.value ? '#333' : '#a0aec0'}"
+                            [ngClass]="{'input-error': createTripForm.get('startDate')?.invalid && createTripForm.get('startDate')?.touched}">
+                        
+                        @if (createTripForm.get('startDate')?.invalid && createTripForm.get('startDate')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">La fecha de inicio es obligatoria.</div>
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label for="endDate" class="input-label">Fecha de fin*</label>
+                        <input type="date" id="endDate" formControlName="endDate" class="input-field" [ngStyle]="{'color': createTripForm.get('endDate')?.value ? '#333' : '#a0aec0'}"
+                            [ngClass]="{'input-error': createTripForm.get('endDate')?.invalid && createTripForm.get('endDate')?.touched}">
+                        
+                        @if (createTripForm.get('endDate')?.invalid && createTripForm.get('endDate')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">La fecha de fin es obligatoria.</div>
+                        }
+
+                        @if (createTripForm.errors?.['fechaInvalida'] && createTripForm.get('endDate')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">La fecha de fin debe ser posterior o igual a la de inicio.</div>
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label for="estimatedBudget" class="input-label">Presupuesto estimado (€)</label>
+                        <input type="number" id="estimatedBudget" formControlName="estimatedBudget" class="input-field" placeholder="Ej: 1500.50" step="0.01" min="0"
+                            [ngClass]="{'input-error': createTripForm.get('estimatedBudget')?.invalid && createTripForm.get('estimatedBudget')?.touched}">
+                        
+                        @if (createTripForm.get('estimatedBudget')?.invalid && createTripForm.get('estimatedBudget')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">Debe ser un valor monetario positivo.</div>
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label for="tripImage" class="input-label">Imágenes del viaje</label>
+                        <label for="tripImage" class="file-upload-button">📎 Seleccionar imágenes</label>
+                        <input id="tripImage" type="file" (change)="onFilesSelected($event)" accept="image/*" multiple class="file-input-hidden">
+                    </div>
+
+                    @if (combinedImages.length > 0) {
+                        <div class="input-group full-width-in-grid preview-panel">
+                            <h4 class="input-label">Archivos seleccionados:</h4>
+                            
+                            @if (coverImageIndex !== null) {
+                                @for (img of combinedImages; track img.index) {
+                                    @if (img.index === coverImageIndex) {
+                                        <div class="large-preview-container">
+                                            <h5 class="preview-title">Portada Actual:</h5>
+                                            <img [src]="img.imageUrl" alt="Portada del viaje" class="image-preview-large">
+                                        </div>
+                                    }
+                                }
+                            }
+
+                            <div class="image-list-grid">
+                                @for (img of combinedImages; track img.index) {
+                                    <div class="image-item" 
+                                        [ngClass]="{'is-cover': img.index === coverImageIndex}"
+                                        (click)="setCoverImage(img.index)" 
+                                        title="Clic para previsualizar y establecer como portada">
+                                        
+                                        <div class="image-info">
+                                            <img [src]="img.imageUrl" alt="Previsualización" class="image-preview-thumbnail">
+
+                                            <div class="text-info-wrapper">
+                                                <div class="image-name">
+                                                    {{ img.name }} 
+                                                </div>
+                                                <span class="tag" [ngClass]="{'tag-new': img.isFile, 'tag-existing': !img.isFile}">
+                                                    {{ img.isFile ? 'NUEVA' : 'EXISTENTE' }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="image-actions">
+                                            <button type="button" 
+                                                (click)="$event.stopPropagation(); setCoverImage(img.index)" 
+                                                class="set-cover-btn"
+                                                [disabled]="img.index === coverImageIndex"
+                                                [title]="img.index === coverImageIndex ? 'Ya es portada' : 'Establecer como portada'">
+                                                {{ img.index === coverImageIndex ? 'Portada' : 'Hacer Portada' }}
+                                            </button>
+                                            
+                                            <button type="button" 
+                                                (click)="$event.stopPropagation(); removeImage(img.index < existingImages.length ? img.index : img.index - existingImages.length, !img.isFile)" 
+                                                class="delete-image-btn"
+                                                title="Eliminar esta imagen">
+                                                &times;
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+
                 </div>
 
-                <!-- Hora -->
-                <div class="input-group">
-                  <label for="time-{{i}}" class="input-label">Hora</label>
-                  <input type="time" id="time-{{i}}" formControlName="time" class="input-field">
-                </div>
-
-                <!-- Actividad -->
                 <div class="input-group full-width-in-grid">
-                  <label for="activity-{{i}}" class="input-label">Descripción de la actividad</label>
-                  <input type="text" id="activity-{{i}}" formControlName="activity" class="input-field"
-                    placeholder="Ej: Visita al Museo del Louvre"
-                    [ngClass]="{'input-error': actividadGroup.get('activity')?.invalid && actividadGroup.get('activity')?.touched}">
-                  
-                  @if (actividadGroup.get('activity')?.invalid && actividadGroup.get('activity')?.touched) {
-                    <div class="text-red-600 text-sm input-error-message">La descripción de la actividad es obligatoria.</div>
-                  }
+                    <label for="description" class="input-label">Descripción</label>
+                    <textarea id="description" formControlName="description" class="input-field" placeholder="Describe tu viaje, qué se incluye, el ambiente esperado, etc." rows="4"
+                        [ngClass]="{'input-error': createTripForm.get('description')?.invalid && createTripForm.get('description')?.touched}"></textarea>
+                    
                 </div>
 
-                <!-- Lugar -->
-                <div class="input-group full-width-in-grid">
-                  <label for="location-{{i}}" class="input-label">Lugar</label>
-                  <input type="text" id="location-{{i}}" formControlName="location" class="input-field" placeholder="Ej: París, Francia">
+                <div class="full-width-in-grid"><hr></div>
+
+                <div class="full-width-in-grid">
+                    <h3 class="new-itinerary-title">
+                        <span class="icon">🗓️</span>
+                        <span class="title-text">Itinerario de actividades</span>
+                    </h3>
+
                 </div>
-              </div>
-            </div>
-          }
+
+                <div formArrayName="itineraryActivities" class="itinerary-list full-width-in-grid">
+                    @for (actividadGroup of actividades.controls; let i = $index; track i) {
+                        <div [formGroupName]="i" class="activity-item">
+
+                            <div class="activity-header">
+                                <h4 class="activity-title">Actividad #{{ i + 1 }}</h4>
+                                <button type="button" (click)="removeActivity(i)" class="remove-activity-btn" title="Eliminar Actividad">
+                                    &times;
+                                </button>
+                            </div>
+
+                            <div class="form-grid-layout">
+                                <div class="input-group">
+                                    <label for="date-{{i}}" class="input-label">Fecha</label>
+                                    <input type="date" id="date-{{i}}" formControlName="date" class="input-field" [ngStyle]="{'color': actividadGroup.get('date')?.value ? '#333' : '#a0aec0'}"
+                                        [ngClass]="{'input-error': actividadGroup.get('date')?.invalid && actividadGroup.get('date')?.touched}">
+                                    
+                                    @if (actividadGroup.get('date')?.invalid && actividadGroup.get('date')?.touched) {
+                                        <div class="text-red-600 text-sm input-error-message">La fecha es obligatoria.</div>
+                                    }
+                                    @if (createTripForm.errors?.['actividadFueraDeRango']) {
+                                        <div class="text-red-600 text-sm input-error-message">
+                                            La fecha está fuera del rango del viaje.
+                                        </div>
+                                    }
+                                    
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="time-{{i}}" class="input-label">Hora</label>
+                                    <input type="time" id="time-{{i}}" formControlName="time" class="input-field">
+                                </div>
+
+                                <div class="input-group full-width-in-grid activity-input">
+                                    <label for="activity-{{i}}" class="input-label">Descripción de la actividad*</label>
+                                    <input type="text" id="activity-{{i}}" formControlName="activity" class="input-field"
+                                        placeholder="Ej: Visita al Museo del Louvre"
+                                        [ngClass]="{'input-error': actividadGroup.get('activity')?.invalid && actividadGroup.get('activity')?.touched}">
+                                    
+                                    @if (actividadGroup.get('activity')?.invalid && actividadGroup.get('activity')?.touched) {
+                                        <div class="text-red-600 text-sm input-error-message">La descripción es obligatoria.</div>
+                                    }
+                                </div>
+
+                                <div class="input-group full-width-in-grid activity-input">
+                                    <label for="location-{{i}}" class="input-label">Lugar</label>
+                                    <input type="text" id="location-{{i}}" formControlName="location" class="input-field" placeholder="Ej: París, Francia">
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="full-width-in-grid" style="display: flex; justify-content: flex-end; margin-top: 10px; margin-bottom: 20px;">
+                    <button type="button" (click)="addActivity()" class="add-activity-btn">+ Añadir actividad</button>
+                </div>
+
+                <button type="submit" class="login-button">Crear viaje</button>
+
+            </form>
         </div>
-
-        <!-- Botón Añadir Actividad -->
-        <div class="full-width-in-grid" style="display: flex; justify-content: flex-end; margin-top: 10px; margin-bottom: 20px;">
-          <button type="button" (click)="addActivity()" class="add-activity-btn">+ Añadir actividad</button>
-        </div>
-
-        <!-- Botón Crear Viaje -->
-        <button type="submit" class="login-button">Crear viaje</button>
-
-      </form>
-    </div>
-  </section>
+    </section>
 </div>

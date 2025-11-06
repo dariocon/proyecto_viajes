@@ -110,7 +110,7 @@
           <div class="trip-card">
               <div class="trip-image-container">
                   <img 
-                      [src]="trip.images.length > 0 ? trip.images[0] : 'assets/images/default-trip.png'"
+                      [src]="getCoverImage(trip)"
                       [alt]="'Imagen principal del viaje: ' + trip.title" 
                       [attr.title]="'Imagen principal del viaje: ' + trip.title" 
                       class="trip-image"
