@@ -64,8 +64,8 @@ setRole(role: string) {
 }
 
 private saveTokens(accessToken: string, refreshToken: string) {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+  localStorage.setItem('accessToken', accessToken.replace(/^Bearer\s/, ''));
+  localStorage.setItem('refreshToken', refreshToken.replace(/^Bearer\s/, ''));
     const tokenInfo = this.getDecodedAccessToken(accessToken);
     if (tokenInfo) {
         this._username = tokenInfo.username;

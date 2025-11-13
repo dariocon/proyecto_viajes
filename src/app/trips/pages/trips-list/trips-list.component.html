@@ -27,8 +27,13 @@
             }
 
             @if (authService.isLogged()) {
-                <button class="cta-button cta-main" [routerLink]="['/create-trip']">Crea tu propio viaje</button>
-                
+                @if (authService.role=='user') {
+                <button class="cta-button cta-main" [routerLink]="['/contact']">Crea tu aventura</button> 
+
+                }@else {
+                <button class="cta-button cta-main" [routerLink]="['/create-trip']">Crea tu propio viaje</button> 
+
+                }
             }
         </div>
     </div>

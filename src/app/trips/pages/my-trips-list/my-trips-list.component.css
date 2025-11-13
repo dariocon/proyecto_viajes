@@ -266,9 +266,8 @@ body {
     
 }
 .trip-btn {
-    padding: 3px 7px;
+    padding: 3px 13px;
     margin-top: 2px;
-    margin-right: 10px;
     font-size: 16px;
     font-weight: 700;
     letter-spacing: -0.025em;
@@ -312,7 +311,8 @@ body {
 
 /* Estilo Base para el contenedor de los iconos (el <span>) */
 .icon-edit,
-.icon-delete {
+.icon-delete,
+.icon-participants {
     display: inline-block;
     width: 20px; /* Tamaño del icono. AJUSTA si tus PNGs son más grandes. */
     height: 20px; /* Tamaño del icono. AJUSTA si tus PNGs son más grandes. */
@@ -332,7 +332,11 @@ body {
     /* RUTA CORREGIDA: assets/images/borrar.png */
     background-image: url('/assets/images/borrado.png'); 
 }
-
+.icon-participants {
+    /* RUTA CORREGIDA: assets/images/borrar.png */
+    background-image: url('/assets/images/cliente.png'); 
+    background-color: white;
+}
 .icon-button {
     background: none;
     
@@ -368,6 +372,22 @@ body {
     line-height: 24px;
     color: white;
     
+    cursor: pointer;
+    border: none;
+    justify-self: center;
+    align-self: end;
+}
+
+.participants-btn {
+    padding: 3px 10px;
+    margin-top: 2px;
+    
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    background-color: white;
     cursor: pointer;
     border: none;
     justify-self: center;

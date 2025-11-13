@@ -1,0 +1,49 @@
+<div class="notification-button-wrapper">
+  
+  <button class="notification-btn" (click)="toggle.emit()">
+    @if (notificationService.hasUnread()) {
+      <img src="assets/images/notificaciones.png" alt="Notificaciones no leídas" class="notification-icon-img has-unread">
+    } @else {
+      <img src="assets/images/notificaciones-off.png" alt="No hay notificaciones" class="notification-icon-img">
+
+    }
+  </button>
+
+  @if (isOpen) {
+    <div class="dropdown-menu notification-dropdown-custom"
+         [ngStyle]="{'width': '380px', 'min-width': '380px', 'max-height': '400px', 'overflow-y': 'auto'}"> 
+      
+      <!-- ✅ Botón "Marcar todo como leído" -->
+      @if (notifications.length > 0) {
+        <button class="mark-all-btn"
+                (click)="markAllAsRead()">
+          Marcar todo como leído
+        </button>
+      }
+
+      <ul>
+        @if (notifications.length > 0) {
+          @for (notification of notifications; track notification.id) {
+            <li class="notification-item" 
+                [ngClass]="{ 'unread': !notification.isRead }"
+                (click)="markAsRead(notification)">
+              
+              <p class="message">{{ notification.content }}</p>
+              <p class="timestamp">{{ formatDate(notification.sentDate) }}</p>
+                           <button type="button" 
+              (click)="deleteNotification(notification.id); $event.stopPropagation()" 
+              class="delete-notification-btn"
+              title="Eliminar esta notificación">
+              &times;
+             </button>
+            </li>
+
+          }
+        } @else {
+          <li class="info-message no-hover">No tienes notificaciones.</li>
+        }
+      </ul>
+
+    </div>
+  }
+</div>

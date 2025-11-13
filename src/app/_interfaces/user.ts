@@ -85,3 +85,8 @@ export interface ParticipationAdd {
     username: string
 }
 
+export interface ParticipationDto {
+    idTrip: number,
+    username: string,
+    participationDate:string
+}

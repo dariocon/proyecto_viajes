@@ -13,6 +13,63 @@ body {
     
 }
 
+.notification-wrapper {
+    /* Esto es CLAVE para que los hijos con position: absolute se anclen aquí */
+    position: relative; 
+    display: flex;
+    align-items: center; 
+}
+.notification-icon-img {
+    width: 22px; 
+    height: 22px; 
+    display: block; 
+    object-fit: contain;
+
+    /* 🔑 CLAVE: Mueve el icono 1px hacia abajo para la alineación visual */
+    transform: translateY(3px); 
+}
+.notification-btn { 
+    position: relative; 
+    
+    /* 🔑 CLAVE: Asegura la transparencia absoluta */
+    background-color: transparent !important; 
+    background: none; 
+    
+    border: none;
+    cursor: pointer;
+    
+    /* Asegura que no tenga relleno interno */
+    padding: 0; 
+    margin: 0;
+    
+width: 22px; /* Mantener este tamaño para el área clicable */
+    height: 22px;
+    
+    /* Quita el contorno feo que dejan algunos navegadores al hacer clic */
+    outline: none; 
+}
+.delete-notification-btn {
+    position: absolute;       /* Para posicionarlo dentro del li */
+    top: 10px;                /* Ajusta según el padding del li */
+    right: 10px;              /* Alineado a la derecha */
+    border: none;
+    background: transparent;  /* Solo el icono visible */
+     color: #888888;                /* Rojo suave para indicar acción de eliminar */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s, transform 0.1s;
+}
+
+.delete-notification-btn:hover {
+    color: #ff1a1a;           /* Color más intenso al pasar el mouse */
+    transform: scale(1.2);    /* Pequeña animación al hover */
+}
+.notification-item {
+    position: relative;       /* Necesario para que el botón se posicione correctamente */
+}
 .inicio {
     position: relative;
     width: 100%;
@@ -39,7 +96,7 @@ body {
     margin: 0 auto;
     background: white;
     border-bottom: 1px solid #f1f5f9;
-    gap: 20px;
+    gap: 2px;
 }
 
 .logo {
@@ -111,23 +168,29 @@ body {
 }
 /* Si NO hay sesión, más ancho */
 .wide-search .search-container {
-  width: 530px; 
+  width: 530px;
   margin-right: 139px;
   margin-left: 20px;
 }
 
-/* logueado */
-.logged-in .search-container {
-    width: 414px; 
-    margin-right: 105px; 
-    margin-left: 5px;
+.logged-in-organizer .search-container {
+  width: 414px;
+  margin-right: 105px;
+  margin-left: 5px;
 }
+
+.logged-in-normal .search-container {
+  width: 470px;
+  margin-right: 140px;
+  margin-left: 5px;
+}
+
 
 .user-profile-container {
     position: relative; 
     display: flex; /* Mantiene la alineación flexible */
     align-items: center;
-    gap: 14px; /* Mantiene el espacio entre el icono y el botón de cerrar sesión */
+    gap: 21px; /* Mantiene el espacio entre el icono y el botón de cerrar sesión */
 }
 
 .profile-icon {
@@ -136,6 +199,51 @@ body {
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer; /* Añadido para la interactividad */
+}
+
+.mark-all-btn {
+    /* Estilo Predeterminado: Claro y Sutil */
+    width: 100%;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 600; /* Ligeramente menos fuerte que los botones primarios */
+    text-align: center;
+    cursor: pointer;
+    line-height: 1.5;
+    
+    /* Colores base para integrarse con el dropdown */
+    background-color: #f8fafc; /* Fondo muy claro, similar al body */
+    color: #475569; /* Texto gris oscuro (títulos) */
+    
+    /* Borde sutil en la parte inferior del botón/parte superior de la lista */
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+    
+    transition: all 0.2s ease-in-out;
+}
+
+.mark-all-btn:hover {
+    /* Estilo Hover: Color de acción */
+    background-color: #e3e3e3; /* Fondo un poco más oscuro, como el hover del sidebar */
+    color: #008080; /* Turquesa (color de acento de texto activo) */
+}
+.username{
+    
+    cursor: pointer;
+    font-size: 14px;
+    color: #475569;
+    transition: background-color 0.2s;
+    text-align: center;
+        font-weight: 600;          /* Semi-bold para destacar */
+    font-size: 14px;           /* Tamaño legible, ligeramente mayor que los items */
+    color: #1f2937;            /* Gris oscuro elegante */
+    margin-top: 10px;
+    margin-right: 15px;
+    margin-bottom: 0px;
+    margin-left: 15px;
+    text-transform: capitalize; /* Que la primera letra sea mayúscula */
+    border-bottom: 1px solid #e5e7eb; /* Línea separadora del resto del menú */
+    padding-bottom: 8px; 
 }
 .dropdown-menu {
     position: absolute;
@@ -151,6 +259,7 @@ body {
     border-radius: 5px;
     min-width: 150px;
     display: block;
+    max-height: 400px;
 }
 
 .dropdown-menu ul {
@@ -165,6 +274,7 @@ body {
     font-size: 14px;
     color: #475569;
     transition: background-color 0.2s;
+    
 }
 
 .dropdown-menu li:hover {

@@ -1,0 +1,59 @@
+<div class="participants-container">
+
+    <h2 class="section-title">Participantes del viaje</h2>
+
+    <div class="participants-list-wrapper">
+        <table class="participants-table">
+            <thead>
+                <tr>
+                    <th class="header-cell header-hash">#</th>
+                    <th class="header-cell header-username">Username</th>
+                    <th class="header-cell header-date">Fecha de Participación</th>
+                    <th class="header-cell header-actions">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (p of participations; track p.username; let i = $index) {
+                    <tr class="data-row">
+                        <td class="data-cell hash-cell">{{ i + 1 }}</td>
+                        <td class="data-cell username-cell">
+                            {{ p.username }}
+                        </td>
+                        <td class="data-cell date-cell">
+                            {{ p.participationDate }}
+                        </td>
+                        <td class="data-cell actions-cell">
+                            <button 
+                                (click)="openNotificationForm(p.username)"
+                                class="btn-notify"
+                                title="Enviar Notificación a {{ p.username }}"
+                            >
+                                Notificar
+                            </button>
+                        </td>
+                    </tr>
+                } 
+                @empty {
+                    <tr class="empty-row">
+                        <td colspan="4" class="empty-message">Aún no hay participantes en este viaje.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+        <div class="action-row">
+        <button 
+            class="btn-notify-all"
+            (click)="openNotificationFormForAll()"
+        >
+            Notificar a todos
+        </button>
+
+        <button 
+            class="participants-btn"
+            [routerLink]="['/mis-viajes']">
+            <span class="icon-participants">Volver</span>
+        </button>
+    </div>
+
+</div>

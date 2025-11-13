@@ -1,7 +1,7 @@
 <div class="new-trip-container">
     <section class="new-trip">
         <div class="new-trip-panel">
-            <h2 class="new-trip-title">Crear viaje</h2>
+            <h2 class="new-trip-title">{{this.id ? 'Editar viaje' : 'Crear viaje'}}</h2>
             <form [formGroup]="createTripForm" (ngSubmit)="onSubmit()" class="new-trip-form">
 
                 <div class="form-grid-layout">
@@ -242,7 +242,7 @@
                     <button type="button" (click)="addActivity()" class="add-activity-btn">+ Añadir actividad</button>
                 </div>
 
-                <button type="submit" class="login-button">Crear viaje</button>
+                <button type="submit" class="login-button">{{this.id ? 'Editar viaje' : 'Crear viaje'}}</button>
 
             </form>
         </div>

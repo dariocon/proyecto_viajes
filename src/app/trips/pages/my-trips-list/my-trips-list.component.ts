@@ -283,10 +283,6 @@ deleteTrip(trip: TripDto): void {
     });
   }
 
-  // Función para controlar participantes 
-  manageParticipants(tripId: number): void {    
-    //  this.router.navigate(['/viajes/participantes', tripId]);
-  }
 
   getCoverImage(trip: TripDto): string {
       const defaultImage = 'assets/images/default-trip.png';

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
-import { LoginResponse, ParticipationAdd, RegisterResponse, Token,User,UserEdit,UserLogin,UserLoginResponse, UserRegister, VerifiedResponse } from '../_interfaces/user';
+import { LoginResponse, ParticipationAdd, ParticipationDto, RegisterResponse, Token,User,UserEdit,UserLogin,UserLoginResponse, UserRegister, VerifiedResponse } from '../_interfaces/user';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
@@ -102,7 +102,7 @@ deleteParticipation(idTrip: number, username: string, participationDate: string)
 
  getTripById(id: number): Observable<TripDto> {
     return this.http.get<TripDto>(`${this.apiUrl}/viajes/${id}`).pipe(
-      // Opcional: para manejar errores de forma centralizada
+      
       catchError(error => {
         console.error('Error al obtener el viaje:', error);
         return throwError(() => error);
@@ -112,7 +112,6 @@ deleteParticipation(idTrip: number, username: string, participationDate: string)
 
    getCategoryById(id: number): Observable<Categoria> {
     return this.http.get<Categoria>(`${this.apiUrl}/categorias/${id}`).pipe(
-      // Opcional: para manejar errores de forma centralizada
       catchError(error => {
         console.error('Error al obtener la categoría:', error);
         return throwError(() => error);
@@ -141,7 +140,15 @@ deleteParticipation(idTrip: number, username: string, participationDate: string)
     );
   }
 
+  getTripParticipationsByTrip(id: number): Observable<ParticipationDto[]> {
+      return this.http.get<ParticipationDto[]>(`${this.apiUrl}/participations/trip/${id}`).pipe(
+      catchError(error => {
+        console.error('Error al obtener la lista de participantes:', error);
+        return throwError(() => new Error('No se pudo cargar la lista de participantes.'));
+      })
+    );
 
+  }
 /*addTrip(trip: TripAdd, image?: File): Observable<any> {
   const formData = new FormData();
   formData.append('trip', new Blob([JSON.stringify(trip)], { type: 'application/json' }));

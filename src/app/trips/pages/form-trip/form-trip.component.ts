@@ -11,12 +11,12 @@ import Swal from 'sweetalert2';
 
 
 @Component({
-  selector: 'app-create-trip',
+  selector: 'app-form-trip',
   imports: [ReactiveFormsModule, FormsModule, NgClass, NgStyle],
-  templateUrl: './create-trip.component.html',
-  styleUrl: './create-trip.component.css'
+  templateUrl: './form-trip.component.html',
+  styleUrl: './form-trip.component.css'
 })
-export class CreateTripComponent implements OnInit {
+export class FormTripComponent implements OnInit {
 
     private authService: AuthService = inject(AuthService);
     private tripsService: TripsService = inject(TripsService);
@@ -26,7 +26,7 @@ export class CreateTripComponent implements OnInit {
     // Input de withComponentInputBinding
     @Input() id!: number;
     trip!: TripDto;
-
+    title:string='Crear viaje';
     
     selectedImages: SelectedImageFile[] = []; 
     coverImageIndex: number | null = null;
@@ -78,7 +78,7 @@ export class CreateTripComponent implements OnInit {
                     destination: this.trip.destination,
                     categoryId: this.trip.categoryId,
                     maxCapacity: this.trip.maxCapacity,
-                    estimatedBudget: this.trip.estimatedBudget
+                    estimatedBudget: this.trip.estimatedBudget 
                 });
                 this.trip.itineraryActivities.forEach(activity => {
                     this.actividades.push(this.fb.group(activity));
@@ -308,7 +308,7 @@ export class CreateTripComponent implements OnInit {
                 startDate: formValue.startDate,
                 endDate: formValue.endDate,
                 maxCapacity: formValue.maxCapacity,
-                estimatedBudget: formValue.estimatedBudget,
+                estimatedBudget: parseFloat(Number(formValue.estimatedBudget).toFixed(2)),
                 destination: formValue.destination,
                 categoryId: formValue.categoryId,
                 organizerUsername: this.authService.username,
@@ -382,7 +382,7 @@ export class CreateTripComponent implements OnInit {
                 startDate: formValue.startDate,
                 endDate: formValue.endDate,
                 maxCapacity: formValue.maxCapacity,
-                estimatedBudget: formValue.estimatedBudget,
+                estimatedBudget: parseFloat(Number(formValue.estimatedBudget).toFixed(2)),
                 destination: formValue.destination,
                 id_category: formValue.categoryId,
                 organizerUsername: this.authService.username,

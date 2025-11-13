@@ -78,18 +78,21 @@
                                         <span class="icon-edit"></span>
                                         
                                     </button>
-                                    
-                                    <!--<button 
-                                        class="participants-btn"
-                                        [routerLink]="['/viajes/participantes', trip.idTrip]">
-                                        Participantes ({{ trip.participations!.length || 0 }})
-                                    </button> -->
+
                                     
                                     <button 
                                         class="delete-trip-button icon-button" 
                                         (click)="deleteTrip(trip)">
                                         <span class="icon-delete"></span>
                                     </button>
+
+                                                                        
+                                    <button 
+                                        class="participants-btn"
+                                        [routerLink]="['/viajes/participants', trip.idTrip]">
+                                        <span class="icon-participants"></span>
+                                    </button> 
+                                    
                                 </div>
                            }@else {
                             <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>

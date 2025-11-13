@@ -10,8 +10,9 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   
   const addToken = (request: typeof req, token: string) => {
+      const rawToken = token.startsWith('Bearer ') ? token.substring(7) : token;
       return request.clone({
-          headers: request.headers.set('Authorization', `Bearer ${token}`)
+          headers: request.headers.set('Authorization', `Bearer ${rawToken}`)
       });
   };
 

@@ -1,0 +1,224 @@
+/* ========================================
+   ESTILOS DE LA TABLA DE PARTICIPANTES
+   ======================================== */
+
+.participants-container {
+    margin: 20px auto; /* Centra horizontalmente y añade margen superior/inferior */
+    text-align: center;
+    width: 100%;
+    max-width: 500px; /* Limita el ancho de la tabla a un tamaño razonable */
+    padding: 0 15px; /* Añade un padding lateral para que no se pegue a los bordes en móviles */
+}
+
+.section-title {
+    margin-bottom: 24px;
+    padding-top:48px ;
+    padding-bottom:48px;
+    font-size: 24px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.participants-list-wrapper {
+    /* Contenedor que permite el scroll horizontal en dispositivos pequeños si es necesario */
+    /* overflow-x: auto; */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.participants-table {
+    width: 100%;
+    border-collapse: separate; /* Permite bordes redondeados en la tabla */
+    border-spacing: 0;
+    min-width: 400px; /* Mínimo para asegurar legibilidad en columnas */
+}
+
+/* Cabecera de la tabla (<thead>) */
+.participants-table thead {
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    color: white;
+}
+
+/* Estilos para todas las celdas de cabecera */
+.header-cell {
+    padding: 10px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+/* Borde redondeado solo para las esquinas superiores */
+.participants-table thead tr:first-child .header-cell:first-child {
+    border-top-left-radius: 12px;
+}
+
+.participants-table thead tr:first-child .header-cell:last-child {
+    border-top-right-radius: 12px;
+}
+
+/* Anchos de columna: Ajustamos el ancho del # y usamos un ancho flexible para Username */
+.header-hash { 
+    width: 30px; 
+    text-align: center; 
+}
+.header-username {
+     width: auto;
+     text-align: center;
+     } /* Dejamos que ocupe el espacio restante */
+.header-date { width: 180px; }
+
+/* ========================================
+   FILAS Y CELDAS DE DATOS
+   ======================================== */
+
+.data-row {
+    background-color: white;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #f3f3f3;
+}
+
+.data-row:last-child {
+    border-bottom: none; /* Eliminar el borde inferior de la última fila */
+}
+
+.data-row:nth-child(even) {
+    background-color: #fcfcfc; /* Alternar color de fondo para mejor legibilidad */
+}
+
+.data-row:hover {
+    background-color: #ffe6e8; /* Efecto hover sutil */
+}
+
+.data-cell {
+    padding: 12px 20px;
+    color: #475569;
+    font-size: 14px;
+    text-align: center; /* Forzamos la alineación de todas las celdas de datos a la izquierda */
+}
+
+.hash-cell {
+    text-align: center; /* Mantenemos el # centrado */
+    font-weight: 500;
+}
+
+.username-cell {
+    font-weight: 600;
+    color: #333;
+    
+}
+
+/* Estilo para fila vacía */
+.empty-row {
+    background-color: white;
+    height: 80px;
+}
+
+.empty-message {
+    text-align: center;
+    font-style: italic;
+    color: #94a3b8;
+    padding: 20px;
+}
+
+/* Ajuste de esquinas inferiores para la última fila */
+.participants-table tbody tr:last-child .data-cell:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.participants-table tbody tr:last-child .data-cell:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+
+/* Contenedor Flex para los botones */
+.action-row {
+    display: flex;
+    justify-content: flex-end; /* Alinea los elementos a la derecha */
+    gap: 16px; /* Espacio entre los botones */
+    margin-top: 20px;
+    padding: 0 10px; /* Pequeño padding si es necesario */
+}
+
+.btn-notify,
+.btn-notify-all {
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 24px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0; /* Limpiamos el margin-left/right auto del anterior .btn-notify-all */
+}
+
+.btn-notify:hover,
+.btn-notify-all:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(249, 85, 150, 0.3);
+}
+
+.btn-notify {
+    padding: 4px 10px;
+    font-size: 14px;
+    line-height: 20px;
+    border-radius: 4px;
+}
+
+/* El estilo de .btn-notify-all no necesita centrado con 'display: block' ahora */
+.btn-notify-all {
+    /* Mantiene las propiedades base de .btn-notify */
+}
+
+.participants-btn {
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    background-color: #f1f1f1;
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0; /* Limpiamos el margin-top innecesario en un flex-container */
+}
+
+.participants-btn:hover {
+    background-color: #e3e3e3;
+    color: #008080;
+}
+
+@media (max-width: 768px) {
+    /* En móvil, los apilamos al centro para que no se vean muy apretados */
+    .action-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .btn-notify,
+    .btn-notify-all,
+    .participants-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 20px;
+        width: 100%; /* Ocupan todo el ancho en móvil */
+        max-width: 250px; /* Máximo ancho para que no se estiren demasiado */
+    }
+}

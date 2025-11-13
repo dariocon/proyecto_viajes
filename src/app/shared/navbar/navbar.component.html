@@ -1,5 +1,9 @@
-<header class="header" [ngClass]="{ 'wide-search': !(authService.isLogged()), 'logged-in': (authService.isLogged()) }">
-<img src="assets/Rutalixpng (1).png" alt="Rutalix Logo" class="logo" [routerLink]="['']">
+<header class="header" 
+        [ngClass]="{ 
+          'wide-search': !(authService.isLogged()), 
+          'logged-in-normal': authService.isLogged() && role !== 'organizer' && role !== 'admin',
+          'logged-in-organizer': authService.isLogged() && (role === 'organizer' || role === 'admin')
+        }"><img src="assets/Rutalixpng (1).png" alt="Rutalix Logo" class="logo" [routerLink]="['']">
 
 <nav class="nav-desktop">
     
@@ -31,17 +35,26 @@
     <div class="nav-item">
         <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="active-link" >Contacto</a>
     </div>
-    
+      @if (authService.isLogged()) {
+    <div class="nav-item notification-wrapper">
+      <app-notification
+        [isOpen]="isNotificationDropdownOpen"
+        (toggle)="toggleNotificationDropdown()">
+      </app-notification>
+    </div>
+  }
     
     @if (authService.isLogged()) {
     <div class="user-profile-container">
         <img src="assets/user-regular-full.svg" alt="Perfil" class="profile-icon" (click)="toggleDropdown()">
         <div *ngIf="isDropdownVisible" class="dropdown-menu">
           <ul>
+            <p class="username">{{authService.username}}</p>
             <li [routerLink]="['/usuarios', authService.username]" (click)="toggleDropdown()" routerLinkActive="active-link" >
-              Editar Perfil
+              Editar perfil 
             </li>
           </ul>
+          
         </div>
         <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
     </div>
