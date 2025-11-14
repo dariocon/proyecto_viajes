@@ -1,144 +1,134 @@
 <div class="web-frame">
     <section class="hero">
-
-    <div class="hero-text-content"> 
-
-        @if (!authService.isLogged()) {
-<h1 class="hero-title">
-    <span>Abre la puerta a tu</span>
-    <span>próxima gran </span>
-    <span><span class="gradient-text">aventura</span>.</span>
-</h1>
-        }
-        @if (authService.isLogged()) {
-            <h1 class="hero-title">
-                <span>Tu próxima <span class="gradient-text">aventura</span></span>
-                <span>te está esperando. </span>
-                <span><span class="gradient-text">Únete</span></span>
-            </h1>
-
-        }
-        <div class="hero-actions">
-            
+        <div class="hero-text-content"> 
             @if (!authService.isLogged()) {
-                <button class="cta-button cta-main" [routerLink]="['/register']">Crea tu cuenta</button>
-                
-                <button class="cta-button cta-secondary" [routerLink]="['/login']">Inicia sesión</button>
+                <h1 class="hero-title">
+                    <span>Abre la puerta a tu</span>
+                    <span>próxima gran </span>
+                    <span><span class="gradient-text">aventura</span>.</span>
+                </h1>
             }
-
             @if (authService.isLogged()) {
-                @if (authService.role=='user') {
-                <button class="cta-button cta-main" [routerLink]="['/contact']">Crea tu aventura</button> 
+                <h1 class="hero-title">
+                    <span>Tu próxima <span class="gradient-text">aventura</span></span>
+                    <span>te está esperando. </span>
+                    <span><span class="gradient-text">Únete</span></span>
+                </h1>
+            }
+            <div class="hero-actions">
+                @if (!authService.isLogged()) {
+                    <button class="cta-button cta-main" [routerLink]="['/register']">Crea tu cuenta</button>
+                    <button class="cta-button cta-secondary" [routerLink]="['/login']">Inicia sesión</button>
+                }
+                @if (authService.isLogged()) {
+                    @if (authService.role=='user') {
+                        <button class="cta-button cta-main" [routerLink]="['/contact']">Crea tu aventura</button> 
+                    } @else {
+                        <button class="cta-button cta-main" [routerLink]="['/create-trip']">Crea tu propio viaje</button> 
+                    }
+                }
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="assets\Famous-cityscape-view-of-St-Peters-basilica-in-Rome-at-sunset-Italy (1).jpg" alt="Music Trip" class="hero-img">
+        </div>
+    </section>
 
-                }@else {
-                <button class="cta-button cta-main" [routerLink]="['/create-trip']">Crea tu propio viaje</button> 
+    <section class="categories-carousel">
+        <div class="categories-content">
+            <div class="carousel-container">
+                <!-- Botón "Todos" -->
+                <div 
+                    class="category-item" 
+                    [class.active]="isCategoryActive()"
+                    (click)="onFilter()"
+                >
+                    <div class="icon-box">
+                        <svg viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter-icon all-icon">
+                            <path d="M4 8H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4 12H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4 16H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <span class="category-name">Todos</span>
+                </div>
+                
+                <!-- Categorías dinámicas -->
+                @for (category of tripCategories; track category.id_category) { 
+                    <div 
+                        class="category-item" 
+                        [class.active]="isCategoryActive(category.id_category)"
+                        (click)="onFilter(category.id_category)"
+                    >
+                        <div class="icon-box">
+                            <img 
+                                [src]="'assets/' + category.photo" 
+                                [alt]="category.name + ' icon'" 
+                                class="filter-icon"
+                            />
+                        </div>
+                        <span class="category-name">{{ category.name }}</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
 
+    <section class="trips-section">
+        <section class="time-filter-section">
+            <div class="time-filter">
+                <select title="filter-time" [(ngModel)]="selectedTimeFilter" (change)="onTimeFilterChange()">
+                    <option value="">Todos</option>
+                    <option value="soon">Más próximos</option>
+                    <option value="far">Más lejanos</option>
+                    <option value="week">Esta semana</option>
+                    <option value="month">Este mes</option>
+                </select>
+            </div>
+        </section>
+        
+        <div class="trips-grid">
+            @if (isLoading) {
+                <p class="empty-message">Cargando viajes...</p>
+            }
+            @if (!isLoading && paginatedTrips.length === 0) {
+                <img 
+                    src="./assets/images/trips-not-available.png" 
+                    alt="trips-not-available"
+                    class="empty-state-image" 
+                >
+                <p class="empty-message">No hay viajes disponibles en este momento.</p>
+            }
+            @if (!isLoading && paginatedTrips.length > 0) {
+                @for (trip of paginatedTrips; track trip.idTrip) { 
+                    <div class="trip-card">
+                        <div class="trip-image-container">
+                            <img 
+                                [src]="getCoverImage(trip)"
+                                [alt]="'Imagen principal del viaje: ' + trip.title" 
+                                [attr.title]="'Imagen principal del viaje: ' + trip.title" 
+                                class="trip-image"
+                            >                
+                        </div>
+                        <div class="trip-content">
+                            <h3 class="trip-title">{{ trip.title }}</h3>
+                            <p class="trip-time">
+                                {{ trip.startDate }} - {{ trip.endDate }}
+                            </p>
+                            <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>
+                        </div>
+                    </div>
                 }
             }
         </div>
-    </div>
-    <div class="hero-image">
-        <img src="assets\Famous-cityscape-view-of-St-Peters-basilica-in-Rome-at-sunset-Italy (1).jpg" alt="Music Trip" class="hero-img">
-    </div>
-</section>
-
-<section class="categories-carousel">
-    <div class="categories-content">
-        
-        <div class="carousel-container">
-
-            <div 
-                class="category-item" 
-                [class.active]="selectedCategory === 'Todos'"
-                (click)="onFilter('Todos')" 
-            >
-                <div class="icon-box">
-                    <svg viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter-icon all-icon">
-                        <path d="M4 8H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>                       
-                        <path d="M4 12H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>        
-                        <path d="M4 16H20" stroke="#F95596" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <span class="category-name">Todos</span>
-            </div>
-            
-            @for (category of tripCategories; track category.id_category) { 
-                <div 
-                    class="category-item" 
-                    [class.active]="selectedCategory === category.name"
-                    (click)="onFilter(category.name, category.id_category)" >
-                    <div class="icon-box">
-                        <img 
-                            [src]="'assets/' + category.photo" 
-                            [alt]="category.name + ' icon'" 
-                            class="filter-icon"
-                        />
-                    </div>
-                    <span class="category-name">{{ category.name }}</span>
-                </div>
-            }
-
-        </div>
-    </div>
-</section>
-
-
-
-    <section class="trips-section">
-
-        <section class="time-filter-section">
-                <div class="time-filter">
-                        <select title="filter-time" [(ngModel)]="selectedTimeFilter" (change)="onTimeFilterChange()">
-                        <option value="">Todos</option>
-                        <option value="soon">Más próximos</option>
-                        <option value="far">Más lejanos</option>
-                        <option value="week">Esta semana</option>
-                        <option value="month">Este mes</option>
-                        </select>
-                </div>
-        </section>
-        
-<div class="trips-grid">
-  @if (isLoading) {
-      <p class="empty-message">Cargando viajes...</p>
-  }
-  @if (!isLoading && paginatedTrips.length === 0) {
-                        <img 
-                        src="./assets/images/trips-not-available.png" 
-                        alt="trips-not-available"
-                        class="empty-state-image" 
-                    >
-      <p class="empty-message">No hay viajes disponibles en este momento.</p>
-  }
-  @if (!isLoading && paginatedTrips.length > 0) {
-      @for (trip of paginatedTrips; track trip.idTrip) { 
-          <div class="trip-card">
-              <div class="trip-image-container">
-                  <img 
-                      [src]="getCoverImage(trip)"
-                      [alt]="'Imagen principal del viaje: ' + trip.title" 
-                      [attr.title]="'Imagen principal del viaje: ' + trip.title" 
-                      class="trip-image"
-                  >                
-              </div>
-              <div class="trip-content">
-                  <h3 class="trip-title">{{ trip.title }}</h3>
-                  <p class="trip-time">
-                      {{ trip.startDate }} - {{ trip.endDate }}
-                  </p>
-                  <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>
-              </div>
-          </div>
-      }
-  }
-</div>
 
         @if (totalPages > 1) {
             <div class="pagination-controls">
                 <button 
                     class="page-btn nav-btn"
                     [disabled]="currentPage === 1"
-                    (click)="changePage(currentPage - 1)">
+                    (click)="changePage(currentPage - 1)"
+                >
                     &larr; Anterior
                 </button>
 
@@ -146,7 +136,8 @@
                     <button
                         class="page-btn"
                         [class.active]="page === currentPage"
-                        (click)="changePage(page)">
+                        (click)="changePage(page)"
+                    >
                         {{ page }}
                     </button>
                 }
@@ -154,12 +145,11 @@
                 <button 
                     class="page-btn nav-btn"
                     [disabled]="currentPage === totalPages"
-                    (click)="changePage(currentPage + 1)">
+                    (click)="changePage(currentPage + 1)"
+                >
                     Siguiente &rarr;
                 </button>
             </div>
         }
     </section>
-
-
 </div>

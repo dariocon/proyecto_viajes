@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { TripsService } from '../../../_services/trips.service';
 import { TripDto } from '../../../_interfaces/trip';
 import { AuthService } from '../../../_services/auth.service';
@@ -7,133 +7,111 @@ import { CommonModule } from '@angular/common';
 import { Categoria } from '../../../_interfaces/categoria';
 import { FormsModule } from '@angular/forms';
 
-
 @Component({
-  selector: 'app-trips-list',
-  imports: [RouterLink, CommonModule, FormsModule ],
-  templateUrl: './trips-list.component.html',
-  styleUrls: ['./trips-list.component.css']
+  selector: 'app-trips-list',
+  imports: [RouterLink, CommonModule, FormsModule],
+  templateUrl: './trips-list.component.html',
+  styleUrls: ['./trips-list.component.css']
 })
 export class TripsListComponent implements OnChanges, OnInit {
 
-  // Inputs de withComponentInputBinding()
-  @Input() term?: string;
-  @Input() category?: number;
+  // Inputs de withComponentInputBinding()
+  @Input() term?: string;
+  @Input() category?: number;
 
   tripCategories: Categoria[] = [];
-  selectedCategory: string = '';
-
-  isLoading: boolean = false;
-  filteredTrips: TripDto[] = [];
-  paginatedTrips: TripDto[] = [];
+  isLoading: boolean = false;
+  filteredTrips: TripDto[] = [];
+  paginatedTrips: TripDto[] = [];
   allTrips: TripDto[] = [];
-  itemsPerPage: number = 12;
-  currentPage: number = 1;
-
-  resetCategories = false;
-
+  itemsPerPage: number = 12;
+  currentPage: number = 1;
   selectedTimeFilter: string = '';
 
-  constructor(
-    private tripsService: TripsService,
-    public authService: AuthService,
-    private router: Router 
-  ) {}
+  constructor(
+    private tripsService: TripsService,
+    public authService: AuthService,
+    private router: Router 
+  ) {}
 
   ngOnInit(): void {
-      this.tripsService.getCategories().subscribe(cats => {
+    this.tripsService.getCategories().subscribe(cats => {
       this.tripCategories = cats;
       this.loadTrips();
-      this.syncCategoryState()
     });
-  }
+  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    /* solo funciona si uno de los dos cambian y no es la primera vez que se ejecutan. 
-       firstChange sirve para que al entrar en la página sin buscar, para ver todos los viajes, no se ejecute tanto
-       el loadTrips de ngOnInit como el de ngOnChanges.
-    */
-     /*if (changes['resetCategories'] && this.resetCategories) {
-        this.selectedCategory = '';
-      }*/
+  ngOnChanges(changes: SimpleChanges): void {
+    // Solo recarga cuando cambien los filtros y no sea la primera vez
     if ((changes['category'] && !changes['category'].firstChange) || 
-          (changes['term'] && !changes['term'].firstChange)) {
-            this.syncCategoryState();
-            this.loadTrips();
-    }
-  }
-  // método de actualización visual de la selección de categoría
-  syncCategoryState(): void {
-    if (this.resetCategories || this.term) {
-      // si hay búsqueda o reset está activo, deseleccionamos.
-      this.selectedCategory = ''; 
-    } else if (this.category && this.tripCategories.length > 0) {
-      // Si hay categoria en url
-      const selected = this.tripCategories.find(c => c.id_category == this.category); 
-      this.selectedCategory = selected ? selected.name : 'Todos'; 
-    } else {
-      // Por defecto (sin filtros) es Todos. Es decir, cuando se entra en /viajes a secas
-      this.selectedCategory = 'Todos';
+        (changes['term'] && !changes['term'].firstChange)) {
+      this.loadTrips();
     }
   }
 
-  
-  loadTrips(): void {
-    this.isLoading = true;
-    
-    const currentId = this.category; 
-    const currentTerm = this.term;
-    
-    const handleTrips = (trips: TripDto[] | null) => {
-      this.allTrips  = Array.isArray(trips) ? trips : [];
-      this.filteredTrips = [...this.allTrips]; 
-      this.currentPage = 1;
-      this.applyTimeFilter(); 
-      this.applyPagination();
-      this.isLoading = false;
-    };
-
-    const handleError = () => {
-        this.allTrips = [];
-        this.filteredTrips = []; 
-        this.currentPage = 1;
-        this.applyPagination(); 
-        this.isLoading = false; 
-    };
-
-    if (currentTerm) {
-      this.resetCategories = true;
-      this.tripsService.getTripsBySearchTerm(currentTerm)
-        .subscribe({ next: handleTrips, error: () => this.isLoading = false });
-    } else if (currentId) {
-    this.resetCategories = false;
-      this.tripsService.getTripByIdCategory(currentId)
-        .subscribe({ next: handleTrips, error: handleError });
-    } else {
-      this.resetCategories = false;
-      this.tripsService.getTripsAvailable()
-        .subscribe({ next: handleTrips, error: handleError });
-    }
-    
-  }
-
-// método que se dispara con cada click en una categoría
-  onFilter(categoryName: string, idCategory?: number): void {
-    //this.selectedCategory = categoryName; 
-    this.resetCategories = false;
-    // this.category = idCategory;
-   
-    // Navega (esto dispara ngOnChanges y loadTrips)
-    const queryParams: any = {};
-    if (idCategory && categoryName !== 'Todos') {
-      queryParams['category'] = idCategory;
+  // Método para saber si una categoría está seleccionada
+  isCategoryActive(categoryId?: number): boolean {
+    // Si hay término de búsqueda, ninguna categoría está activa
+    if (this.term){
+      return false;
+    }     
+    // Si no hay categoryId (botón "Todos")
+    if (!categoryId) {
+      return !this.category; // Activo si no hay categoría en URL
     }
-    this.router.navigate(['/viajes'], { queryParams}); 
+    
+    // Comparar con la categoría actual - convertir ambos a número
+    return Number(this.category) === Number(categoryId);
+  }
+
+  loadTrips(): void {
+    this.isLoading = true;
+
+    const handleTrips = (trips: TripDto[] | null) => {
+      this.allTrips = Array.isArray(trips) ? trips : [];
+      this.filteredTrips = [...this.allTrips];
+      this.currentPage = 1;
+      this.applyTimeFilter();
+      this.applyPagination();
+      this.isLoading = false;
+    };
+
+    const handleError = () => {
+      this.allTrips = [];
+      this.filteredTrips = [];
+      this.currentPage = 1;
+      this.applyPagination();
+      this.isLoading = false;
+    };
+
+    // Prioridad: 1) Búsqueda, 2) Categoría, 3) Todos
+    if (this.term) {
+      this.tripsService.getTripsBySearchTerm(this.term)
+        .subscribe({ next: handleTrips, error: handleError });
+    } else if (this.category) {
+      this.tripsService.getTripByIdCategory(this.category)
+        .subscribe({ next: handleTrips, error: handleError });
+    } else {
+      this.tripsService.getTripsAvailable()
+        .subscribe({ next: handleTrips, error: handleError });
+    }
+  }
+
+  // Método que se dispara con cada click en una categoría
+  onFilter(categoryId?: number): void {
+    const queryParams: any = {};
+    
+    if (categoryId) {
+      queryParams['category'] = categoryId;
+    }
+    // Si categoryId es undefined, navegamos a /viajes sin params (Todos)
+    
+    this.router.navigate(['/viajes'], { queryParams });
   }
 
   applyTimeFilter(): void {
     const now = new Date();
-    let trips = [...this.allTrips]; // filtramos siempre sobre todos los viajes
+    let trips = [...this.allTrips]; 
 
     if (this.selectedTimeFilter === 'soon') {
       trips.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
@@ -156,54 +134,53 @@ export class TripsListComponent implements OnChanges, OnInit {
     this.currentPage = 1;
     this.applyPagination();
   }
+
   onTimeFilterChange(): void {
     this.applyTimeFilter();
-    this.currentPage = 1;
-    this.applyPagination();
-}
+  }
 
-    getCoverImage(trip: TripDto): string {
-        const defaultImage = 'assets/images/default-trip.png';
+  getCoverImage(trip: TripDto): string {
+    const defaultImage = 'assets/images/default-trip.png';
 
-        if (!trip.images || trip.images.length === 0) {
-            return defaultImage;
-        }
-
-        // Buscamos la imagen marcada como portada
-        const coverImage = trip.images.find(image => image.isCover);
-        if (coverImage) {
-            return coverImage.imageUrl;
-        }
-
-        // Si no hay portada, usamos la primera imagen
-        if (trip.images.length > 0) {
-            return trip.images[0].imageUrl;
-        }
-
-        // sI no, imagen por defecto
-        return defaultImage;
+    if (!trip.images || trip.images.length === 0) {
+      return defaultImage;
     }
 
-  // métodos de paginación
+    // Buscamos la imagen marcada como portada
+    const coverImage = trip.images.find(image => image.isCover);
+    if (coverImage) {
+      return coverImage.imageUrl;
+    }
 
-  applyPagination(): void {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    this.paginatedTrips = this.filteredTrips.slice(start, start + this.itemsPerPage);
-  }
+    // Si no hay portada, usamos la primera imagen
+    if (trip.images.length > 0) {
+      return trip.images[0].imageUrl;
+    }
 
-  changePage(page: number): void {
-    if (page < 1 || page > this.totalPages) return;
-    this.currentPage = page;
-    this.applyPagination();
-    document.querySelector('.trips-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+    // Si no, imagen por defecto
+    return defaultImage;
+  }
 
-  get totalPages(): number {
-    return Math.ceil(this.filteredTrips.length / this.itemsPerPage);
-  }
 
-  getPageNumbers(): number[] {
-    return Array(this.totalPages).fill(0).map((_, i) => i + 1);
-  }
 
+  // Métodos de paginación
+  applyPagination(): void {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    this.paginatedTrips = this.filteredTrips.slice(start, start + this.itemsPerPage);
+  }
+
+  changePage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.applyPagination();
+    document.querySelector('.trips-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredTrips.length / this.itemsPerPage);
+  }
+
+  getPageNumbers(): number[] {
+    return Array(this.totalPages).fill(0).map((_, i) => i + 1);
+  }
 }
