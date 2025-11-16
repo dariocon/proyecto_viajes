@@ -121,15 +121,7 @@
                 }
             }
         </div>
-<div style="background: yellow; padding: 20px; margin: 20px; border: 2px solid red;">
-  <h3>DEBUG INFO:</h3>
-  <p><strong>totalPages:</strong> {{ totalPages }} (tipo: {{ totalPages | json }})</p>
-  <p><strong>totalPages > 1:</strong> {{ totalPages > 1 }}</p>
-  <p><strong>currentPage:</strong> {{ currentPage }}</p>
-  <p><strong>displayCurrentPage:</strong> {{ displayCurrentPage }}</p>
-  <p><strong>totalElements:</strong> {{ totalElements }}</p>
-  <p><strong>paginatedTrips.length:</strong> {{ paginatedTrips.length }}</p>
-</div>
+
         @if (totalPages > 1) {
             <div class="pagination-controls">
                 <button 
