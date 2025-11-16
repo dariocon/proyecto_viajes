@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { LoginResponse, ParticipationAdd, ParticipationDto, RegisterResponse, Token,User,UserEdit,UserLogin,UserLoginResponse, UserRegister, VerifiedResponse } from '../_interfaces/user';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Categoria } from '../_interfaces/categoria';
-import { TripAdd, TripDto } from '../_interfaces/trip';
+import { TripPageResponse, TripAdd, TripDto } from '../_interfaces/trip';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -33,13 +33,35 @@ getCategories(): Observable<Categoria[]> {
 getTrips(): Observable<TripDto[]> {
     return this.http.get<TripDto[]>(`${this.apiUrl}/viajes`);
 }
-
+/*
 getTripsAvailable(): Observable<TripDto[]> {
     return this.http.get<TripDto[]>(`${this.apiUrl}/viajes/available`);
-}
+}*/
+  getTripsAvailable(page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'ASC', timeFilter?: string): Observable<TripPageResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sortBy', sortBy)
+      .set('sortDir', sortDir);
 
- getTripByIdCategory(idCat: number): Observable<TripDto[]> {
-    return this.http.get<TripDto[]>(`${this.apiUrl}/viajes/filter/${idCat}`).pipe(
+    if (timeFilter) {
+      params = params.set('timeFilter', timeFilter);
+    }
+    
+    return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/available`, { params });
+  }
+  getTripByIdCategory(idCat: number, page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'ASC', timeFilter?: string): Observable<TripPageResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sortBy', sortBy)
+      .set('sortDir', sortDir);
+
+    if (timeFilter) {
+      params = params.set('timeFilter', timeFilter);
+    }
+    
+    return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/filter/${idCat}`, { params }).pipe(
       catchError(error => {
         console.error('Error al obtener los viajes:', error);
         return throwError(() => new Error('No se pudo cargar.'));
@@ -57,13 +79,16 @@ getTripsAvailable(): Observable<TripDto[]> {
   }
 
 
-getTripsBySearchTerm(term: string): Observable<TripDto[]> {
+  getTripsBySearchTerm(term: string, page: number = 0, size: number = 12, sortBy: string = 'title', sortDir: string = 'ASC'): Observable<TripPageResponse> {
+    const finalTerm = (term || '').trim();
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sortBy', sortBy)
+      .set('sortDir', sortDir);
+
     
-    // Si el término es nulo o vacío, lo convertimos a una cadena vacía ('').
-    // Esto construye una URL como '/viajes/search/' que el backend dinterpreta
-    // que debe trare todos los viajes.
-    const finalTerm = (term || '').trim(); 
-    return this.http.get<TripDto[]>(`${this.apiUrl}/viajes/search/${finalTerm}`).pipe(
+    return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/search/${finalTerm}`, { params }).pipe(
       catchError(error => {
         console.error(`Error al buscar viajes por término "${finalTerm}":`, error);
         return throwError(() => new Error('No se pudo cargar la búsqueda.'));
@@ -130,7 +155,7 @@ deleteParticipation(idTrip: number, username: string, participationDate: string)
   getTripParticipationsByUser(targetUsername?: string): Observable<any> {
     let url = `${this.apiUrl}/viajes/mis-viajes-participados`;
     if (targetUsername) {
-      url += `?username=${targetUsername}`;
+      url += `?targetUsername=${targetUsername}`;
     }
     return this.http.get<any>(url).pipe(
       catchError(error => {

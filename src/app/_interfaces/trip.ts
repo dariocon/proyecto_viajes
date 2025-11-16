@@ -34,4 +34,12 @@ export interface TripDto {
   participations: any[]
 }
 
-
+export interface TripPageResponse {
+  content: TripDto[];
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
+}
