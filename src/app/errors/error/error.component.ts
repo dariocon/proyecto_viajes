@@ -15,15 +15,15 @@ errorType: 'not-found' | 'forbidden' | null = null;
 ngOnInit(): void {
     this.route.data.subscribe(data => {
       
-      // 💡 Asignación y casting: Solo acepta los tipos definidos.
+      // solo acepta estos tipos
       this.errorType = data['error'] as 'not-found' | 'forbidden';
       
-      // 💡 Valor por defecto: Si data['error'] es undefined o null, usamos 'not-found'.
+      // Valor por defecto
       if (!this.errorType) {
         this.errorType = 'not-found'; 
       }
       
-      console.log('Error Page Component initialized with type:', this.errorType);
+      console.log('Error:', this.errorType);
     });
   }
 }
