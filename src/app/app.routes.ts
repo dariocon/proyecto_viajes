@@ -4,7 +4,7 @@ import { loginGuard } from './shared/guards/login.guard';
 import { RegisterComponent } from './auth/register/register.component';
 import { UserComponent } from './profile-data/user/user.component';
 import { HomeComponent } from './home/home/home.component';
-import { usernameGuard } from './shared/guards/username.guard';
+import { editGuard } from './shared/guards/edit-guard.guard';
 import { FormTripComponent } from './trips/pages/form-trip/form-trip.component';
 import { MyTripsListComponent } from './trips/pages/my-trips-list/my-trips-list.component';
 import { TripsListComponent } from './trips/pages/trips-list/trips-list.component';
@@ -20,18 +20,27 @@ export const routes: Routes = [
     { path:'', component: HomeComponent },
     { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [loggedGuard] },
-    { path: 'usuarios/:username', component: UserComponent, canMatch: [loginGuard], canActivate: [usernameGuard]},
+    { path: 'usuarios/:username', component: UserComponent, canMatch: [loginGuard], canActivate: [editGuard]},
     { path: 'create-trip', component: FormTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
-    { path: 'viajes/edit/:id', component: FormTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
+    
+    { path: 'viajes/edit/:id/:username', 
+    component: FormTripComponent, 
+    canMatch: [loginGuard, roleGuard], 
+    canActivate: [editGuard], 
+    data: { roles: ['organizer', 'admin'] } 
+    },    
     { path: 'mis-viajes', component: MyTripsListComponent, canMatch: [loginGuard] },
-    { path: 'viajes', component: TripsListComponent,
-  runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
+    { path: 'viajes', component: TripsListComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
     { path: 'viajes/:id', component: TripDetailComponent },
-    { path: 'viajes/participants/:id', component: TripParticipantsComponent },
+    { path: 'viajes/participants/:id', component: TripParticipantsComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
     { path: 'confirm', component: VerifyComponent },
     { path: 'notifications', component: NotificationComponent, canMatch: [loginGuard] }, 
 
-    { path: '**', component: ErrorComponent }
+    { path: 'not-found', component: ErrorComponent, data: { error: 'not-found' } },
+    { path: 'forbidden', component: ErrorComponent, data: { error: 'forbidden' } },
+    
+    //{ path: 'unauthorized', component: ErrorComponent, data: { error: 'unauthorized' } },
+    { path: '**', redirectTo: '/not-found' }
 
 
 

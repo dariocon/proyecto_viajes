@@ -3,7 +3,7 @@ import { TripDto } from '../../../_interfaces/trip';
 import { TripsService } from '../../../_services/trips.service';
 import { AuthService } from '../../../_services/auth.service';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 })
 export class MyTripsListComponent implements OnInit{
   private authService: AuthService = inject(AuthService);
+  private router: Router = inject(Router);
   constructor(private tripsService: TripsService) { }
  /* filterGroups = [
     {
@@ -234,9 +235,28 @@ ngOnInit(): void {
     return group === 'Creados' && trip.organizerUsername === this.currentUserId;
   }
 
-  editTrip(tripId: number): void {
-    console.log(`Navegando a edición del viaje ID: ${tripId}`);
-  }
+  canEditTrip(trip: TripDto): boolean {
+    const now = new Date();
+    const start = new Date(trip.startDate);
+    // solo editable si aún no comienza
+    return start.getTime() > now.getTime();
+}
+
+
+editTrip(trip: TripDto): void {
+    if (!this.canEditTrip(trip)) {
+        Swal.fire({
+            title: 'Edición no permitida',
+            text: 'Este viaje ya comenzó o terminó, por lo que no puede modificarse.',
+            icon: 'info',
+            confirmButtonText: 'Entendido'
+        });
+        return;
+    }
+
+    this.router.navigate(['/viajes/edit', trip.idTrip, this.authService.username]);
+}
+
 
 deleteTrip(trip: TripDto): void {
  

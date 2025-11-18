@@ -57,6 +57,16 @@ export class FormTripComponent implements OnInit {
                 this.trip=tripResponse
                 this.currentParticipantsCount = this.trip.participations?.length || 0;
 
+                if (!this.isTripEditable(this.trip)) {
+                        Swal.fire({
+                            title: 'Edición no permitida',
+                            text: 'Este viaje ya comenzó o terminó, por lo que no puede modificarse.',
+                            icon: 'info',
+                            confirmButtonText: 'Entendido'
+                        }).then(() => this.router.navigate(['/viajes', this.id]));
+                        return;
+                }
+
                 if (this.trip.images) {
                         this.existingImages = this.trip.images.map(img => ({ // Serán las imágenes ya existentes del viaje
                             imageUrl: img.imageUrl,
@@ -243,6 +253,13 @@ export class FormTripComponent implements OnInit {
 
         const startDate = new Date(startControl.value);
         const endDate = new Date(endControl.value);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (startDate < today || endDate < today) {
+        return { fechaPasada: true };
+        }
         
         if (startDate > endDate) {
           return { fechaInvalida: true }; 
@@ -472,5 +489,12 @@ export class FormTripComponent implements OnInit {
           this.createTripForm.markAllAsTouched();
         }
     }
+
+    private isTripEditable(trip: TripDto): boolean {
+        const now = new Date();
+        const start = new Date(trip.startDate);
+        return start.getTime() > now.getTime();
+    }
+
 
 }

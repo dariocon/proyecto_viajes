@@ -13,7 +13,7 @@ export const roleGuard: CanActivateFn = (route, state) => {
   if (allowedRoles.includes(role)) {
     return true; 
   }else {
-     router.navigateByUrl('');
+     router.navigateByUrl('/forbidden');
     return false;
   }
 };

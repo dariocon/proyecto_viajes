@@ -63,15 +63,41 @@ setRole(role: string) {
   this.roleSubject.next(role);
 }
 
-private saveTokens(accessToken: string, refreshToken: string) {
-  localStorage.setItem('accessToken', accessToken.replace(/^Bearer\s/, ''));
-  localStorage.setItem('refreshToken', refreshToken.replace(/^Bearer\s/, ''));
-    const tokenInfo = this.getDecodedAccessToken(accessToken);
-    if (tokenInfo) {
-        this._username = tokenInfo.username;
-        localStorage.setItem('username', tokenInfo.username);
-        this.isLoggedSignal.set(true);
+get refreshing$() {
+  return this.isRefreshing.asObservable();
+}
+
+get refreshToken$() {
+  return this.refreshTokenSubject.asObservable();
+}
+
+setRefreshing(value: boolean) {
+  this.isRefreshing.next(value);
+}
+
+setRefreshToken(token: string | null) {
+  this.refreshTokenSubject.next(token);
+}
+
+
+
+private saveTokens(accessToken: string, refreshToken: string): void {
+  // Quitar "Bearer " de forma más agresiva (puede venir con mayúsculas/minúsculas)
+  const cleanAccessToken = accessToken.trim().replace(/^Bearer\s*/gi, '');
+  const cleanRefreshToken = refreshToken.trim().replace(/^Bearer\s*/gi, '');
+    
+  localStorage.setItem('accessToken', cleanAccessToken);
+  localStorage.setItem('refreshToken', cleanRefreshToken);
+  
+  const tokenInfo = this.getDecodedAccessToken(cleanAccessToken);
+  if (tokenInfo) {
+    this._username = tokenInfo.username;
+    localStorage.setItem('username', tokenInfo.username);
+    this.isLoggedSignal.set(true);
+    if (tokenInfo?.role) {
+      this.roleSubject.next(tokenInfo.role);
     }
+  }
 }
 
 

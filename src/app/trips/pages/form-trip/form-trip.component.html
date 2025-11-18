@@ -76,6 +76,12 @@
                         @if (createTripForm.get('startDate')?.invalid && createTripForm.get('startDate')?.touched) {
                             <div class="text-red-600 text-sm input-error-message">La fecha de inicio es obligatoria.</div>
                         }
+                        @if (createTripForm.errors?.['fechaPasada'] && createTripForm.get('startDate')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">
+                                La fecha no puede ser anterior a hoy.
+                            </div>
+                        }
+
                     </div>
 
                     <div class="input-group">
@@ -86,6 +92,13 @@
                         @if (createTripForm.get('endDate')?.invalid && createTripForm.get('endDate')?.touched) {
                             <div class="text-red-600 text-sm input-error-message">La fecha de fin es obligatoria.</div>
                         }
+
+                        @if (createTripForm.errors?.['fechaPasada'] && createTripForm.get('startDate')?.touched) {
+                            <div class="text-red-600 text-sm input-error-message">
+                                La fecha no puede ser anterior a hoy.
+                            </div>
+                        }
+
 
                         @if (createTripForm.errors?.['fechaInvalida'] && createTripForm.get('endDate')?.touched) {
                             <div class="text-red-600 text-sm input-error-message">La fecha de fin debe ser posterior o igual a la de inicio.</div>

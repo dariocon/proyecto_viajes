@@ -1,5 +1,6 @@
+/*404*/
 
-.error-container {
+.not-found-container {
     position: relative; 
     width: 100%;
     min-height: 89vh; 
@@ -9,7 +10,7 @@
 }
 
 
-.error-content {
+.not-found-content {
     position: absolute; 
     top: 0;
     left: 0;
@@ -24,7 +25,7 @@
 }
 
 
-.error-image {
+.not-found-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -36,7 +37,7 @@
 
 
 
-.error-overlay-content {
+.not-found-overlay-content {
 position: absolute; 
     bottom: 20px; 
     left: 49%; 
@@ -67,3 +68,119 @@ position: absolute;
     transition: background-color 0.3s ease;
 }
 
+
+
+/*403*/
+
+
+.error-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: white; 
+    padding: 0 20px 20px 20px;
+    display: grid;
+    grid-template-columns: 5fr 7fr; 
+    align-items: center; /* Cambiado a 'center' para una mejor alineación vertical de los paneles */
+    gap: 30px; 
+    padding-top: 0px; 
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.error-text-panel {
+    text-align: left;
+    padding-left: 50px; 
+    margin-top: 0; /* Eliminamos el margen superior si ahora alineamos al centro y ajustamos la altura de la imagen */
+}
+
+.error-status {
+    font-size: 80px; 
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #F95596, #FE7079); 
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.error-message-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 10px;
+}
+
+.error-description {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 30px;
+    max-width: 90%; 
+}
+
+.go-back-link {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(to right, #F95596, #FE7079);
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.go-back-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(249, 85, 150, 0.3);
+}
+
+.error-image-panel {
+    display: flex;
+    justify-content: center; 
+    align-items: center; /* Centramos verticalmente la imagen dentro de su panel */
+    padding: 0;
+    margin-top: 0; /* Eliminamos el margen negativo para que la imagen se ajuste a la nueva altura */
+    height: 100%; /* Aseguramos que el panel de la imagen ocupe la altura disponible */
+}
+
+.error-illustration {
+    max-width: 100%;
+    /* --- MODIFICADO: Ajustamos la altura del SVG --- */
+    height: 480px; /* Puedes ajustar este valor (ej: 300px, 400px) para que coincida con la altura del texto. */
+    width: auto; /* Mantenemos el ancho automático para conservar la proporción */
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .error-container {
+        grid-template-columns: 1fr;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .error-text-panel {
+        padding-left: 0;
+        margin-top: 0; 
+    }
+    
+    .error-description {
+        margin: 0 auto 30px auto;
+        max-width: 100%;
+    }
+    
+    .error-text-panel h1,
+    .error-text-panel p {
+        text-align: center;
+    }
+    
+    .error-image-panel {
+        align-items: center; /* Centramos también en móviles */
+    }
+
+    .error-illustration {
+        height: auto; /* Restauramos la altura automática en móviles si es necesario */
+        max-height: 250px; /* Podrías limitar la altura máxima en móviles */
+    }
+}

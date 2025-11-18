@@ -13,29 +13,35 @@
                 </tr>
             </thead>
             <tbody>
-                @for (p of participations; track p.username; let i = $index) {
-                    <tr class="data-row">
-                        <td class="data-cell hash-cell">{{ i + 1 }}</td>
-                        <td class="data-cell username-cell">
-                            {{ p.username }}
-                        </td>
-                        <td class="data-cell date-cell">
-                            {{ p.participationDate }}
-                        </td>
-                        <td class="data-cell actions-cell">
-                            <button 
-                                (click)="openNotificationForm(p.username)"
-                                class="btn-notify"
-                                title="Enviar Notificación a {{ p.username }}"
-                            >
-                                Notificar
-                            </button>
-                        </td>
-                    </tr>
-                } 
-                @empty {
-                    <tr class="empty-row">
-                        <td colspan="4" class="empty-message">Aún no hay participantes en este viaje.</td>
+                @if (!loading) {
+                    @for (p of participations; track p.username; let i = $index) {
+                        <tr class="data-row">
+                            <td class="data-cell hash-cell">{{ i + 1 }}</td>
+                            <td class="data-cell username-cell">
+                                {{ p.username }}
+                            </td>
+                            <td class="data-cell date-cell">
+                                {{ p.participationDate }}
+                            </td>
+                            <td class="data-cell actions-cell">
+                                <button 
+                                    (click)="openNotificationForm(p.username)"
+                                    class="btn-notify"
+                                    title="Enviar Notificación a {{ p.username }}"
+                                >
+                                    Notificar
+                                </button>
+                            </td>
+                        </tr>
+                    } 
+                    @empty {
+                        <tr class="empty-row">
+                            <td colspan="4" class="empty-message">Aún no hay participantes en este viaje.</td>
+                        </tr>
+                    }
+                } @else {
+                    <tr>
+                        <td colspan="4" class="empty-message">Cargando...</td>
                     </tr>
                 }
             </tbody>

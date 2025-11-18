@@ -23,15 +23,17 @@ export class TripParticipantsComponent implements OnInit {
     private notificationService: NotificationService = inject(NotificationService);
     private router: Router = inject(Router);
 
-
+    loading = true;
     participations: ParticipationDto[]= []
 
     ngOnInit(): void {
     this.tripsService.getTripParticipationsByTrip(this.id).subscribe({
               next: (participations: ParticipationDto[]) => {
                     this.participations= participations
+                    this.loading = false;
               },
               error: (err) => {
+                this.loading = false;
                 Swal.fire({
                   title: "Error al obtener los participantes",
                   text: err?.error.message || "No se han podido obtener los participantes.",

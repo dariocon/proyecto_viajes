@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, HostBinding } from '@an
 import { NotificationService } from '../../_services/notification.service';
 import { Notifications } from '../../_interfaces/notification';
 import { NgClass, NgStyle } from '@angular/common';
-
+import { interval, tap } from 'rxjs';
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
@@ -18,6 +18,11 @@ export class NotificationComponent implements OnInit {
   ngOnInit(): void {
     this.notificationService.notifications$.subscribe(nots => this.notifications = nots);
     this.notificationService.refreshNotifications();
+      interval(5000)
+      .pipe(
+        tap(() => this.notificationService.refreshNotifications())
+      )
+      .subscribe();
   }
 
 markAsRead(notification: Notifications) {
