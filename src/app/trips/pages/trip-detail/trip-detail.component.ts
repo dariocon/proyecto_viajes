@@ -5,7 +5,7 @@ import { TripsService } from '../../../_services/trips.service';
 import Swal from 'sweetalert2';
 import { RouterLink } from '@angular/router';
 import { Categoria } from '../../../_interfaces/categoria';
-import { switchMap, tap } from 'rxjs';
+import { switchMap, tap, of } from 'rxjs'; // <--- AÑADIDO 'of'
 import { DatePipe, registerLocaleData, CommonModule } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { ParticipationAdd } from '../../../_interfaces/user';
@@ -17,7 +17,6 @@ registerLocaleData(localeEs, 'es');
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.css',
   providers: [
-    
     { provide: LOCALE_ID, useValue: 'es' } 
   ],
 })
@@ -26,7 +25,8 @@ export class TripDetailComponent implements OnInit, OnDestroy {
   constructor(public authService: AuthService, private tripsService: TripsService) {}
 
   @Input() id!: number;
-  trip?: TripDto;
+  @Input() trip?: TripDto; 
+
   categoryName?: String;
   currentImageIndex: number = 0;
   hasParticipated: boolean | null = null;
@@ -38,22 +38,24 @@ export class TripDetailComponent implements OnInit, OnDestroy {
       if (this.authService.isLogged()) {
           this.hasParticipated = null; 
       } else {
-          this.hasParticipated = false; // No está logueado, no participa. El estado es definitivo.
+          this.hasParticipated = false;
       }
+     
+      /* Si 'this.trip' ya tiene datos del Resolver, usamos 'of(this.trip)' para que sea instantáneo.
+       Si no, usamos la llamada original al servicio.*/
+      const tripSource$ = this.trip 
+          ? of(this.trip) 
+          : this.tripsService.getTripById(this.id);
 
-      this.tripsService.getTripById(this.id).pipe(
+      tripSource$.pipe(
         switchMap((trip: TripDto) => {
           this.trip = trip;
           
           if (this.trip.images && this.trip.images.length > 0) {
-                // Buscamos el índice de la imagen donde isCover=true. 
                 const coverIndex = this.trip.images.findIndex(image => image.isCover);
-                
-                // Si se encuentra una portada, actualizamos el índice actual.
                 if (coverIndex !== -1) {
                     this.currentImageIndex = coverIndex;
                 }
-                // Si no se encuentra, currentImageIndex se mantiene en 0, es decir, la primera imagen 
             }
             
           if (this.authService.isLogged()) { 
@@ -89,18 +91,17 @@ export class TripDetailComponent implements OnInit, OnDestroy {
         }
       });
     }
-  ngOnDestroy(): void {
-          // Al asignar una cadena vacía (''), Angular y el navegador restaurarán el estilo definido en styles.css (blanco).
-          document.body.style.backgroundColor = ''; 
-      }
 
-onSubmit(): void {
+  ngOnDestroy(): void {
+      document.body.style.backgroundColor = ''; 
+  }
+
+  onSubmit(): void {
     const participation: ParticipationAdd = {
       idTrip: this.id,
       username: this.authService.username
     }
 
-    // Confirmación 
     Swal.fire({
       title: '¿Deseas unirte a este viaje?',
       text: 'Confirma si quieres reservar tu plaza.',
@@ -129,29 +130,26 @@ onSubmit(): void {
                       confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
                     }).then(() => {
                           this.hasParticipated = true;
-
-                          // cambiamos visualmente el número de plazas disponibles tras reservar
-                            if (this.trip?.participations && response) {
-                              this.trip.participations.push(response); 
-                              this.participationDate = response.participationDate;
-                            }
+                          if (this.trip?.participations && response) {
+                            this.trip.participations.push(response); 
+                            this.participationDate = response.participationDate;
+                          }
                         });
              },
-              error: error => Swal.fire({
-                  title: '¡Error!',
-                  text: error?.error.message,
-                  icon: 'error',
-                  confirmButtonText: 'Aceptar',
-                  background: 'linear-gradient(135deg, #F95596, #FE7079)', 
-                  color: 'white',
-                  iconColor: 'white',
-                  confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
-                })
+             error: error => Swal.fire({
+                 title: '¡Error!',
+                 text: error?.error.message,
+                 icon: 'error',
+                 confirmButtonText: 'Aceptar',
+                 background: 'linear-gradient(135deg, #F95596, #FE7079)', 
+                 color: 'white',
+                 iconColor: 'white',
+                 confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
+               })
           });
       }
     });
-}
-
+  }
 
   nextSlide(): void {
     if (this.trip && this.trip.images && this.trip.images.length > 1) {
@@ -161,7 +159,6 @@ onSubmit(): void {
 
   prevSlide(): void {
     if (this.trip && this.trip.images && this.trip.images.length > 1) {
-      // SE calcula el índice anterior de forma circular
       this.currentImageIndex = (this.currentImageIndex - 1 + this.trip.images.length) % this.trip.images.length;
     }
   }
@@ -181,8 +178,6 @@ onSubmit(): void {
             confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
         }).then((result) => {
             if (result.isConfirmed) {
-                
-                
                 this.tripsService.deleteParticipation(this.id, this.authService.username, this.participationDate!).subscribe({
                     next: (deletedParticipation) => {
                         Swal.fire({
@@ -199,45 +194,39 @@ onSubmit(): void {
                             this.trip.participations = this.trip.participations.filter(
                               p => p.username !== this.authService.username
                             );
-                          } // cambiamos visualmente el número de plazas disponibles tras cancelar
+                          } 
 
                     },
                         error: error => {
-                        Swal.fire({
-                            title: '¡Error!',
-                            text: error?.error?.message || 'No se pudo cancelar la participación.',
-                            icon: 'error',
-                            confirmButtonText: 'Aceptar',
-                            background: 'linear-gradient(135deg, #F95596, #FE7079)',
-                            color: 'white',
-                            iconColor: 'white',
-                            confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: error?.error?.message || 'No se pudo cancelar la participación.',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar',
+                            background: 'linear-gradient(135deg, #F95596, #FE7079)',
+                            color: 'white',
+                            iconColor: 'white',
+                            confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
                     });
-                    }
-                });
-            }
-        });
-    }
+                    }
+                });
+            }
+        });
+    }
 
   isTripInThePast(): boolean {
     if (!this.trip?.startDate) {
       return false;
     }
-
     const startDate = new Date(this.trip.startDate);
     const now = new Date();
-    
     return startDate.getTime() <= now.getTime();
-}
+  }
 
-getNumberOfDays(): number {
-  // Retorna 0 si las fechas no están definidas
-  if (!this.trip?.startDate || !this.trip?.endDate) return 0; 
-
-  const msPerDay = 86400000;
-  const days = Math.floor((new Date(this.trip.endDate).getTime() - new Date(this.trip.startDate).getTime()) / msPerDay) + 1;
-
-  return days > 0 ? days : 0;
-}
-
+  getNumberOfDays(): number {
+    if (!this.trip?.startDate || !this.trip?.endDate) return 0; 
+    const msPerDay = 86400000;
+    const days = Math.floor((new Date(this.trip.endDate).getTime() - new Date(this.trip.startDate).getTime()) / msPerDay) + 1;
+    return days > 0 ? days : 0;
+  }
 }

@@ -15,6 +15,7 @@ import { ErrorComponent } from './errors/error/error.component';
 import { TripDetailComponent } from './trips/pages/trip-detail/trip-detail.component';
 import { TripParticipantsComponent } from './trips/pages/trip-participants/trip-participants.component';
 import { NotificationComponent } from './profile-data/notification/notification.component';
+import { tripResolver } from './trips/pages/trip-detail/trip.resolver';
 export const routes: Routes = [
 
     { path:'', component: HomeComponent },
@@ -31,7 +32,7 @@ export const routes: Routes = [
     },    
     { path: 'mis-viajes', component: MyTripsListComponent, canMatch: [loginGuard] },
     { path: 'viajes', component: TripsListComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
-    { path: 'viajes/:id', component: TripDetailComponent },
+    { path: 'viajes/:id', component: TripDetailComponent, resolve: { trip: tripResolver } },
     { path: 'viajes/participants/:id', component: TripParticipantsComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
     { path: 'confirm', component: VerifyComponent },
     { path: 'notifications', component: NotificationComponent, canMatch: [loginGuard] }, 

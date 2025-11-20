@@ -70,6 +70,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
           }),
           catchError((refreshError) => {
             // Si el refresh falla (refresh token inválido o expirado), forzar logout
+            console.error('Refresh token falló:', refreshError);
             isRefreshing = false;
             authService.logout();
             router.navigate(['/login']);

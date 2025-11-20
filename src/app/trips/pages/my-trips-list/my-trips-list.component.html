@@ -19,7 +19,6 @@
   }
 </div>
 
-
         <section class="trips-section">
             <div class="trips-header">
                 <div class="search-bar">
@@ -31,16 +30,6 @@
                     class="search-input">
                 </div>
                 <h2 class="trips-title">Mis viajes</h2>
-
-                
-                @if (filteredTrips.length > 0) {
-                   <!--  <div class="view-all">
-                       <span>Ver todos</span>
-                        <svg class="chevron-right" width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 1L8 8L1 15" stroke="#545F71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                    </div>-->
-                }
             </div>
 
             <div class="trips-grid">
@@ -49,96 +38,88 @@
                 }
 
                 @if (!isLoading) {
-                @for (trip of paginatedTrips; track trip.idTrip) { 
-                    
-                    <div class="trip-card">
-                        <div class="trip-image-container">
-                            <img 
-                                [src]="getCoverImage(trip)"
-                                [alt]="'Imagen principal del viaje: ' + trip.title" 
-                                [attr.title]="'Imagen principal del viaje: ' + trip.title" 
-                                class="trip-image"
-                            >
-                        </div>
-                        <div class="trip-content">
-                            <h3 class="trip-title">{{ trip.title }}</h3>
-                            <p class="trip-time">
-                                {{ trip.startDate }} - {{ trip.endDate }}
-                            </p>
-                            
-                              
-                            @if (isTripCreatable(trip)) {
-                                <div class="trip-management-actions">
-                                  <button class="view-trip-btn icon-button" [routerLink]="['/viajes/', trip.idTrip]">
-                                    <span class="icon-vision"></span>
-                                  </button>
-                                    <button 
-                                        class="edit-btn icon-button" 
-                                        (click)="editTrip(trip)">
-                                        <span class="icon-edit"></span>
+                    @for (trip of paginatedTrips; track trip.idTrip) { 
+                        <div class="trip-card" [style]="'view-transition-name: trip-card-' + trip.idTrip">
+                            <div class="trip-image-container" [style]="'view-transition-name: trip-img-' + trip.idTrip">
+                                <img 
+                                    [src]="getCoverImage(trip)"
+                                    [alt]="'Imagen principal del viaje: ' + trip.title" 
+                                    [attr.title]="'Imagen principal del viaje: ' + trip.title" 
+                                    class="trip-image"
+                                    
+                                >
+                            </div>
+                            <div class="trip-content">
+                                <h3 class="trip-title">{{ trip.title }}</h3>
+                                <p class="trip-time">
+                                    {{ trip.startDate }} - {{ trip.endDate }}
+                                </p>
+                                
+                                @if (isTripCreatable(trip)) {
+                                    <div class="trip-management-actions">
+                                      <button class="view-trip-btn icon-button" [routerLink]="['/viajes/', trip.idTrip]">
+                                        <span class="icon-vision"></span>
+                                      </button>
+                                        <button 
+                                            class="edit-btn icon-button" 
+                                            (click)="editTrip(trip)">
+                                            <span class="icon-edit"></span>
+                                        </button>
                                         
-                                    </button>
-
-                                    
-                                    <button 
-                                        class="delete-trip-button icon-button" 
-                                        (click)="deleteTrip(trip)">
-                                        <span class="icon-delete"></span>
-                                    </button>
-
-                                                                        
-                                    <button 
-                                        class="participants-btn"
-                                        [routerLink]="['/viajes/participants', trip.idTrip]">
-                                        <span class="icon-participants"></span>
-                                    </button> 
-                                    
-                                </div>
-                           }@else {
-                            <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>
-                           }
+                                        <button 
+                                            class="delete-trip-button icon-button" 
+                                            (click)="deleteTrip(trip)">
+                                            <span class="icon-delete"></span>
+                                        </button>
+                                                                            
+                                        <button 
+                                            class="participants-btn"
+                                            [routerLink]="['/viajes/participants', trip.idTrip]">
+                                            <span class="icon-participants"></span>
+                                        </button> 
+                                    </div>
+                               } @else {
+                                    <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>
+                               }
+                            </div>
                         </div>
-                    </div>
-                } 
-                @empty {
-                    <img 
-                        src="assets/trips-not-available.png" 
-                        alt="trips-not-available"
-                        class="empty-state-image" 
-                    >
-                    <p class="empty-message">No hay viajes disponibles en este momento.</p>
+                    } @empty {
+                        <img 
+                            src="assets/trips-not-available.png" 
+                            alt="trips-not-available"
+                            class="empty-state-image" 
+                        >
+                        <p class="empty-message">No hay viajes disponibles en este momento.</p>
+                    }
                 }
-                }
-                
-
             </div>
             
-      @if (totalPages > 1) {
-        <div class="pagination-controls">
-          <button
-            class="page-btn nav-btn"
-            [disabled]="currentPage === 1"
-            (click)="changePage(currentPage - 1)">
-            &larr; Anterior
-          </button>
+            @if (totalPages > 1) {
+                <div class="pagination-controls">
+                  <button
+                    class="page-btn nav-btn"
+                    [disabled]="displayCurrentPage === 1"
+                    (click)="changePage(displayCurrentPage - 1)">
+                    &larr; Anterior
+                  </button>
 
-          @for (page of getPageNumbers(); track page) {
-            <button
-              class="page-btn"
-              [class.active]="page === currentPage"
-              (click)="changePage(page)">
-              {{ page }}
-            </button>
-          }
+                  @for (page of getPageNumbers(); track page) {
+                    <button
+                      class="page-btn"
+                      [class.active]="page === displayCurrentPage"
+                      (click)="changePage(page)">
+                      {{ page }}
+                    </button>
+                  }
 
-          <button
-            class="page-btn nav-btn"
-            [disabled]="currentPage === totalPages"
-            (click)="changePage(currentPage + 1)">
-            Siguiente &rarr;
-          </button>
-        </div>
-      }
+                  <button
+                    class="page-btn nav-btn"
+                    [disabled]="displayCurrentPage === totalPages"
+                    (click)="changePage(displayCurrentPage + 1)">
+                    Siguiente &rarr;
+                  </button>
+                </div>
+            }
         </section>
     </div>
 </div>

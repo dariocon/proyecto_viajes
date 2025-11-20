@@ -20,13 +20,16 @@
                             
                             @if (trip.images.length > 0) {
                                 @for (image of trip.images; track $index) {
-                                    <div class="carousel-slide-content">
+                                    <div class="carousel-slide-content" [style.view-transition-name]="($index === currentImageIndex) ? 'trip-img-' + trip.idTrip : null">
                                         <img 
                                             [src]="image.imageUrl" 
                                             alt="Imagen del Viaje {{ $index + 1 }}" 
-                                            class="trip-main-image">
+                                            class="trip-main-image"
+                                            
+                                            >
                                     </div>
-                                }
+                                }                                            <!--[style.view-transition-name]="($index === currentImageIndex) ? 'trip-img-' + trip.idTrip : null"-->
+
                             } @else {
                                 <div class="carousel-slide-content">
                                     <img 

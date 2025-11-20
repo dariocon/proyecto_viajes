@@ -69,14 +69,19 @@ getTripsAvailable(): Observable<TripDto[]> {
     );
   }
 
-   getTripsByOrganizer(organizer: string): Observable<TripDto[]> {
-    return this.http.get<TripDto[]>(`${this.apiUrl}/viajes/organizer/${organizer}`).pipe(
-      catchError(error => {
-        console.error('Error al obtener los viajes:', error);
-        return throwError(() => new Error('No se pudo cargar.'));
-      })
-    );
+getTripsByOrganizer(organizer: string, page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'DESC', timeFilter?: string): Observable<TripPageResponse> {
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
+  
+  if (timeFilter) {
+    params = params.set('timeFilter', timeFilter);
   }
+  
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/organizer/${organizer}`, { params });
+}
 
 
   getTripsBySearchTerm(term: string, page: number = 0, size: number = 12, sortBy: string = 'title', sortDir: string = 'ASC'): Observable<TripPageResponse> {
@@ -144,26 +149,67 @@ deleteParticipation(idTrip: number, username: string, participationDate: string)
     );
   }
   
-  searchMyTrips(term: string, type: string): Observable<TripDto[]> {
+ /* searchMyTrips(term: string, type: string): Observable<TripDto[]> {
   const finalTerm = (term || '').trim();
   return this.http.get<TripDto[]>(
     `${this.apiUrl}/viajes/mis-viajes/buscar?termino=${encodeURIComponent(finalTerm)}&tipo=${encodeURIComponent(type)}`
   );
+  }*/
+searchMyTripsPaginated(
+  term: string, 
+  type: string, 
+  timeFilter?: string,
+  page: number = 0, 
+  size: number = 12, 
+  sortBy: string = 'startDate', 
+  sortDir: string = 'DESC'
+): Observable<TripPageResponse> {
+  let params = new HttpParams()
+    .set('termino', term)
+    .set('tipo', type)
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
+
+  if (timeFilter) {
+    params = params.set('timeFilter', timeFilter);
   }
 
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/mis-viajes/buscar`, { params }).pipe(
+    catchError(error => {
+      console.error('Error al buscar viajes paginados:', error);
+      return throwError(() => new Error('No se pudo realizar la búsqueda de viajes.'));
+    })
+  );
+}
+
+
   //El objetivo de este método es usarlo tanto en mytrips como en un ver participaciones de x user por parte de un admin.
-  getTripParticipationsByUser(targetUsername?: string): Observable<any> {
-    let url = `${this.apiUrl}/viajes/mis-viajes-participados`;
-    if (targetUsername) {
-      url += `?targetUsername=${targetUsername}`;
-    }
-    return this.http.get<any>(url).pipe(
-      catchError(error => {
-        console.error('Error al obtener la lista de viajes en los que ha participado:', error);
-        return throwError(() => new Error('No se pudo cargar la lista de viajes en los que participa.'));
-      })
-    );
+getTripParticipationsByUser(targetUsername?: string, page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'DESC', timeFilter?: string): Observable<TripPageResponse> {
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
+  
+  if (targetUsername) {
+    params = params.set('targetUsername', targetUsername);
   }
+  
+  if (timeFilter) {
+    params = params.set('timeFilter', timeFilter);
+  }
+  console.log('Llamando a getTripParticipationsByUser con params:', {
+  targetUsername, page, size, sortBy, sortDir, timeFilter
+});
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/mis-viajes-participados`, { params }).pipe(
+    catchError(error => {
+      console.error('Error al obtener la lista de viajes en los que ha participado:', error);
+      return throwError(() => new Error('No se pudo cargar la lista de viajes en los que participa.'));
+    })
+  );
+}
 
   getTripParticipationsByTrip(id: number): Observable<ParticipationDto[]> {
       return this.http.get<ParticipationDto[]>(`${this.apiUrl}/participations/trip/${id}`).pipe(

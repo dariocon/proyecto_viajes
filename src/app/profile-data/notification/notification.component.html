@@ -13,7 +13,6 @@
     <div class="dropdown-menu notification-dropdown-custom"
          [ngStyle]="{'width': '380px', 'min-width': '380px', 'max-height': '400px', 'overflow-y': 'auto'}"> 
       
-      <!-- ✅ Botón "Marcar todo como leído" -->
       @if (notifications.length > 0) {
         <button class="mark-all-btn"
                 (click)="markAllAsRead()">

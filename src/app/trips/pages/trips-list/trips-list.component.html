@@ -102,7 +102,7 @@
             @if (!isLoading && paginatedTrips.length > 0) {
                 @for (trip of paginatedTrips; track trip.idTrip) { 
                     <div class="trip-card">
-                        <div class="trip-image-container">
+                        <div class="trip-image-container"  [style]="'view-transition-name: trip-img-' + trip.idTrip">
                             <img 
                                 [src]="getCoverImage(trip)"
                                 [alt]="'Imagen principal del viaje: ' + trip.title" 

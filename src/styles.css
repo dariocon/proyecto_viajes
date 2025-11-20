@@ -173,6 +173,153 @@ width: 22px; /* Mantener este tamaño para el área clicable */
   margin-left: 20px;
 }
 
+/*
+@keyframes slide-out-to-left {
+    from{
+        transform:translateX(0)
+    }
+    to{
+        transform: translateX(-100%)
+    }
+}
+
+@keyframes slide-out-to-right {
+    from{
+        transform:translateX(0)
+    }
+    to{
+        transform: translateX(-100%)
+    }
+}*/
+
+/* 1. Activar view transitions */
+/* 1. Activar view transitions */
+@view-transition {
+    navigation: auto;
+}
+
+/* 2. Asignar nombre a la imagen del carousel dinámicamente */
+.carousel-slide-content[view-transition-name^="trip-img-"] {
+    view-transition-name: trip-img;
+}
+
+/* 3. Duración de la transición: rápida */
+/*
+::view-transition-group(*) {
+    animation-duration: 0.5s; 
+}*/
+::view-transition-group(trips-grid) {
+  animation-duration: 0.5s;
+}
+
+/* 4. Control de la imagen durante la transición */
+::view-transition-old(trip-img) {
+    animation: none;
+    mix-blend-mode: normal;
+    height: 100%;
+    overflow: clip;
+    border-radius: 2rem;
+    object-fit: contain; 
+    width: 100%;
+    max-width: 900px;
+}
+
+::view-transition-new(trip-img) {
+    animation: none;
+    mix-blend-mode: normal;
+    height: 100%;
+    overflow: clip;
+    border-radius: 2rem;
+    object-fit: cover;   /* nuevo: llena el contenedor */
+    width: 100%;
+    max-width: 900px;
+}
+
+/* 5. Opcional: animación tipo fade-in/fade-out para elementos adicionales */
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(20px); }
+}
+
+/* Ejemplo para detalles o texto dentro de la slide */
+.carousel-slide-content .details::view-transition-new {
+    animation: 500ms ease-out both fade-in;
+}
+
+.carousel-slide-content .details::view-transition-old {
+    animation: 300ms ease-in both fade-out;
+}
+
+
+
+/* Aplicar nombre de transición a cada tarjeta */
+.trip-image-container[view-transition-name^="trip-img-"] {
+    view-transition-name: trip-img;
+}
+
+::view-transition-old(trip-img),
+::view-transition-new(trip-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+
+
+
+
+/* solo animamos el grid, no cada card */
+.trips-grid {
+  view-transition-name: trips-grid;
+}
+
+/* estado antiguo */
+::view-transition-old(trips-grid) {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* estado nuevo entra desde la derecha */
+::view-transition-new(trips-grid) {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* duración */
+::view-transition-group(trips-grid) {
+  animation-duration: .25s;
+}
+
+/* 5. Keyframes para slide-in desde la derecha */
+@keyframes slide-in-left {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 6. Opcional: puedes agregar slide-out para que desaparezcan suavemente */
+@keyframes slide-out-right {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
 .logged-in-organizer .search-container {
   width: 414px;
   margin-right: 105px;

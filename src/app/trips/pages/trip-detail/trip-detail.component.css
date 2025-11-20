@@ -137,13 +137,14 @@ body {
     justify-content: center; /* Centra la imagen horizontalmente */
     align-items: center; /* Centra la imagen verticalmente */
     position: relative;
+    overflow: hidden;
 }
 
 /* 4. Imagen Principal */
 .trip-main-image {
     /* Mantiene el diseño centrado con 40px de padding virtual */
     width: calc(100% - 40px); 
-    height: 100%;
+    height: 400px;
     max-width: 900px;
     
     object-fit: cover; 
@@ -1255,6 +1256,7 @@ body {
     .carousel-slide-content {
         /* No se centra, ocupa todo el espacio en móvil */
         display: block; 
+        
     }
 
     .trip-main-image {
@@ -1265,8 +1267,22 @@ body {
         max-width: none; 
         margin: 0; 
         box-shadow: none; /* Quitamos la sombra de la imagen en móvil */
+
     }
-    
+/* Puedes eliminar la regla @view-transition-group completa a menos que NECESITES personalizarla */
+/* Si necesitas un efecto más lento o específico: */
+
+::view-transition-old(trip-img),
+::view-transition-new(trip-img) {
+    animation: none;
+    mix-blend-mode: normal;
+    height: 100%;
+    overflow: clip;
+    border-radius: 2rem;
+}
+
+
+
     .blur-layer {
         /* Se adapta al tamaño del wrapper */
         margin: 0;
