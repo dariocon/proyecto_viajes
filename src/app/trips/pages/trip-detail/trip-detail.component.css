@@ -1384,3 +1384,29 @@ body {
         gap: 8px;
     }
 }
+.star {
+  font-size: 20px;
+  color: gold;
+  display: inline-block;
+  position: relative;
+}
+
+.star.half {
+  color: lightgray; /* color de fondo de la estrella "vacía" */
+}
+
+.star.half::before {
+  content: '\2605'; /* estrella completa */
+  position: absolute;
+  width: 50%;       /* mostrar solo la mitad */
+  overflow: hidden;
+  color: gold;      /* color de la mitad llena */
+}
+
+
+
+
+app-trip-ratings {
+    grid-column: 1 / -1;
+    display: contents; /* ← CLAVE: hace que los hijos del componente se comporten como si estuvieran directamente en el grid padre */
+}

@@ -1,0 +1,344 @@
+<div class="skeleton-container" *ngIf="!organizer">
+
+  <!-- Título -->
+  <div class="sk sk-title"></div>
+
+  <!-- Subtítulo / username -->
+  <div class="sk sk-sub"></div>
+
+  <!-- Stats cards -->
+  <div class="sk-cards">
+    <div class="sk sk-card" *ngFor="let _ of [1,2,3,4]"></div>
+  </div>
+
+</div>
+
+<div class="inicio">
+  @if (organizer) {
+  <div class="web-frame">
+
+    <!-- Profile Info Section -->
+    <div class="profile-info-section">
+      <div class="profile-main-info">
+        <div class="profile-name-wrapper">
+          <h1 class="profile-name">{{ organizer.name }} {{ organizer.surname }}</h1>
+          <svg class="verified-badge" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" fill="#F95596"/>
+            <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="profile-username">{{ organizer.username }}</p>
+
+        <!-- Meta Info -->
+        <div class="profile-meta">
+          <div class="meta-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>Miembro desde {{ organizer.registrationDate | date:'MMMM yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">{{ stats?.organizedTrips }}</div>
+        <div class="stat-label">Viajes organizados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ stats?.satisfiedTravelers }}</div>
+        <div class="stat-label">Viajeros satisfechos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number stat-rating">
+          {{ stats?.averageRating | number:'1.1-1' }}
+          <span class="star-icon">★</span>
+        </div>
+        <div class="stat-label">Valoración media</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ stats?.totalReviews }}</div>
+        <div class="stat-label">Reseñas</div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-navigation">
+      <div class="tabs-container">
+        <button class="tab-button" [class.active]="activeTab==='trips'" (click)="switchTab('trips')" (click)="activeTab='trips'">
+          Viajes próximos
+        </button>
+        <button class="tab-button" 
+        [class.active]="activeTab==='past'" 
+        (click)="activeTab='past'"
+        (click)="switchTab('past')">
+  Viajes pasados
+</button>
+        <button class="tab-button" [class.active]="activeTab==='reviews'" (click)="activeTab='reviews'" (click)="switchTab('reviews')">
+          Reseñas ({{ stats?.totalReviews }})
+        </button>
+      </div>
+    </div>
+
+    <!-- Content Area - Trips -->
+    @if (activeTab==='trips') {
+    <div class="content-area">
+              <!-- 🔥 SKELETON TRIPS -->
+      <div class="trips-grid" *ngIf="loadingTrips">
+        <div class="trip-card sk-trip" *ngFor="let _ of [1,2,3,4,5,6]">
+          <div class="sk sk-trip-img"></div>
+          <div class="sk sk-trip-title"></div>
+          <div class="sk sk-trip-line"></div>
+        </div>
+      </div>
+
+      <div class="trips-grid">
+        @for (trip of organizerTrips; track trip.idTrip) {
+        <div class="trip-card" [routerLink]="['/viajes', trip.idTrip]">
+
+          <div class="trip-image-container">
+            <img [src]="getCoverImage(trip)" [alt]="trip.title" class="trip-image" [style]="'view-transition-name: trip-img-' + trip.idTrip">
+
+          </div>
+
+          <div class="trip-content">
+            <h3 class="trip-title">{{ trip.title }}</h3>
+
+            <p class="trip-dates">
+              {{ trip.startDate | date:'dd MMM yyyy' }} - 
+              {{ trip.endDate | date:'dd MMM yyyy' }}
+            </p>
+
+            <div class="trip-footer">
+
+              <div class="trip-price-info">
+                <div class="trip-price">{{ trip.estimatedBudget | number:'1.0-0' }}€</div>
+                <div class="price-label">por persona</div>
+              </div>
+
+              <div class="trip-spots">
+                @if(trip.maxCapacity) {
+                {{ trip.maxCapacity - (trip.participations?.length ?? 0) }} plazas
+
+                }@else {
+                    PLAZAS ILIMITADAS
+                }
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        }
+      </div>
+
+      @if (organizerTrips.length === 0 && !loadingTrips) {
+      <div>
+        <img 
+          src="./assets/images/trips-not-available-gris.png" 
+          alt="trips-not-available"
+          class="empty-state-image" 
+        >
+        <p class="empty-message">No hay viajes próximos disponibles.</p>
+      </div>
+      }
+
+      @if (totalPagesTrips > 1) {
+      <div class="pagination-controls">
+        <button class="page-btn nav-btn" 
+                [disabled]="displayCurrentTripsPage === 1"
+                (click)="changeTripsPage(displayCurrentTripsPage - 2)">
+          &larr; Anterior
+        </button>
+
+        @for (page of getTripsPageNumbers(); track page) {
+        <button
+                class="page-btn"
+                [class.active]="page === displayCurrentTripsPage"
+                (click)="changeTripsPage(page - 1)">
+          {{ page }}
+        </button>
+        }
+
+        <button class="page-btn nav-btn"
+                [disabled]="displayCurrentTripsPage === totalPagesTrips"
+                (click)="changeTripsPage(displayCurrentTripsPage)">
+          Siguiente &rarr;
+        </button>
+      </div>
+      }
+    </div>
+    }
+
+    @if (activeTab==='past') {
+    <div class="content-area">
+              <!-- 🔥 SKELETON PAST TRIPS -->
+      <div class="trips-grid" *ngIf="loadingPastTrips">
+        <div class="trip-card sk-trip" *ngFor="let _ of [1,2,3,4,5,6]">
+          <div class="sk sk-trip-img"></div>
+          <div class="sk sk-trip-title"></div>
+          <div class="sk sk-trip-line"></div>
+        </div>
+      </div>
+      <div class="trips-grid">
+
+        @for (trip of pastTrips; track trip.idTrip) {
+        <div class="trip-card" 
+             [routerLink]="['/viajes', trip.idTrip]">
+
+          <div class="trip-image-container" >
+            <img [src]="getCoverImage(trip)" 
+                 [alt]="trip.title" 
+                 class="trip-image">
+          </div>
+
+          <div class="trip-content">
+            <h3 class="trip-title">{{ trip.title }}</h3>
+
+            <p class="trip-dates">
+              {{ trip.startDate | date:'dd MMM yyyy' }} -
+              {{ trip.endDate | date:'dd MMM yyyy' }}
+            </p>
+
+            <div class="trip-footer">
+              <div class="trip-price-info">
+                <div class="trip-price">{{ trip.estimatedBudget | number:'1.0-0' }}€</div>
+                <div class="price-label">por persona</div>
+              </div>
+
+              <div class="trip-spots">
+      {{ isTripFinished(trip) ? 'Finalizado' : (trip.maxCapacity ? trip.maxCapacity - (trip.participations?.length ?? 0) + ' plazas' : 'PLAZAS ILIMITADAS') }}
+    </div>
+            </div>
+          </div>
+
+        </div>
+        }
+      </div>
+
+      @if (pastTrips.length === 0 && !loadingPastTrips) {
+      <div>
+        <img 
+          src="./assets/images/trips-not-available-gris.png" 
+          alt="trips-not-available"
+          class="empty-state-image" 
+        >
+        <p class="empty-message">No hay viajes pasados disponibles.</p>
+      </div>
+      }
+
+      <!-- PAGINACIÓN -->
+      @if (totalPagesPast > 1) {
+      <div class="pagination-controls">
+
+        <button class="page-btn nav-btn"
+                [disabled]="displayCurrentPastTripsPage === 1"
+                (click)="changePastTripsPage(displayCurrentPastTripsPage - 2)">
+          &larr; Anterior
+        </button>
+
+        @for (page of getPastTripsPageNumbers(); track page) {
+        <button
+                class="page-btn"
+                [class.active]="page === displayCurrentPastTripsPage"
+                (click)="changePastTripsPage(page - 1)">
+          {{ page }}
+        </button>
+        }
+
+        <button class="page-btn nav-btn"
+                [disabled]="displayCurrentPastTripsPage === totalPagesPast"
+                (click)="changePastTripsPage(displayCurrentPastTripsPage)">
+          Siguiente &rarr;
+        </button>
+
+      </div>
+      }
+    </div>
+    }
+
+
+    <!-- Content Area - Reviews -->
+    @if (activeTab==='reviews') {
+    <div class="content-area">
+              <div class="reviews-grid" *ngIf="loadingReviews">
+        <div class="review-card sk-review" *ngFor="let _ of [1,2,3,4]">
+          <div class="sk sk-review-line"></div>
+          <div class="sk sk-review-line short"></div>
+          <div class="sk sk-review-block"></div>
+        </div>
+      </div>
+      
+      <div class="reviews-grid">
+        @for (review of reviews; track review.tripId) {
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-author-info">
+              <div class="review-top-line">
+                <div class="review-author-details">
+                  <div class="review-author-name">{{ review.username }}</div>
+                  <a class="review-trip-badge" [routerLink]="['/viajes', review.tripId]">{{ review.tripTitle }}</a>
+                  <div class="review-meta">{{ review.tripId }} • {{ review.submissionDate | date:'mediumDate' }}</div>
+                </div>
+                <div class="review-rating">
+                  @for (star of [1,2,3,4,5]; track star) {
+                  <span class="star" 
+                        [ngClass]="{'filled': star <= review.rating, 'empty': star > review.rating}">★</span>
+                  }
+                </div>
+              </div>
+              <p class="review-comment">{{ review.comment }}</p>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+     @if (reviews.length === 0 && !loadingReviews) {
+      <div>
+        <img 
+          src="./assets/images/trips-not-available-gris.png" 
+          alt="trips-not-available"
+          class="empty-state-image" 
+        >
+        <p class="empty-message">No hay reseñas disponibles.</p>
+      </div>
+      }
+
+      <!-- Pagination Buttons -->
+      @if (totalPages > 1) {
+      <div class="pagination-controls">
+
+        <button class="page-btn nav-btn"
+                [disabled]="displayCurrentReviewsPage === 1"
+                (click)="changePage(displayCurrentReviewsPage - 2)">
+          &larr; Anterior
+        </button>
+
+        @for (page of getReviewPageNumbers(); track page) {
+        <button
+                class="page-btn"
+                [class.active]="page === displayCurrentReviewsPage"
+                (click)="changePage(page - 1)">
+          {{ page }}
+        </button>
+        }
+
+        <button class="page-btn nav-btn"
+                [disabled]="displayCurrentReviewsPage === totalPages"
+                (click)="changePage(displayCurrentReviewsPage)">
+          Siguiente &rarr;
+        </button>
+
+      </div>
+      }
+
+    </div>
+    }
+
+  </div>
+  }
+</div>

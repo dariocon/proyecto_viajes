@@ -1,0 +1,75 @@
+<div class="comments-section">
+  <div class="comments-header">
+    <h3 class="comments-title">Valoraciones y comentarios</h3>
+    <div class="rating-summary">
+      <div class="average-rating">
+        <span class="rating-number">{{ averageRating }}</span>
+        <div class="rating-stars">
+         <!-- <span *ngFor="let i of [1,2,3,4,5]" [class.filled]="i <= Math.round(averageRating)">★</span>-->
+        </div>
+        <span class="total-reviews">{{ totalReviews }} valoraciones</span>
+      </div>
+    </div>
+  </div>
+
+<div class="add-comment-form" *ngIf="authService.isLogged() && hasParticipated && commentForm">
+  <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form-content">
+    <div class="rating-input">
+      <span class="rating-label">Tu valoración:</span>
+      <div class="rating-stars-input">
+        <span *ngFor="let i of [1,2,3,4,5]" 
+              class="star-input" 
+              [class.filled]="i <= selectedScore" 
+              (click)="selectScore(i)">★</span>
+      </div>
+      <div *ngIf="commentForm.get('score')?.invalid && commentForm.get('score')?.touched" class="error-message">
+        Debes seleccionar una valoración
+      </div>
+    </div>
+
+    <textarea formControlName="comment"
+              class="comment-textarea"
+              placeholder="Comparte tu experiencia sobre este viaje..."
+              rows="3"></textarea>
+    <div *ngIf="commentForm.get('comment')?.invalid && commentForm.get('comment')?.touched" class="error-message">
+      Debes escribir un comentario para poder publicar.
+    </div>
+
+    <div class="comment-form-actions">
+      <span class="character-count">{{ commentForm.value.comment?.length || 0 }} / 500</span>
+      <button type="submit"  class="submit-comment-btn">Publicar comentario</button>
+    </div>
+  </form>
+</div>
+
+
+
+  <div class="comments-list">
+    <div *ngFor="let r of ratings" class="comment-card">
+      <div class="comment-header">
+        <div class="comment-author-info">
+          <div class="comment-author-name">{{ r.username }}</div>
+          <div class="comment-meta">
+            <div class="comment-rating">
+                @for (i of getStars(r.rating); track i) {
+                    <span class="filled">★</span>
+                }        
+                @for (i of getStars(5 - r.rating); track i) {
+                    <span class="empty-star">★</span>
+                }
+             </div>
+            <span class="comment-separator">•</span>
+            <span class="comment-date">{{ r.submissionDate | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+      <p class="comment-text">{{ r.comment }}</p>
+
+
+    </div>
+  </div>
+
+  <div class="load-more-container" *ngIf="ratings.length < totalReviews">
+    <button class="load-more-btn" (click)="loadMore()">Ver más comentarios</button>
+  </div>
+</div>

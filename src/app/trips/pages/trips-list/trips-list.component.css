@@ -377,78 +377,94 @@
     margin-bottom: 30px; /* Añadido espacio entre la grilla y la paginación */
 }
 
-.trip-image-container {
+.trip-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
     display: grid;
-    place-items: center;
-    width: 100%;
-    background: #f1f5f9;
-    height: 110px; /* Mantener una altura fija para la imagen */
-    overflow: hidden; /* Asegurar que la imagen no se desborde */
+    grid-template-rows: auto 1fr;
+}
+
+.trip-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.trip-image-container {
+   width: 100%;
+   place-items: center;
+   overflow: hidden;
+   height: 110px;
+   display: grid;
 }
 
 .trip-image {
-    object-fit: cover;
-    height: 100%;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.trip-card {
-    display: grid;
-    grid-template-rows: auto 1fr auto; /* Imagen (auto), Contenido (1fr), Botón (auto) */
-    overflow: hidden;
-    border-radius: 8px;
-    height: auto; /* Altura fija para todas las tarjetas */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); 
+.trip-card:hover .trip-image {
+    transform: scale(1.05);
 }
 
 .trip-content {
+    padding: 16px;
     display: grid;
-    grid-template-rows: auto auto auto; /* Título (auto), Tiempo (auto), espacio expandible (1fr) */
+    grid-template-rows: auto auto 1fr;
     gap: 8px;
-    padding: 11px;
-    text-align: center;
-    align-items: start;
-    justify-items: center;
 }
 
 .trip-title {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 24px;
     background: linear-gradient(135deg, #F95596, #FE7079);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    display: grid; /* Asegura display grid */
-    place-items: center; /* Centra el texto */
-    text-align: center;
+    margin: 0;
 }
 
-.trip-time {
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 24px;
+.trip-dates {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+.trip-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+    margin-top: auto;
+}
+
+.trip-price-info {
+    display: grid;
+    gap: 2px;
+}
+
+.trip-price {
+    font-size: 20px;
+    font-weight: 700;
     color: #475569;
 }
 
-.trip-btn {
-    padding: 3px 13px;
-    margin-top: 2px;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 24px;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    border: none;
-    background: linear-gradient(to right, #F95596, #FE7079);
-    justify-self: center;
-    align-self: end;
+.price-label {
+    font-size: 12px;
+    color: #64748b;
 }
 
+.trip-spots {
+    font-size: 13px;
+    color: #F95596;
+    font-weight: 600;
+}
 /* ---------------------------------------------------------------------- */
 /* |--------------------------------------------------
 | PAGINATION CONTROLS

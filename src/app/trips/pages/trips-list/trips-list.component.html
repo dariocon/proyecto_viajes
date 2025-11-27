@@ -101,23 +101,44 @@
             }
             @if (!isLoading && paginatedTrips.length > 0) {
                 @for (trip of paginatedTrips; track trip.idTrip) { 
-                    <div class="trip-card">
-                        <div class="trip-image-container"  [style]="'view-transition-name: trip-img-' + trip.idTrip">
-                            <img 
-                                [src]="getCoverImage(trip)"
-                                [alt]="'Imagen principal del viaje: ' + trip.title" 
-                                [attr.title]="'Imagen principal del viaje: ' + trip.title" 
-                                class="trip-image"
-                            >                
-                        </div>
-                        <div class="trip-content">
-                            <h3 class="trip-title">{{ trip.title }}</h3>
-                            <p class="trip-time">
-                                {{ trip.startDate }} - {{ trip.endDate }}
-                            </p>
-                            <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>
-                        </div>
-                    </div>
+
+                        <div class="trip-card" [routerLink]="['/viajes', trip.idTrip]" >
+
+      <div class="trip-image-container">
+        <img [src]="getCoverImage(trip)" [alt]="trip.title" class="trip-image" [style]="'view-transition-name: trip-img-' + trip.idTrip">
+
+      </div>
+
+      <div class="trip-content">
+        <h3 class="trip-title">{{ trip.title }}</h3>
+
+        <p class="trip-dates">
+          {{ trip.startDate | date:'dd MMM yyyy' }} - 
+          {{ trip.endDate | date:'dd MMM yyyy' }}
+        </p>
+
+        <div class="trip-footer">
+
+          <div class="trip-price-info">
+            <div class="trip-price">{{ trip.estimatedBudget | number:'1.0-0' }}€</div>
+            <div class="price-label">por persona</div>
+          </div>
+
+          <div class="trip-spots">
+            @if(trip.maxCapacity) {
+            {{ trip.maxCapacity - (trip.participations?.length ?? 0) }} plazas
+
+            }@else {
+                PLAZAS ILIMITADAS
+            }
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+      
                 }
             }
         </div>

@@ -21,6 +21,19 @@ export interface User {
 
 }
 
+export interface UsuariosDto {
+  username: string;
+  name: string;
+  surname: string;
+  email: string;
+  address: string;
+  gender: string;
+  role: string;
+  registrationDate: string; 
+  userStatus: string;
+  birthDate: string;
+}
+
 export interface UserLoginResponse {
    
     message:    string;

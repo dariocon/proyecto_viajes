@@ -16,9 +16,10 @@ import { TripDetailComponent } from './trips/pages/trip-detail/trip-detail.compo
 import { TripParticipantsComponent } from './trips/pages/trip-participants/trip-participants.component';
 import { NotificationComponent } from './profile-data/notification/notification.component';
 import { tripResolver } from './trips/pages/trip-detail/trip.resolver';
+import { OrganizerProfileComponent } from './profile-data/organizer-profile/organizer-profile.component';
 export const routes: Routes = [
 
-    { path:'', component: HomeComponent },
+    { path:'', component: TripsListComponent }, //HomeComponent
     { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [loggedGuard] },
     { path: 'usuarios/:username', component: UserComponent, canMatch: [loginGuard], canActivate: [editGuard]},
@@ -39,6 +40,8 @@ export const routes: Routes = [
 
     { path: 'not-found', component: ErrorComponent, data: { error: 'not-found' } },
     { path: 'forbidden', component: ErrorComponent, data: { error: 'forbidden' } },
+    { path: 'organizer/:organizerUsername', component: OrganizerProfileComponent},
+
     
     //{ path: 'unauthorized', component: ErrorComponent, data: { error: 'unauthorized' } },
     { path: '**', redirectTo: '/not-found' }

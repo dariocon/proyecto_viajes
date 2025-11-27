@@ -9,11 +9,13 @@ import { switchMap, tap, of } from 'rxjs'; // <--- AÑADIDO 'of'
 import { DatePipe, registerLocaleData, CommonModule } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { ParticipationAdd } from '../../../_interfaces/user';
+import { TripRatingComponent } from '../trip-ratings/trip-ratings.component';
+import { RatingsService } from '../../../_services/rating.service';
 registerLocaleData(localeEs, 'es');
 
 @Component({
   selector: 'app-trip-detail',
-  imports: [RouterLink, DatePipe, CommonModule],
+  imports: [RouterLink, DatePipe, CommonModule,TripRatingComponent ],
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.css',
   providers: [
@@ -22,16 +24,19 @@ registerLocaleData(localeEs, 'es');
 })
 export class TripDetailComponent implements OnInit, OnDestroy {
 
-  constructor(public authService: AuthService, private tripsService: TripsService) {}
+  constructor(public authService: AuthService, private tripsService: TripsService, private ratingService: RatingsService) {}
 
   @Input() id!: number;
   @Input() trip?: TripDto; 
+averageRating: number = 0; // valor numérico real
+starArray: ('full' | 'half' | 'empty')[] = [];
 
   categoryName?: String;
   currentImageIndex: number = 0;
   hasParticipated: boolean | null = null;
   participationDate: string | null = null;
-
+  stats: any;
+  
   ngOnInit(): void {
       document.body.style.backgroundColor = '#F6F7F8';
 
@@ -50,6 +55,13 @@ export class TripDetailComponent implements OnInit, OnDestroy {
       tripSource$.pipe(
         switchMap((trip: TripDto) => {
           this.trip = trip;
+          this.ratingService.getAverageRatingByTrip(this.trip.idTrip).subscribe({
+  next: avg => {
+    this.averageRating = avg;
+    this.generateStars();
+  },
+  error: err => console.error('No se pudo obtener la media de valoraciones', err)
+});
           
           if (this.trip.images && this.trip.images.length > 0) {
                 const coverIndex = this.trip.images.findIndex(image => image.isCover);
@@ -57,7 +69,7 @@ export class TripDetailComponent implements OnInit, OnDestroy {
                     this.currentImageIndex = coverIndex;
                 }
             }
-            
+            this.loadOrganizerStats();
           if (this.authService.isLogged()) { 
               return this.tripsService.checkParticipation(this.id).pipe(
                   tap(participation => {
@@ -223,10 +235,39 @@ export class TripDetailComponent implements OnInit, OnDestroy {
     return startDate.getTime() <= now.getTime();
   }
 
+  isTripFinished(): boolean {
+    if (!this.trip?.endDate) {
+      return false;
+    }
+    const endDate = new Date(this.trip.endDate);
+    const now = new Date();
+    return endDate.getTime() < now.getTime();
+  }
+
   getNumberOfDays(): number {
     if (!this.trip?.startDate || !this.trip?.endDate) return 0; 
     const msPerDay = 86400000;
     const days = Math.floor((new Date(this.trip.endDate).getTime() - new Date(this.trip.startDate).getTime()) / msPerDay) + 1;
     return days > 0 ? days : 0;
   }
+
+    loadOrganizerStats(): void {
+    this.tripsService.getOrganizerStats(this.trip!.organizerUsername).subscribe({
+      next: data => this.stats = data,
+      error: err => console.error('Error cargando stats', err)
+    });
+  }
+
+generateStars(): void {
+  this.starArray = [];
+  const fullStars = Math.floor(this.averageRating);
+  const halfStar = (this.averageRating - fullStars) >= 0.5;
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+  for (let i = 0; i < fullStars; i++) this.starArray.push('full');
+  if (halfStar) this.starArray.push('half');
+  for (let i = 0; i < emptyStars; i++) this.starArray.push('empty');
+}
+
+
 }

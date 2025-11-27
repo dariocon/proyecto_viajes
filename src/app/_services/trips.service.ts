@@ -8,6 +8,7 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/fo
 import { Categoria } from '../_interfaces/categoria';
 import { TripPageResponse, TripAdd, TripDto } from '../_interfaces/trip';
 import { AuthService } from './auth.service';
+import { RatingPageResponse } from '../_interfaces/rating';
 
 @Injectable({
 providedIn: 'root'
@@ -229,4 +230,21 @@ getTripParticipationsByUser(targetUsername?: string, page: number = 0, size: num
   return this.http.post<any>(`${this.apiUrl}/viajes`, formData);
 }*/
 
+getOrganizerByUsername(username: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/organizer/${username}`);
+}
+
+getOrganizerReviews(username: string, page: number = 0, size: number = 12, sortBy: string = 'submissionDate', sortDir: string = 'DESC'): Observable<RatingPageResponse> {
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
+
+    return this.http.get<RatingPageResponse>(`${this.apiUrl}/ratings/organizer/${username}/all`, { params });
+}
+
+getOrganizerStats(username: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/ratings/organizer/stats/${username}`);
+}
 }
