@@ -107,6 +107,11 @@ export class OrganizerProfileComponent implements OnInit {
     if (newPage >= 0 && newPage < this.totalPagesPast) {
       this.pagePast = newPage;
       this.loadPastTrips();
+
+          document.querySelector('.tabs-navigation')?.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start' 
+    });
     }
   }
 
@@ -142,6 +147,11 @@ loadOrganizerReviews(): void {
     if (newPage >= 0 && newPage < this.totalPages) {
       this.page = newPage;
       this.loadOrganizerReviews();
+
+    document.querySelector('.tabs-navigation')?.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start' 
+    });
     }
   }
 
@@ -149,6 +159,12 @@ loadOrganizerReviews(): void {
   if (newPage >= 0 && newPage < this.totalPagesTrips) {
     this.pageTrips = newPage;
     this.loadOrganizerTrips();
+
+    
+    document.querySelector('.tabs-navigation')?.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start' 
+    });
   }
 }
 get displayCurrentTripsPage(): number {

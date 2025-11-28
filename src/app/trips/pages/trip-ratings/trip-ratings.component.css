@@ -269,7 +269,10 @@
   color: gold; /* amarillo para llenas */
   font-size: 1.2rem;
 }
-
+.star-icon {
+    font-size: 20px;
+    color: #F95596;
+}
 .empty-star {
   color: #ccc; /* gris para vacías */
   font-size: 1.2rem;

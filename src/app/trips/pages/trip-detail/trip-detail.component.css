@@ -1385,38 +1385,53 @@ body {
         gap: 8px;
     }
 }
-.star-full{
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.average-rating {
+  font-size: 13px;
+  color: #475569;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
+.star-full {
+  font-size: 20px;
+  display: inline-block;
+  color: gold;
+  line-height: 20px;
+  vertical-align: middle;
+}
+
+.empty-star {
+  font-size: 20px;
+  display: inline-block;
+  color: #d1d5db;
+  
+  vertical-align: middle;
+}
+
+.star-half {
   font-size: 20px;
   display: inline-block;
   position: relative;
-  color: gold;
-}
-.empty-star{
-      font-size: 20px;
-  display: inline-block;
-  position: relative;
-    color: #d1d5db !important; 
-}
-
-
-.star-half {
-          font-size: 20px;
-  display: inline-block;
-  position: relative;
-  color: #d1d5db; /* color de fondo de la estrella "vacía" */
-  position: relative;
+  color: #d1d5db;
+  line-height: 20px;
+  vertical-align: middle;
 }
 
 .star-half::before {
-  content: '\2605'; /* estrella completa */
+  content: '\2605';
   position: absolute;
   left: 0;
   top: 0;
-  width: 50%; /* mostrar solo la mitad */
+  width: 50%;
   overflow: hidden;
-  color: gold; /* color de la mitad llena */
+  color: gold;
 }
-
 
 
 app-trip-ratings {

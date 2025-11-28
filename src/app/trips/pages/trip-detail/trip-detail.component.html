@@ -72,6 +72,7 @@
                     </div>
                     
 <div class="rating">
+   <span class="average-rating">{{averageRating | number:'1.1-1'}}</span>
   <ng-container *ngFor="let star of starArray">
     <ng-container [ngSwitch]="star">
       <span *ngSwitchCase="'full'" class="star-full">&#9733;</span>

@@ -3,11 +3,13 @@
     <h3 class="comments-title">Valoraciones y comentarios</h3>
     <div class="rating-summary">
       <div class="average-rating">
-        <span class="rating-number">{{ averageRating }}</span>
+        <span class="rating-number">{{ averageRating | number:'1.1-1' }}</span>
+        <span class="star-icon">★</span>
         <div class="rating-stars">
          <!-- <span *ngFor="let i of [1,2,3,4,5]" [class.filled]="i <= Math.round(averageRating)">★</span>-->
         </div>
         <span class="total-reviews">{{ totalReviews }} valoraciones</span>
+        
       </div>
     </div>
   </div>

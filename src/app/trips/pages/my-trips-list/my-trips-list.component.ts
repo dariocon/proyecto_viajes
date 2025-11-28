@@ -5,6 +5,7 @@ import { AuthService } from '../../../_services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute,Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-trips-list',
@@ -37,6 +38,19 @@ export class MyTripsListComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.tripsService.myTripsPageState$
+      .pipe(
+        tap(state => {
+          if (state) { // Comprobación añadida
+            this.paginatedTrips = state.content;
+            this.totalElements = state.page.totalElements;
+            this.totalPages = state.page.totalPages;
+            this.currentPage = state.page.number;
+            this.isLoading = false;
+          }
+        })
+      ).subscribe();
+
     this.authService.role$.subscribe(role => {
       this.role = role;
 
@@ -66,22 +80,14 @@ export class MyTripsListComponent implements OnInit {
     });
   }
 
-  private loadTripsByGroup(group: string): void {
+private loadTripsByGroup(group: string): void {
     this.isLoading = true;
-    this.searchTerm = ''; // Limpiamos búsqueda
+    this.searchTerm = ''; 
     
     const [_, option] = this.activeFilter.split(' - ');
     const timeFilter = this.getTimeFilter(option);
 
-    const handlePageResponse = (response: TripPageResponse) => {
-      this.paginatedTrips = response.content;
-      this.totalElements = response.page.totalElements;
-      this.totalPages = response.page.totalPages;
-      this.currentPage = response.page.number;
-      this.isLoading = false;
-    };
-
-    const handleError = (error: any) => {
+    const errorCallback = (error: any) => {
       console.error('Error completo al cargar viajes:', error);
       this.paginatedTrips = [];
       this.totalElements = 0;
@@ -97,7 +103,7 @@ export class MyTripsListComponent implements OnInit {
         'startDate', 
         'DESC',
         timeFilter
-      ).subscribe({ next: handlePageResponse, error: handleError });
+      ).subscribe({ error: errorCallback });
     } else if (group === 'Asistente') {
       this.tripsService.getTripParticipationsByUser(
         this.authService.username, 
@@ -106,7 +112,7 @@ export class MyTripsListComponent implements OnInit {
         'startDate', 
         'DESC',
         timeFilter
-      ).subscribe({ next: handlePageResponse, error: handleError });
+      ).subscribe({ error: errorCallback });
     }
   }
 
@@ -146,13 +152,6 @@ export class MyTripsListComponent implements OnInit {
     'startDate',
     'DESC'
   ).subscribe({
-    next: (response: TripPageResponse) => {
-      this.paginatedTrips = response.content;
-      this.totalElements = response.page.totalElements;
-      this.totalPages = response.page.totalPages;
-      this.currentPage = response.page.number;
-      this.isLoading = false;
-    },
     error: (err) => {
       console.error('Error al buscar viajes paginados:', err);
       this.paginatedTrips = [];
@@ -253,9 +252,13 @@ export class MyTripsListComponent implements OnInit {
               confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
             });
 
-            // Recargamos los viajes después de eliminar
-            const [group] = this.activeFilter.split(' - ');
-            this.loadTripsByGroup(group);
+            /*
+            * No se muta el BehaviorSubject localmente porque esta lista está paginada y filtrada.
+            * La petición HTTP es necesaria para que el backend recalcule y devuelva un estado
+            * correcto de paginación (totalElements, totalPages,etc).
+            */
+       //     const [group] = this.activeFilter.split(' - ');
+         //   this.loadTripsByGroup(group);
           },
           error: (err) => {
             Swal.fire('Error', err?.error?.message || 'Hubo un error al intentar eliminar el viaje.', 'error');

@@ -587,7 +587,7 @@ body {
 
 .skeleton-card {
     pointer-events: none;
-    user-select: none;
+   /* user-select: none; */
     width: 100%;
 }
 

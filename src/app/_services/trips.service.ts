@@ -20,6 +20,8 @@ http: HttpClient = inject(HttpClient);
 private searchTermSubject = new BehaviorSubject<string>('');
 public currentSearchTerm: Observable<string> = this.searchTermSubject.asObservable();
 public authService = inject(AuthService);
+private _myTripsPageState = new BehaviorSubject<TripPageResponse | null>(null);
+public myTripsPageState$ = this._myTripsPageState.asObservable();
 
 setSearchTerm(term: string): void {
     this.searchTermSubject.next(term.toLowerCase()); 
@@ -38,37 +40,37 @@ getTrips(): Observable<TripDto[]> {
 getTripsAvailable(): Observable<TripDto[]> {
     return this.http.get<TripDto[]>(`${this.apiUrl}/viajes/available`);
 }*/
-  getTripsAvailable(page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'ASC', timeFilter?: string): Observable<TripPageResponse> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString())
-      .set('sortBy', sortBy)
-      .set('sortDir', sortDir);
+getTripsAvailable(page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'ASC', timeFilter?: string): Observable<TripPageResponse> {
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
 
-    if (timeFilter) {
-      params = params.set('timeFilter', timeFilter);
-    }
-    
-    return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/available`, { params });
+  if (timeFilter) {
+    params = params.set('timeFilter', timeFilter);
   }
-  getTripByIdCategory(idCat: number, page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'ASC', timeFilter?: string): Observable<TripPageResponse> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString())
-      .set('sortBy', sortBy)
-      .set('sortDir', sortDir);
+  
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/available`, { params });
+}
+getTripByIdCategory(idCat: number, page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'ASC', timeFilter?: string): Observable<TripPageResponse> {
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
 
-    if (timeFilter) {
-      params = params.set('timeFilter', timeFilter);
-    }
-    
-    return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/filter/${idCat}`, { params }).pipe(
-      catchError(error => {
-        console.error('Error al obtener los viajes:', error);
-        return throwError(() => new Error('No se pudo cargar.'));
-      })
-    );
+  if (timeFilter) {
+    params = params.set('timeFilter', timeFilter);
   }
+  
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/filter/${idCat}`, { params }).pipe(
+    catchError(error => {
+      console.error('Error al obtener los viajes:', error);
+      return throwError(() => new Error('No se pudo cargar.'));
+    })
+  );
+}
 
 getTripsByOrganizer(organizer: string, page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'DESC', timeFilter?: string): Observable<TripPageResponse> {
   let params = new HttpParams()
@@ -81,26 +83,35 @@ getTripsByOrganizer(organizer: string, page: number = 0, size: number = 12, sort
     params = params.set('timeFilter', timeFilter);
   }
   
-  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/organizer/${organizer}`, { params });
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/organizer/${organizer}`, { params }).pipe(
+    tap(response => {
+      this._myTripsPageState.next(response); 
+    }),
+    catchError(error => {
+      console.error('Error al cargar la lista de viajes creados:', error);
+      this._myTripsPageState.next(null); // Emite null si hay error
+      return throwError(() => new Error('No se pudo cargar la lista de viajes.'));
+    })
+  );
 }
 
 
-  getTripsBySearchTerm(term: string, page: number = 0, size: number = 12, sortBy: string = 'title', sortDir: string = 'ASC'): Observable<TripPageResponse> {
-    const finalTerm = (term || '').trim();
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString())
-      .set('sortBy', sortBy)
-      .set('sortDir', sortDir);
+getTripsBySearchTerm(term: string, page: number = 0, size: number = 12, sortBy: string = 'title', sortDir: string = 'ASC'): Observable<TripPageResponse> {
+  const finalTerm = (term || '').trim();
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
 
-    
-    return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/search/${finalTerm}`, { params }).pipe(
-      catchError(error => {
-        console.error(`Error al buscar viajes por término "${finalTerm}":`, error);
-        return throwError(() => new Error('No se pudo cargar la búsqueda.'));
-      })
-    );
-  }
+  
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/search/${finalTerm}`, { params }).pipe(
+    catchError(error => {
+      console.error(`Error al buscar viajes por término "${finalTerm}":`, error);
+      return throwError(() => new Error('No se pudo cargar la búsqueda.'));
+    })
+  );
+}
 /*addTrip(trip: TripAdd): Observable<any>
 {
 return this.http.post<any>(`${this.apiUrl}/viajes`, trip);
@@ -120,35 +131,61 @@ deleteParticipation(idTrip: number, username: string, participationDate: string)
       return this.http.delete<any>(url);
 }
 
-  deleteTrip(idTrip: number): Observable<any> {
-        const url = `${this.apiUrl}/viajes/${idTrip}`;
-        return this.http.delete<any>(url);
-  }
+deleteTrip(idTrip: number): Observable<any> {
+  const url = `${this.apiUrl}/viajes/${idTrip}`;
+  return this.http.delete<any>(url).pipe(
+    tap(() => {
+      this.removeTripFromState(idTrip);
+    })
+  );
+}
 
 
-    updateTrip(id: number, formData: FormData): Observable<any> {
+private removeTripFromState(idTrip: number) {
+  const state = this._myTripsPageState.value;
+  if (!state) return;
+
+  const newContent = state.content.filter(t => t.idTrip !== idTrip);
+  const newTotal = state.page.totalElements - 1;
+
+  const newState: TripPageResponse = {
+    ...state,
+    content: newContent,
+    page: {
+      ...state.page,
+      totalElements: newTotal,
+      totalPages: Math.ceil(newTotal / state.page.size)
+    }
+  };
+
+  this._myTripsPageState.next(newState);
+}
+
+
+
+updateTrip(id: number, formData: FormData): Observable<any> {
         return this.http.put<any>(`${this.apiUrl}/viajes/${id}`, formData);
   }
 
 
- getTripById(id: number): Observable<TripDto> {
-    return this.http.get<TripDto>(`${this.apiUrl}/viajes/${id}`).pipe(
-      
-      catchError(error => {
-        console.error('Error al obtener el viaje:', error);
-        return throwError(() => error);
-      })
-    );
-  }
+getTripById(id: number): Observable<TripDto> {
+  return this.http.get<TripDto>(`${this.apiUrl}/viajes/${id}`).pipe(
+    
+    catchError(error => {
+      console.error('Error al obtener el viaje:', error);
+      return throwError(() => error);
+    })
+  );
+}
 
-   getCategoryById(id: number): Observable<Categoria> {
-    return this.http.get<Categoria>(`${this.apiUrl}/categorias/${id}`).pipe(
-      catchError(error => {
-        console.error('Error al obtener la categoría:', error);
-        return throwError(() => error);
-      })
-    );
-  }
+getCategoryById(id: number): Observable<Categoria> {
+  return this.http.get<Categoria>(`${this.apiUrl}/categorias/${id}`).pipe(
+    catchError(error => {
+      console.error('Error al obtener la categoría:', error);
+      return throwError(() => error);
+    })
+  );
+}
   
  /* searchMyTrips(term: string, type: string): Observable<TripDto[]> {
   const finalTerm = (term || '').trim();
@@ -177,9 +214,13 @@ searchMyTripsPaginated(
     params = params.set('timeFilter', timeFilter);
   }
 
-  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/mis-viajes/buscar`, { params }).pipe(
+    return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/mis-viajes/buscar`, { params }).pipe(
+    tap(response => {
+      this._myTripsPageState.next(response); // Actualiza el estado central
+    }),
     catchError(error => {
       console.error('Error al buscar viajes paginados:', error);
+      this._myTripsPageState.next(null); // Emite null si hay error
       return throwError(() => new Error('No se pudo realizar la búsqueda de viajes.'));
     })
   );
@@ -204,15 +245,19 @@ getTripParticipationsByUser(targetUsername?: string, page: number = 0, size: num
   console.log('Llamando a getTripParticipationsByUser con params:', {
   targetUsername, page, size, sortBy, sortDir, timeFilter
 });
-  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/mis-viajes-participados`, { params }).pipe(
+return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/mis-viajes-participados`, { params }).pipe(
+    tap(response => {
+      this._myTripsPageState.next(response); // Actualiza el estado central
+    }),
     catchError(error => {
       console.error('Error al obtener la lista de viajes en los que ha participado:', error);
+      this._myTripsPageState.next(null); // Emite null si hay error
       return throwError(() => new Error('No se pudo cargar la lista de viajes en los que participa.'));
     })
   );
 }
 
-  getTripParticipationsByTrip(id: number): Observable<ParticipationDto[]> {
+getTripParticipationsByTrip(id: number): Observable<ParticipationDto[]> {
       return this.http.get<ParticipationDto[]>(`${this.apiUrl}/participations/trip/${id}`).pipe(
       catchError(error => {
         console.error('Error al obtener la lista de participantes:', error);
@@ -221,14 +266,7 @@ getTripParticipationsByUser(targetUsername?: string, page: number = 0, size: num
     );
 
   }
-/*addTrip(trip: TripAdd, image?: File): Observable<any> {
-  const formData = new FormData();
-  formData.append('trip', new Blob([JSON.stringify(trip)], { type: 'application/json' }));
-  if (image) {
-    formData.append('image', image);
-  }
-  return this.http.post<any>(`${this.apiUrl}/viajes`, formData);
-}*/
+
 
 getOrganizerByUsername(username: string): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/organizer/${username}`);

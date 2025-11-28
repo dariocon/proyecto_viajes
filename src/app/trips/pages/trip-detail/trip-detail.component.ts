@@ -28,8 +28,8 @@ export class TripDetailComponent implements OnInit, OnDestroy {
 
   @Input() id!: number;
   @Input() trip?: TripDto; 
-averageRating: number = 0; // valor numérico real
-starArray: ('full' | 'half' | 'empty')[] = [];
+  averageRating: number = 0; 
+  starArray: ('full' | 'half' | 'empty')[] = [];
 
   categoryName?: String;
   currentImageIndex: number = 0;

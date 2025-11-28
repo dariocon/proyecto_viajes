@@ -22,7 +22,7 @@ export class TripRatingComponent implements OnInit {
 
   Math = Math;
   ratings: RatingDto[] = [];
-  averageRating: number = 4.2;
+  averageRating: number = 0;
   totalReviews: number = 0;
   page: number = 0;
   size: number = 5;
@@ -38,6 +38,7 @@ export class TripRatingComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadRatings();
+    this.loadAverageFromBackend();
     this.initForm();
   }
 
@@ -48,11 +49,22 @@ export class TripRatingComponent implements OnInit {
     });
   }
 
+  loadAverageFromBackend() {
+    this.ratingsService.getAverageRatingByTrip(this.trip.idTrip).subscribe({
+      next: (avg: number) => {
+        this.averageRating = avg;
+      },
+      error: err => {
+        console.error('Error obteniendo la media del backend', err);
+      }
+    });
+  }
+
   loadRatings() {
     this.ratingsService.getRatingsByTrip(this.trip.idTrip, this.page, this.size).subscribe({
       next: (res: RatingPageResponse) => {
         this.ratings = res.content;
-        this.calculateAverage();
+        
         this.totalReviews = res.page.totalElements;
       },
       error: (err) => {
@@ -61,14 +73,7 @@ export class TripRatingComponent implements OnInit {
     });
   }
 
-  calculateAverage() {
-    if (!this.ratings || this.ratings.length === 0) {
-      this.averageRating = 0;
-      return;
-    }
-    const total = this.ratings.reduce((acc, r) => acc + r.rating, 0);
-    this.averageRating = parseFloat((total / this.ratings.length).toFixed(1));
-  }
+
 
   selectScore(score: number) {
     this.selectedScore = score;
@@ -102,7 +107,7 @@ submitComment() {
       this.ratings.unshift(res);
       this.commentForm.reset();
       this.selectedScore = 0;
-      this.calculateAverage();
+      this.loadAverageFromBackend();
       this.totalReviews++;
     },
     error: (err) => {
