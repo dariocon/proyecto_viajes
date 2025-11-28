@@ -8,6 +8,7 @@
     width: 100%;
     max-width: 500px; /* Limita el ancho de la tabla a un tamaño razonable */
     padding: 0 15px; /* Añade un padding lateral para que no se pegue a los bordes en móviles */
+            margin-bottom: 70px;
 }
 
 .section-title {

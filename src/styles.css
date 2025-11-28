@@ -97,6 +97,11 @@ width: 22px; /* Mantener este tamaño para el área clicable */
     background: white;
     border-bottom: 1px solid #f1f5f9;
     gap: 2px;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 1px 2px rgba(237, 237, 237, 0.459);
 }
 
 .logo {

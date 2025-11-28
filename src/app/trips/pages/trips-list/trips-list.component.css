@@ -4,7 +4,9 @@
     padding: 0;
 }
 
-
+.web-frame{
+    margin-bottom: 25px;
+}
 
 
 
@@ -259,6 +261,7 @@
     border-bottom-left-radius: 12px;
     height: auto;
     width: 600px;
+    margin-top:4px;
 }
 .time-filter-section {
     width: 100%;
@@ -476,7 +479,7 @@
     justify-content: center; /* Centra horizontalmente */
     align-items: center;
     gap: 8px;
-    margin-top: 20px;
+    margin-top: 50px;
     padding: 10px 0;
     width: 100%;
 }

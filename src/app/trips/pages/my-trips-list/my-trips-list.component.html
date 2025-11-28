@@ -34,7 +34,16 @@
 
             <div class="trips-grid">
                 @if (isLoading) {
-                    <p class="empty-message">Cargando.</p>
+              @for (skeleton of [1,2,3,4,5,6]; track skeleton) {
+            <div class="trip-card skeleton-card">
+                <div class="trip-image-container skeleton-image"></div>
+                <div class="trip-content">
+                    <div class="skeleton-title skeleton-shimmer"></div>
+                    <div class="skeleton-text skeleton-shimmer"></div>
+                    <div class="skeleton-button skeleton-shimmer"></div>
+                </div>
+            </div>
+        }
                 }
 
                 @if (!isLoading) {

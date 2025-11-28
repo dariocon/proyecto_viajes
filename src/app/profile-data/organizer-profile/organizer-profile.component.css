@@ -5,6 +5,7 @@
     background: #f8fafc;
     overflow: hidden;
     padding: 40px 28px 60px;
+    margin-bottom: 3px;
 }
 
 .web-frame {
@@ -79,7 +80,7 @@
     justify-content: center; /* Centra horizontalmente */
     align-items: center;
     gap: 8px;
-    margin-top: 20px;
+    margin-top: 57px;
     padding: 10px 0;
     width: 100%;
 }

@@ -74,9 +74,10 @@
 <div class="rating">
   <ng-container *ngFor="let star of starArray">
     <ng-container [ngSwitch]="star">
-      <span *ngSwitchCase="'full'" class="star">&#9733;</span>
-      <span *ngSwitchCase="'half'" class="star half">&#9733;</span>
-      <span *ngSwitchCase="'empty'" class="star">&#9734;</span>
+      <span *ngSwitchCase="'full'" class="star-full">&#9733;</span>
+      <span *ngSwitchCase="'half'" class="star-half">&#9733;</span>
+      <span *ngSwitchCase="'empty'" class="empty-star">&#9733;</span>
+      
     </ng-container>
   </ng-container>
   

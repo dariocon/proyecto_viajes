@@ -179,8 +179,9 @@ export class MyTripsListComponent implements OnInit {
   }
   */
 
-showTripsGrid = true;
+//showTripsGrid = true;
   setActiveFilter(group: string, option: string): void {
+    this.isLoading = true;
     this.activeFilter = `${group} - ${option}`;
     this.currentPage = 0;
     this.searchTerm = ''; // Limpiamos búsqueda al cambiar filtro
@@ -189,11 +190,9 @@ showTripsGrid = true;
     queryParamsHandling: 'merge' // mantiene otros query params
   });
     // Siempre recargamos desde backend
-      this.showTripsGrid = false;
-  setTimeout(() => {
-    this.showTripsGrid = true;
+
     this.loadTripsByGroup(group);
-  }, 0);
+  
   }
 
   isTripCreatable(trip: TripDto): boolean {
@@ -302,7 +301,7 @@ showTripsGrid = true;
       this.loadTripsByGroup(group);
     }
     
-    document.querySelector('.trips-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   get displayCurrentPage(): number {

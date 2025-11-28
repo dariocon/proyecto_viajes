@@ -3,6 +3,8 @@
             min-height: calc(100vh - 48px); /* Restaurado: Altura de la pantalla menos el nav */
             width: 100%;
             padding: 0;
+            margin-top: 30px;
+            margin-bottom: 70px;
         }
 
         /* Panel principal: ahora ocupa el 100% del ancho y centra el contenido */
