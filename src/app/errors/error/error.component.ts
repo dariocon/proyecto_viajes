@@ -9,14 +9,14 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
   styleUrl: './error.component.css'
 })
 export class ErrorComponent {
-errorType: 'not-found' | 'forbidden' | null = null;
+errorType: 'not-found' | 'forbidden' | 'unauthorized' | null = null;
   
   constructor(private route: ActivatedRoute) { }
 ngOnInit(): void {
     this.route.data.subscribe(data => {
       
       // solo acepta estos tipos
-      this.errorType = data['error'] as 'not-found' | 'forbidden';
+      this.errorType = data['error'] as 'not-found' | 'forbidden' | 'unauthorized';
       
       // Valor por defecto
       if (!this.errorType) {

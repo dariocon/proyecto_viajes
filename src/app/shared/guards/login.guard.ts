@@ -15,8 +15,8 @@ export const loginGuard: CanMatchFn = (route, segments) => {
 
   if (!accessToken) {
    
-    router.navigateByUrl('/login');
-    return false; 
+    router.navigateByUrl('/unauthorized');
+    return false;
   }else {
     return true;
   }

@@ -71,18 +71,22 @@
                         </div>
                     </div>
                     
-<div class="rating">
-   <span class="average-rating">{{averageRating | number:'1.1-1'}}</span>
-  <ng-container *ngFor="let star of starArray">
-    <ng-container [ngSwitch]="star">
-      <span *ngSwitchCase="'full'" class="star-full">&#9733;</span>
-      <span *ngSwitchCase="'half'" class="star-half">&#9733;</span>
-      <span *ngSwitchCase="'empty'" class="empty-star">&#9733;</span>
-      
-    </ng-container>
-  </ng-container>
-  
-</div>
+                    <div class="rating">
+                    <span class="average-rating">{{averageRating | number:'1.1-1'}}</span>
+                    @for (star of starArray; track $index) {
+                    @switch (star) {
+                        @case ('full') {
+                        <span class="star-full">&#9733;</span>
+                        }
+                        @case ('half') {
+                        <span class="star-half">&#9733;</span>
+                        }
+                        @case ('empty') {
+                        <span class="empty-star">&#9733;</span>
+                        }
+                    }
+                    } 
+                    </div>
 
 
                     
@@ -122,7 +126,7 @@
                             </div>
                         </div>
                         <div class="booking-price">
-                        @if (!isTripInThePast()) {
+                        @if (!isTripInThePast() && !isTripFinished()) {
                             @if(trip.maxCapacity) {
                                 @if(trip.maxCapacity>trip.participations.length) {
                                     <span class="booking-label">PLAZAS LIMITADAS ({{ trip.maxCapacity - trip.participations.length }})</span>
@@ -135,7 +139,13 @@
                             <span class="booking-label">PLAZAS ILIMITADAS</span>
                             }
                         }@else {
-                            <span class="booking-label-soldout">EL VIAJE YA SE INICIÓ</span>
+                            @if(isTripFinished()) {
+                                <span class="booking-label-soldout">EL VIAJE YA FINALIZÓ</span>
+                            }@else {
+                                <span class="booking-label-soldout">EL VIAJE YA SE INICIÓ</span>
+
+                            }
+                            
                         }
 
 

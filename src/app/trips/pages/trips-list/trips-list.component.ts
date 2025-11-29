@@ -20,6 +20,9 @@ export class TripsListComponent implements OnChanges, OnInit {
 
   tripCategories: Categoria[] = [];
   isLoading: boolean = false;
+  isHeroImageLoading: boolean = true;
+  isCategoriesLoading: boolean = true;
+
   //filteredTrips: TripDto[] = [];
   paginatedTrips: TripDto[] = [];
   
@@ -42,6 +45,8 @@ export class TripsListComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.tripsService.getCategories().subscribe(cats => {
       this.tripCategories = cats;
+      
+      this.isCategoriesLoading = false;
       this.loadTrips();
     });
   }

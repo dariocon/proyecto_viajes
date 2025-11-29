@@ -39,10 +39,9 @@ export const routes: Routes = [
     { path: 'notifications', component: NotificationComponent, canMatch: [loginGuard] }, 
 
     { path: 'not-found', component: ErrorComponent, data: { error: 'not-found' } },
+    { path: 'unauthorized', component: ErrorComponent, data: { error: 'unauthorized' } },
     { path: 'forbidden', component: ErrorComponent, data: { error: 'forbidden' } },
     { path: 'organizer/:organizerUsername', component: OrganizerProfileComponent},
-
-    
     //{ path: 'unauthorized', component: ErrorComponent, data: { error: 'unauthorized' } },
     { path: '**', redirectTo: '/not-found' }
 

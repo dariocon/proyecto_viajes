@@ -48,7 +48,59 @@
 
                 @if (!isLoading) {
                     @for (trip of paginatedTrips; track trip.idTrip) { 
-                        <div class="trip-card" [style]="'view-transition-name: trip-card-' + trip.idTrip">
+                      <div class="trip-card">
+
+                                  <div class="trip-image-container" [routerLink]="['/viajes', trip.idTrip]">
+                                      <img [src]="getCoverImage(trip)" 
+                                          [alt]="trip.title" 
+                                          class="trip-image"
+                                          [style]="'view-transition-name: trip-img-' + trip.idTrip">
+                                  </div>
+
+                                  <div class="trip-content" [routerLink]="['/viajes', trip.idTrip]">
+                                      <h3 class="trip-title">{{ trip.title }}</h3>
+
+                                      <p class="trip-dates">
+                                          {{ trip.startDate | date:'dd MMM yyyy' }} - 
+                                          {{ trip.endDate | date:'dd MMM yyyy' }}
+                                      </p>
+
+                                      <div class="trip-footer">
+                                          <div class="trip-price-info">
+                                              <div class="trip-price">{{ trip.estimatedBudget | number:'1.0-0' }}€</div>
+                                              <div class="price-label">por persona</div>
+                                          </div>
+
+                                          <div class="trip-spots">
+      {{ isTripFinished(trip) ? 'Finalizado' : (trip.maxCapacity ? trip.maxCapacity - (trip.participations?.length ?? 0) + ' plazas' : 'PLAZAS ILIMITADAS') }}
+
+                                          </div>
+                                      </div>
+                                  </div>
+                                  @if (isTripCreatable(trip)) {
+                                    <div class="trip-management-actions">
+
+                                        <button 
+                                            class="edit-btn icon-button" 
+                                            (click)="editTrip(trip)">
+                                            <span class="icon-edit"></span>
+                                        </button>
+                                        
+                                        <button 
+                                            class="delete-trip-button icon-button" 
+                                            (click)="deleteTrip(trip)">
+                                            <span class="icon-delete"></span>
+                                        </button>
+                                                                            
+                                        <button 
+                                            class="participants-btn icon-button"
+                                            [routerLink]="['/viajes/participants', trip.idTrip]">
+                                            <span class="icon-participants"></span>
+                                        </button> 
+                                    </div>
+                                  }
+</div>
+                 <!--   <div class="trip-card" [style]="'view-transition-name: trip-card-' + trip.idTrip">
                             <div class="trip-image-container" [style]="'view-transition-name: trip-img-' + trip.idTrip">
                                 <img 
                                     [src]="getCoverImage(trip)"
@@ -91,7 +143,7 @@
                                     <button class="trip-btn" [routerLink]="['/viajes/', trip.idTrip]">Ver viaje</button>
                                }
                             </div>
-                        </div>
+                        </div> -->
                     } @empty {
                         <img 
                             src="assets/trips-not-available.png" 

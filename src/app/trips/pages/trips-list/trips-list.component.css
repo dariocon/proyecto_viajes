@@ -945,3 +945,121 @@
   }
 }
 
+
+
+.hero-image-skeleton {
+  width: 100%;
+  height: 300px;
+  background: #e2e8f0;
+  border-radius: 12px 0 0 12px; /* igual que la imagen */
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+
+
+.category-item-skeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+  gap: 6px;
+}
+
+.icon-box-skeleton {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  animation: pulse 1.5s infinite;
+}
+
+.category-name-skeleton {
+  width: 50px;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+
+.trip-card-skeleton {
+  background: #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 110px 1fr;
+  width: 100%;
+  max-width: 250px;
+  position: relative;
+}
+
+.trip-card-skeleton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150px; /* empieza fuera del contenedor */
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(300px); } /* mueve la barra a través del contenedor */
+}
+
+.trip-image-skeleton {
+  width: 100%;
+  height: 110px;
+  border-radius: 12px 12px 0 0;
+  background: #cbd5e1;
+}
+
+.trip-content-skeleton {
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.trip-title-skeleton {
+  width: 70%;
+  height: 18px;
+  border-radius: 4px;
+  background: #cbd5e1;
+}
+
+.trip-dates-skeleton {
+  width: 50%;
+  height: 13px;
+  border-radius: 4px;
+  background: #cbd5e1;
+}
+
+.trip-footer-skeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  gap: 8px;
+}
+
+.trip-price-skeleton,
+.trip-spots-skeleton {
+  width: 45%;
+  height: 16px;
+  border-radius: 4px;
+  background: #cbd5e1;
+}

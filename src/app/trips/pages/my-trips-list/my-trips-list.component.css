@@ -209,44 +209,83 @@ body {
 }
 
 .trip-image {
-    object-fit: cover;
-    height: 100%;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
 .trip-card {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+    background: white;
+    border-radius: 12px;
     overflow: hidden;
-    border-radius: 8px;
-    height: auto;
-    background-color: white; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    display: grid;
+    grid-template-rows: auto 1fr auto; 
 }
 
+.trip-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+.trip-card:hover .trip-image {
+    transform: scale(1.05);
+}
 .trip-content {
+    padding: 16px;
     display: grid;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto 1fr;
     gap: 8px;
-    padding: 11px;
-    text-align: center;
-    align-items: start;
-    justify-items: center;
 }
 
 .trip-title {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 24px;
     background: linear-gradient(135deg, #F95596, #FE7079);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    display: grid;
-    place-items: center;
-    text-align: center;
+    margin: 0;
 }
+.trip-dates {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+.trip-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+    margin-top: auto;
+}
+
+.trip-price-info {
+    display: grid;
+    gap: 2px;
+}
+
+.trip-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.price-label {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.trip-spots {
+    font-size: 13px;
+    color: #F95596;
+    font-weight: 600;
+}
+
 
 .trip-time {
     font-size: 12px;
@@ -263,11 +302,13 @@ body {
     align-items: center;  
     gap: 1px; 
     width: 100%;
+    padding-bottom: 7px;
     
 }
 .trip-btn {
     padding: 3px 13px;
     margin-top: 2px;
+    margin-bottom: 9px;
     font-size: 16px;
     font-weight: 700;
     letter-spacing: -0.025em;
@@ -306,7 +347,11 @@ body {
     justify-self: center;
     align-self: end;
 }
-
+.icon-button:hover {
+    background-color: #FFE3E5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
 /* 1. Aplicar nombre de transición a cada tarjeta o imagen */
 
 
@@ -337,7 +382,7 @@ body {
 .icon-participants {
     /* RUTA CORREGIDA: assets/images/borrar.png */
     background-image: url('/assets/images/cliente.png'); 
-    background-color: white;
+    
 }
 .icon-button {
     background: none;
@@ -448,6 +493,21 @@ body {
   margin: 10px 0;
   display: flex;
   justify-content: left;
+}
+.search-input {
+  border: 2px solid #ddd;
+  padding: 10px 14px;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color .2s ease;
+}
+
+.search-input:focus {
+  border-color: #000000; 
+}
+
+.search-input:hover {
+border-color: #000000;
 }
 
 .search-input {

@@ -145,7 +145,16 @@ width: 22px; /* Mantener este tamaño para el área clicable */
     color: #475569;
     width: 100%;
     border: 1px solid rgb(210, 210, 210);
+    outline: none;
+
 }
+.search-input:focus {
+  border-color: #000000;
+}
+.search-input:hover {
+  border-color: #000000;
+}
+
 .search-btn {
     /* 1. Resetear el estilo predeterminado del botón */
     background: none;

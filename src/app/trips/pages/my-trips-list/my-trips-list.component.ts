@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute,Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { tap } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-my-trips-list',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, CommonModule],
   templateUrl: './my-trips-list.component.html',
   styleUrl: './my-trips-list.component.css'
 })
@@ -41,7 +42,7 @@ export class MyTripsListComponent implements OnInit {
     this.tripsService.myTripsPageState$
       .pipe(
         tap(state => {
-          if (state) { // Comprobación añadida
+          if (state) { 
             this.paginatedTrips = state.content;
             this.totalElements = state.page.totalElements;
             this.totalPages = state.page.totalPages;
@@ -252,11 +253,6 @@ private loadTripsByGroup(group: string): void {
               confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
             });
 
-            /*
-            * No se muta el BehaviorSubject localmente porque esta lista está paginada y filtrada.
-            * La petición HTTP es necesaria para que el backend recalcule y devuelva un estado
-            * correcto de paginación (totalElements, totalPages,etc).
-            */
        //     const [group] = this.activeFilter.split(' - ');
          //   this.loadTripsByGroup(group);
           },
@@ -286,7 +282,13 @@ private loadTripsByGroup(group: string): void {
 
     return defaultImage;
   }
-
+  
+  isTripFinished(trip: TripDto): boolean {
+    if (!trip.endDate) return false;
+    const endDate = new Date(trip.endDate);
+    const now = new Date();
+    return endDate.getTime() < now.getTime();
+  }
   // Métodos de paginación
   changePage(page: number): void {
     const backendPage = page - 1;

@@ -37,4 +37,22 @@
 
     </div>
 
+    <div *ngIf="errorType === 'unauthorized'" class="error-container">
+
+                <div class="error-text-panel">
+            
+            <h1 class="error-status">No estás autorizado</h1>
+            
+            <p class="error-message-title">Acceso Restringido</p>
+            
+            <p class="error-description">
+                Intentaste acceder a una página para la que necesitas haber iniciado sesión.
+            </p>
+            
+            <a routerLink="/" class="go-back-link">Volver al Inicio</a>
+        </div>
+
+
+    
+    </div>
 </div>

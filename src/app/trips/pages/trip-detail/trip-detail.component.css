@@ -1003,9 +1003,29 @@ body {
 }
 
 .organizer-name-inline {
-    font-size: 15px;
+    /* Heredamos la fuente, pero aseguramos que sea un poco más fuerte */
     font-weight: 700;
-    color: #475569; /* var(--text-color-dark) */
+    font-size: 15px;
+    
+    /* Aplica el degradado de marca */
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent; /* Necesario para que el degradado funcione */
+
+    /* Estilo de enlace */
+    text-decoration: underline;
+    text-decoration-color: rgba(249, 85, 150, 0.5); /* Color de subrayado más suave */
+    text-underline-offset: 4px; /* Separa ligeramente el subrayado del texto */
+    
+    cursor: pointer;
+    transition: opacity 0.3s; /* Animación de hover */
+}
+
+.organizer-name-inline:hover {
+    opacity: 0.8; /* Se atenúa ligeramente al pasar el ratón */
+    text-decoration-color: #F95596; /* Subrayado más fuerte en hover */
 }
 
 .attendees-tag {

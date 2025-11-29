@@ -37,6 +37,15 @@
     <section class="categories-carousel">
         <div class="categories-content">
             <div class="carousel-container">
+                @if (isCategoriesLoading) {
+                    @for (_ of [0,1,2,3,4,5,6,7,8]; track _) {
+                        <div class="category-item-skeleton">
+                            <div class="icon-box-skeleton"></div>
+                            <div class="category-name-skeleton"></div>
+                        </div>
+                    }
+                }
+                @if (!isCategoriesLoading) {
                 <!-- Botón "Todos" -->
                 <div 
                     class="category-item" 
@@ -70,6 +79,7 @@
                         <span class="category-name">{{ category.name }}</span>
                     </div>
                 }
+            }
             </div>
         </div>
     </section>
@@ -89,7 +99,19 @@
         
         <div class="trips-grid">
             @if (isLoading) {
-                <p class="empty-message">Cargando viajes...</p>
+        @for (_ of [0,1,2,3,4,5,6,7,8,9,10,11]; track _) {
+            <div class="trip-card-skeleton">
+                <div class="trip-image-skeleton"></div>
+                <div class="trip-content-skeleton">
+                    <div class="trip-title-skeleton"></div>
+                    <div class="trip-dates-skeleton"></div>
+                    <div class="trip-footer-skeleton">
+                        <div class="trip-price-skeleton"></div>
+                        <div class="trip-spots-skeleton"></div>
+                    </div>
+                </div>
+            </div>
+        }
             }
             @if (!isLoading && paginatedTrips.length === 0) {
                 <img 
