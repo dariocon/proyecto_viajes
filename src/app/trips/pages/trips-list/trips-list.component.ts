@@ -67,6 +67,7 @@ export class TripsListComponent implements OnChanges, OnInit {
       return !this.category;
     }
     return Number(this.category) === Number(categoryId);
+    
   }
 
   loadTrips(): void {
@@ -129,8 +130,8 @@ export class TripsListComponent implements OnChanges, OnInit {
     if (categoryId) {
       queryParams['category'] = categoryId;
     }
-    
     this.router.navigate(['/viajes'], { queryParams });
+
   }
 
   onTimeFilterChange(): void {
@@ -175,7 +176,7 @@ export class TripsListComponent implements OnChanges, OnInit {
     
     this.currentPage = backendPage;
     this.loadTrips();
-    document.querySelector('.trips-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelector('.trips-section')?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }
 
   getPageNumbers(): number[] {

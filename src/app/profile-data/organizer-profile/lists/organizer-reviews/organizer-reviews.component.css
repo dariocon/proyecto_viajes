@@ -1,0 +1,207 @@
+/* CONTENT AREA */
+.content-area {
+    padding: 0 20px;
+}
+
+/* REVIEWS GRID */
+.reviews-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.review-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.review-header {
+    display: flex;
+    gap: 16px;
+}
+
+.review-author-info {
+    flex: 1;
+}
+
+.review-top-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 12px;
+}
+
+.review-author-details {
+    display: grid;
+    gap: 4px;
+}
+
+.review-author-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.review-trip-badge {
+    display: inline-block;
+    background: #f95596;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-top: 4px;
+    text-decoration: none !important;
+}
+
+.review-meta {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.review-rating {
+    display: flex;
+    gap: 2px;
+}
+
+.review-rating .star {
+    font-size: 18px;
+}
+
+.review-rating .star.filled {
+    color: #FFD700;
+}
+
+.review-rating .star.empty {
+    color: #e2e8f0;
+}
+
+.review-comment {
+    font-size: 14px;
+    color: #545F71;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* EMPTY STATE */
+.empty-message {
+    text-align: center !important;
+    font-size: 20px !important;
+    font-weight: 500 !important;
+    color: #888 !important;
+    margin: 0px 0 !important;
+    grid-column: 1 / -1 !important;
+    letter-spacing: -0.02em !important;
+    animation: fadeIn 0.3s ease-in-out !important;
+}
+
+.empty-state-image {
+    width: 100% !important;
+    max-width: 200px !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0px auto 0px auto !important;
+    grid-column: 1 / -1 !important;
+}
+
+/* PAGINATION */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 57px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    color: #475569;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.page-btn:hover:not([disabled]) {
+    border-color: #F95596;
+    color: #F95596;
+}
+
+.page-btn.active {
+    background: linear-gradient(to right, #F95596, #FE7079);
+    color: white;
+    border-color: transparent;
+    cursor: default;
+    pointer-events: none;
+}
+
+.page-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border-color: #e2e8f0;
+}
+
+.nav-btn {
+    min-width: 100px;
+}
+
+/* SKELETON REVIEWS */
+.sk-review {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    display: grid;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.sk {
+    background: #e2e8f0;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sk::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, #f1f5f9, transparent);
+    animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+
+.sk-review-line {
+    height: 16px;
+    width: 80%;
+    border-radius: 6px;
+}
+
+.sk-review-line.short {
+    width: 40%;
+}
+
+.sk-review-block {
+    height: 60px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .content-area {
+        padding: 0 10px;
+    }
+}

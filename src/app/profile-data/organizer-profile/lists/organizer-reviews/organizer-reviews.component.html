@@ -1,0 +1,72 @@
+<div class="content-area">
+  <!-- Skeleton Reviews -->
+  <div class="reviews-grid" *ngIf="loadingReviews">
+    <div class="review-card sk-review" *ngFor="let _ of [1,2,3,4]">
+      <div class="sk sk-review-line"></div>
+      <div class="sk sk-review-line short"></div>
+      <div class="sk sk-review-block"></div>
+    </div>
+  </div>
+  
+  <div class="reviews-grid">
+    @for (review of reviews; track review.tripId) {
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-author-info">
+          <div class="review-top-line">
+            <div class="review-author-details">
+              <div class="review-author-name">{{ review.username }}</div>
+              <a class="review-trip-badge" [routerLink]="['/viajes', review.tripId]">{{ review.tripTitle }}</a>
+              <div class="review-meta">{{ review.tripId }} • {{ review.submissionDate | date:'mediumDate' }}</div>
+            </div>
+            <div class="review-rating">
+              @for (star of [1,2,3,4,5]; track star) {
+              <span class="star" 
+                    [ngClass]="{'filled': star <= review.rating, 'empty': star > review.rating}">★</span>
+              }
+            </div>
+          </div>
+          <p class="review-comment">{{ review.comment }}</p>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  @if (reviews.length === 0 && !loadingReviews) {
+  <div>
+    <img 
+      src="./assets/images/trips-not-available-gris.png" 
+      alt="trips-not-available"
+      class="empty-state-image" 
+    >
+    <p class="empty-message">No hay reseñas disponibles.</p>
+  </div>
+  }
+
+  <!-- Pagination -->
+  @if (totalPages > 1) {
+  <div class="pagination-controls">
+    <button class="page-btn nav-btn"
+            [disabled]="displayCurrentReviewsPage === 1"
+            (click)="changePage(displayCurrentReviewsPage - 2)">
+      &larr; Anterior
+    </button>
+
+    @for (page of getReviewPageNumbers(); track page) {
+    <button
+            class="page-btn"
+            [class.active]="page === displayCurrentReviewsPage"
+            (click)="changePage(page - 1)">
+      {{ page }}
+    </button>
+    }
+
+    <button class="page-btn nav-btn"
+            [disabled]="displayCurrentReviewsPage === totalPages"
+            (click)="changePage(displayCurrentReviewsPage)">
+      Siguiente &rarr;
+    </button>
+  </div>
+  }
+</div>

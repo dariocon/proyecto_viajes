@@ -1,0 +1,85 @@
+<div class="content-area">
+  <!-- Skeleton Trips -->
+  <div class="trips-grid" *ngIf="loading">
+    <div class="trip-card sk-trip" *ngFor="let _ of [1,2,3,4,5,6]">
+      <div class="sk sk-trip-img"></div>
+      <div class="sk sk-trip-title"></div>
+      <div class="sk sk-trip-line"></div>
+    </div>
+  </div>
+
+  <div class="trips-grid">
+    @for (trip of organizerTrips; track trip.idTrip) {
+    <div class="trip-card" [routerLink]="['/viajes', trip.idTrip]">
+      <div class="trip-image-container">
+        <img [src]="getCoverImage(trip)" [alt]="trip.title" class="trip-image" 
+             [style]="'view-transition-name: trip-img-' + trip.idTrip">
+      </div>
+
+      <div class="trip-content">
+        <h3 class="trip-title">{{ trip.title }}</h3>
+
+        <p class="trip-dates">
+          {{ trip.startDate | date:'dd MMM yyyy' }} - 
+          {{ trip.endDate | date:'dd MMM yyyy' }}
+        </p>
+
+        <div class="trip-footer">
+          <div class="trip-price-info">
+            <div class="trip-price">{{ trip.estimatedBudget | number:'1.0-0' }}€</div>
+            <div class="price-label">por persona</div>
+          </div>
+
+          <div class="trip-spots">
+            @if(tripType === 'pasados') {
+              {{ isTripFinished(trip) ? 'Finalizado' : (trip.maxCapacity ? trip.maxCapacity - (trip.participations?.length ?? 0) + ' plazas' : 'PLAZAS ILIMITADAS') }}
+            } @else {
+              @if(trip.maxCapacity) {
+                {{ trip.maxCapacity - (trip.participations?.length ?? 0) }} plazas
+              }@else {
+                PLAZAS ILIMITADAS
+              }
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  @if (organizerTrips.length === 0 && !loading) {
+  <div>
+    <img 
+      src="./assets/images/trips-not-available-gris.png" 
+      alt="trips-not-available"
+      class="empty-state-image" 
+    >
+    <p class="empty-message">No hay viajes {{ tripType === 'pasados' ? 'pasados' : 'próximos' }} disponibles.</p>
+  </div>
+  }
+
+  @if (totalPages > 1) {
+  <div class="pagination-controls">
+    <button class="page-btn nav-btn" 
+            [disabled]="displayCurrentPage === 1"
+            (click)="changePage(displayCurrentPage - 2)">
+      &larr; Anterior
+    </button>
+
+    @for (page of getPageNumbers(); track page) {
+    <button
+            class="page-btn"
+            [class.active]="page === displayCurrentPage"
+            (click)="changePage(page - 1)">
+      {{ page }}
+    </button>
+    }
+
+    <button class="page-btn nav-btn"
+            [disabled]="displayCurrentPage === totalPages"
+            (click)="changePage(displayCurrentPage)">
+      Siguiente &rarr;
+    </button>
+  </div>
+  }
+</div>
