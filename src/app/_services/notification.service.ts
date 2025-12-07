@@ -4,6 +4,9 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { NotificationDtoAdd, Notifications } from '../_interfaces/notification';
 import { AuthService } from './auth.service';
 
+//import SockJS from 'sockjs-client';
+import { Client, Stomp } from '@stomp/stompjs';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +14,7 @@ export class NotificationService {
   private apiUrl = 'http://localhost:8080/notifications';
   private http: HttpClient = inject(HttpClient);
   private authService = inject(AuthService);
-
+  private stompClient!: Client;
   private _notifications$ = new BehaviorSubject<Notifications[]>([]);
   public notifications$ = this._notifications$.asObservable();
 
@@ -22,8 +25,31 @@ export class NotificationService {
     this.notifications$.subscribe(nots => {
       this.hasUnread.set(nots.some(n => !n.isRead));
     });
+
+    this.initWebSocket();
   }
 
+  //Método para el websocket de notificaciones (tanto la notificación del día antes del comienzo del viaje como las de borrado/editado viaje)
+  private initWebSocket() {
+    const username = this.authService.username;
+    if (!username) return;
+
+    this.stompClient = new Client({
+      brokerURL: 'ws://localhost:8080/ws', 
+      reconnectDelay: 5000
+    });
+
+    this.stompClient.onConnect = () => {
+      console.log('WS conectado');
+      this.stompClient.subscribe(`/topic/notifications/${username}`, message => {
+        const notification: Notifications = JSON.parse(message.body);
+        const current = this._notifications$.value;
+        this._notifications$.next([notification, ...current]);
+      });
+    };
+
+    this.stompClient.activate();
+  }
 
 addNotification(participation: NotificationDtoAdd): Observable<any> {
   return this.http.post<any>(`${this.apiUrl}`, participation);

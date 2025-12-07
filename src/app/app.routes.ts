@@ -23,7 +23,7 @@ export const routes: Routes = [
     { path:'', component: TripsListComponent }, //HomeComponent
     { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [loggedGuard] },
-    { path: 'usuarios/create',component: RegisterComponent},
+    { path: 'usuarios/create',component: RegisterComponent, canMatch: [loginGuard, roleGuard], data: {roles:['admin']}},
     { path: 'usuarios/:username', component: UserComponent, canMatch: [loginGuard], canActivate: [editGuard]},
     { path: 'create-trip', component: FormTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
 
@@ -44,7 +44,7 @@ export const routes: Routes = [
     { path: 'unauthorized', component: ErrorComponent, data: { error: 'unauthorized' } },
     { path: 'forbidden', component: ErrorComponent, data: { error: 'forbidden' } },
     { path: 'organizer/:organizerUsername', component: OrganizerProfileComponent},
-    { path: 'administration', component: AdministrationComponent},
+    { path: 'administration', component: AdministrationComponent, canMatch: [loginGuard, roleGuard], data: {roles:['admin']}},
     //{ path: 'unauthorized', component: ErrorComponent, data: { error: 'unauthorized' } },
     { path: '**', redirectTo: '/not-found' }
 

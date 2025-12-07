@@ -17,12 +17,13 @@ export class NotificationComponent implements OnInit {
 
   ngOnInit(): void {
     this.notificationService.notifications$.subscribe(nots => this.notifications = nots);
-    this.notificationService.refreshNotifications();
+     this.notificationService.refreshNotifications();
+ /*   this.notificationService.refreshNotifications();
       interval(5000)
       .pipe(
         tap(() => this.notificationService.refreshNotifications())
       )
-      .subscribe();
+      .subscribe();*/
   }
 
 markAsRead(notification: Notifications) {
