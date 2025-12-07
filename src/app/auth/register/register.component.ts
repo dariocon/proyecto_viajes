@@ -1,5 +1,5 @@
 import { NgClass, NgIf, NgStyle } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { AbstractControl, Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { UsernameValidatorService } from '../../_services/username-validator-ser
 })
 export class RegisterComponent {
 
+  @Input() admin: boolean = false;
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
@@ -81,19 +82,32 @@ export class RegisterComponent {
 
       this.authService.register( userRegister ).subscribe({
         next: () => {
-          Swal.fire({
-              title: "Registro correcto",
-              text: "Te hemos enviado un enlace de confirmación a tu correo.",
-              icon: 'success',
-              confirmButtonText: 'Aceptar',  
-              background: 'linear-gradient(135deg, #F95596, #FE7079)',
-              color: 'white',
-              iconColor: 'white',
-              confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
-          }).then(
-            () => this.router.navigate(['/login'])
-          )
-
+          if (!this.admin) {
+              Swal.fire({
+                  title: "Registro correcto",
+                  text: "Te hemos enviado un enlace de confirmación a tu correo.",
+                  icon: 'success',
+                  confirmButtonText: 'Aceptar',  
+                  background: 'linear-gradient(135deg, #F95596, #FE7079)',
+                  color: 'white',
+                  iconColor: 'white',
+                  confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
+              }).then(
+                () => this.router.navigate(['/login'])
+              )
+          
+         }else{
+              Swal.fire({
+                  title: "Usuario creado",
+                  text: "Se ha registrado un nuevo usuario.",
+                  icon: 'success',
+                  confirmButtonText: 'Aceptar',  
+                  background: 'linear-gradient(135deg, #F95596, #FE7079)',
+                  color: 'white',
+                  iconColor: 'white',
+                  confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
+              })
+          }
         },
         error: (error) => {
           Swal.fire({
@@ -114,5 +128,9 @@ export class RegisterComponent {
     this.registerForm.markAllAsTouched();
   }
   }
+
+      goBack(): void {
+        history.back(); 
+    }
 }
 

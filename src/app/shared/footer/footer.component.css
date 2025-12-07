@@ -129,7 +129,7 @@
     flex-direction: column;
     gap: 20px;
     align-items: center; 
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .original-nav-link {
@@ -186,7 +186,7 @@
 .social-icon-box {
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -199,6 +199,20 @@
 .social-icon-box:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+}
+
+.instagram-logo{
+    width: 40px;
+    height: 40px;
+}
+.x-logo{
+    width: 44px;
+    height: 44px;
+}
+
+.youtube-logo{
+    width: 41px;
+    height: 41px;
 }
 
 .footer-copyright {

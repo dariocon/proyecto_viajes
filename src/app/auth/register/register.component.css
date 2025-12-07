@@ -181,6 +181,57 @@ div.radio-container label {
     font-size: small;
 }
 
+.back-button {
+    background-color: #e3e3e3;
+    color: #008080;
+    font-weight: 700;
+    padding: 9px 16px;
+    font-size: 16px; 
+    line-height: 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    text-decoration: none;
+    
+}
+
+.back-button:hover {
+    background-color: #ededed;
+    color: #666;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    margin-top: 30px;
+}
+.submit-button {
+    max-width: 300px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(254, 112, 121, 0.4);
+}
+
+.submit-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
 
 @media (max-width: 768px) {
     .register-container .left-panel {

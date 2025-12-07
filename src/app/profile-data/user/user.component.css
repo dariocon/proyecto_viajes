@@ -129,29 +129,56 @@
         .input-error { border: 1px solid #dc3545 !important; outline: none; }
         .input-error-message { color: #dc3545 !important; font-size: 0.875rem; /* text-sm de Tailwind */ }
 
-        /* Estilo del botón */
-        .login-button {
-            width: 100%;
-            max-width: 300px; /* Limita el ancho en pantallas grandes */
-            display: block; /* Asegura el comportamiento de bloque para que margin: auto funcione */
-            margin-left: auto; /* Centrar horizontalmente */
-            margin-right: auto; /* Centrar horizontalmente */
-            padding: 12px;
-            margin-top: 20px; /* Aumentado ligeramente para mejor separación */
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #F95596, #FE7079);
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.3s, transform 0.2s;
-            box-shadow: 0 4px 10px rgba(254, 112, 121, 0.4);
-        }
-        .login-button:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
+ .form-actions {
+    display: grid;
+    grid-template-columns: auto auto; 
+    gap: 20px;
+    justify-content: center;
+    align-items: center; 
+    margin-top: 30px;
+}
+
+.form-actions button {
+    min-width: 140px;        
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+    
+    display: grid; 
+    place-content: center; 
+    line-height: 1; 
+}
+
+
+.back-button {
+    background-color: #e8e8e8; 
+    color: #008080;
+    font-weight: 600; 
+}
+
+.back-button:hover {
+    background-color: #f5f5f5;
+    color: #008080; 
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); 
+}
+
+.submit-button {
+    background: linear-gradient(135deg, #F95596, #FE7079);
+    color: white;
+    font-weight: 600; 
+    box-shadow: 0 4px 10px rgba(254, 112, 121, 0.4); 
+}
+
+.submit-button:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(254, 112, 121, 0.6); 
+}
 
         /* NUEVA IMPLEMENTACIÓN DE LA CUADRÍCULA (CSS PURO) */
         @media (min-width: 640px) {
@@ -180,3 +207,6 @@
                 max-width: 100%;
             }
         }
+
+
+ 

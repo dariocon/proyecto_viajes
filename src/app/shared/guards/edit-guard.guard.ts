@@ -13,8 +13,12 @@ export const editGuard: CanActivateFn = (route, state) => {
     console.log(`Autorización CONCEDIDA: ${loggedInUsername} puede editar.`);
     return true; 
   } else {
+    if(authService.role=="admin") {
+      return true
+    }else{
     console.log(`Autorización DENEGADA: ${loggedInUsername} intentó editar.`);
     return router.createUrlTree(['/forbidden']); 
+    }
   }
 
  

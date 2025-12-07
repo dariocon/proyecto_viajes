@@ -8,16 +8,21 @@
 <nav class="nav-desktop">
     
 
-    <div class="search-container" [ngClass]="{ 'wide-search': !(authService.isLogged()) }">
+    <div class="search-container" [ngClass]="{ 'wide-search': !(authService.isLogged()), 'small-search': authService.isLogged() && role === 'admin'}">
         <input type="text" placeholder="Buscar viajes" class="search-input" #searchInput (keyup.enter)="onSearch(searchInput)">
-<button class="search-btn" (click)="onSearch(searchInput)">
+          <button class="search-btn" (click)="onSearch(searchInput)">
         <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 19L13 13M15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z" stroke="#F95596" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
-    </button>
+          </button>
     </div>
 
     @if (authService.isLogged()) {
+      @if (role === 'admin') {
+        <div class="nav-item">
+          <a class="nav-link" [routerLink]="['/administration']" routerLinkActive="active-link">Administración</a>
+        </div>
+      }
       <div class="nav-item">
         <a class="nav-link" [routerLink]="['/mis-viajes']" routerLinkActive="active-link">Mis viajes</a>
       </div>

@@ -20,8 +20,15 @@ http: HttpClient = inject(HttpClient);
 private searchTermSubject = new BehaviorSubject<string>('');
 public currentSearchTerm: Observable<string> = this.searchTermSubject.asObservable();
 public authService = inject(AuthService);
-private _myTripsPageState = new BehaviorSubject<TripPageResponse | null>(null);
+
+public _myTripsPageState = new BehaviorSubject<TripPageResponse | null>(null);
 public myTripsPageState$ = this._myTripsPageState.asObservable();
+
+private _tripsPageState = new BehaviorSubject<TripPageResponse | null>(null);
+public tripsPageState$ = this._tripsPageState.asObservable();
+
+public _adminTripsPageState = new BehaviorSubject<TripPageResponse | null>(null);
+public adminTripsPageState$ = this._adminTripsPageState.asObservable();
 
 setSearchTerm(term: string): void {
     this.searchTermSubject.next(term.toLowerCase()); 
@@ -33,14 +40,38 @@ getCategories(): Observable<Categoria[]> {
     return this.http.get<Categoria[]>(`${this.apiUrl}/categorias`);
 }
 
-getTrips(): Observable<TripDto[]> {
-    return this.http.get<TripDto[]>(`${this.apiUrl}/viajes`);
+public resetTripsPageState(targetState?: BehaviorSubject<TripPageResponse | null>): void {
+  const stateSubject = targetState || this._tripsPageState;
+  stateSubject.next(null);
+}
+
+getTrips(page: number = 0, size: number = 12, order: string = 'DESC', sortBy?: string): Observable<TripPageResponse> {
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('order', order); 
+
+  if (sortBy) {
+    params = params.set('sortBy', sortBy);
+  }
+
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/all`, { params }).pipe(
+    tap(response => {
+      this._adminTripsPageState.next(response);
+    }),
+    catchError(error => {
+      console.error('Error al obtener los viajes:', error);
+      this._adminTripsPageState.next(null);
+      return throwError(() => error);
+    })
+  );
 }
 /*
 getTripsAvailable(): Observable<TripDto[]> {
     return this.http.get<TripDto[]>(`${this.apiUrl}/viajes/available`);
 }*/
-getTripsAvailable(page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'ASC', timeFilter?: string): Observable<TripPageResponse> {
+getTripsAvailable(page: number = 0, size: number = 12, sortBy: string = 'startDate', 
+  sortDir: string = 'ASC', timeFilter?: string): Observable<TripPageResponse> {
   let params = new HttpParams()
     .set('page', page.toString())
     .set('size', size.toString())
@@ -72,7 +103,8 @@ getTripByIdCategory(idCat: number, page: number = 0, size: number = 12, sortBy: 
   );
 }
 
-getTripsByOrganizer(organizer: string, page: number = 0, size: number = 12, sortBy: string = 'startDate', sortDir: string = 'DESC', timeFilter?: string): Observable<TripPageResponse> {
+getTripsByOrganizer(organizer: string, page: number = 0, size: number = 12, 
+  sortBy: string = 'startDate', sortDir: string = 'DESC', timeFilter?: string): Observable<TripPageResponse> {
   let params = new HttpParams()
     .set('page', page.toString())
     .set('size', size.toString())
@@ -96,7 +128,13 @@ getTripsByOrganizer(organizer: string, page: number = 0, size: number = 12, sort
 }
 
 
-getTripsBySearchTerm(term: string, page: number = 0, size: number = 12, sortBy: string = 'title', sortDir: string = 'ASC'): Observable<TripPageResponse> {
+getTripsBySearchTermAdmin(
+  term: string, 
+  page: number = 0, 
+  size: number = 12, 
+  sortBy: string = 'startDate', 
+  sortDir: string = 'ASC'
+): Observable<TripPageResponse> {
   const finalTerm = (term || '').trim();
   let params = new HttpParams()
     .set('page', page.toString())
@@ -104,14 +142,44 @@ getTripsBySearchTerm(term: string, page: number = 0, size: number = 12, sortBy: 
     .set('sortBy', sortBy)
     .set('sortDir', sortDir);
 
-  
-  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/search/${finalTerm}`, { params }).pipe(
+  return this.http.get<TripPageResponse>(`${this.apiUrl}/viajes/searchAdmin/${finalTerm}`, { params }).pipe(
+    tap(response => this._adminTripsPageState.next(response)),
     catchError(error => {
       console.error(`Error al buscar viajes por término "${finalTerm}":`, error);
-      return throwError(() => new Error('No se pudo cargar la búsqueda.'));
+      this._adminTripsPageState.next(null);
+      return throwError(() => error);
     })
   );
 }
+
+
+searchTripsAvailable(
+  term: string, 
+  page: number = 0, 
+  size: number = 12, 
+  sortBy: string = 'startDate', 
+  sortDir: string = 'ASC'
+): Observable<TripPageResponse> {
+  const finalTerm = (term || '').trim();
+  let params = new HttpParams()
+    .set('page', page.toString())
+    .set('size', size.toString())
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
+
+  return this.http.get<TripPageResponse>(
+    `${this.apiUrl}/viajes/search/${finalTerm}`, 
+    { params }
+  ).pipe(
+   // tap(response => this._tripsPageState.next(response)),
+    catchError(error => {
+      console.error(`Error al buscar viajes disponibles por término "${finalTerm}":`, error);
+   //   this._tripsPageState.next(null);
+      return throwError(() => error);
+    })
+  );
+}
+
 /*addTrip(trip: TripAdd): Observable<any>
 {
 return this.http.post<any>(`${this.apiUrl}/viajes`, trip);
@@ -131,18 +199,26 @@ deleteParticipation(idTrip: number, username: string, participationDate: string)
       return this.http.delete<any>(url);
 }
 
-deleteTrip(idTrip: number): Observable<any> {
+deleteTripFromMyTrips(idTrip: number): Observable<any> {
   const url = `${this.apiUrl}/viajes/${idTrip}`;
   return this.http.delete<any>(url).pipe(
     tap(() => {
-      this.removeTripFromState(idTrip);
+      this.removeTripFromState(this._myTripsPageState, idTrip);
     })
   );
 }
 
+deleteTripFromAdminTrips(idTrip: number): Observable<any> {
+  const url = `${this.apiUrl}/viajes/${idTrip}`;
+  return this.http.delete<any>(url).pipe(
+    tap(() => {
+      this.removeTripFromState(this._adminTripsPageState, idTrip);
+    })
+  );
+}
 
-private removeTripFromState(idTrip: number) {
-  const state = this._myTripsPageState.value;
+private removeTripFromState(subject: BehaviorSubject<TripPageResponse | null>, idTrip: number) {
+  const state = subject.value;
   if (!state) return;
 
   const newContent = state.content.filter(t => t.idTrip !== idTrip);
@@ -158,8 +234,9 @@ private removeTripFromState(idTrip: number) {
     }
   };
 
-  this._myTripsPageState.next(newState);
+  subject.next(newState);
 }
+
 
 
 

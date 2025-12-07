@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TripDto, TripPageResponse } from '../../../_interfaces/trip';
 import { TripsService } from '../../../_services/trips.service';
 import { AuthService } from '../../../_services/auth.service';
@@ -7,6 +7,7 @@ import { ActivatedRoute,Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { tap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-my-trips-list',
@@ -14,10 +15,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './my-trips-list.component.html',
   styleUrl: './my-trips-list.component.css'
 })
-export class MyTripsListComponent implements OnInit {
+export class MyTripsListComponent implements OnInit , OnDestroy {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
-  
+  private subscriptions: Subscription = new Subscription();
   constructor(private tripsService: TripsService) { }
   
   filterGroups: { title: string; options: string[] }[] = [];
@@ -35,10 +36,12 @@ export class MyTripsListComponent implements OnInit {
   currentUserId = this.authService.username; 
   role: string = '';
 
- private route: ActivatedRoute = inject(ActivatedRoute);
+ //private route: ActivatedRoute = inject(ActivatedRoute);
 
-  ngOnInit(): void {
+ngOnInit(): void {
 
+  // Suscripción al estado de mis viajes
+  this.subscriptions.add(
     this.tripsService.myTripsPageState$
       .pipe(
         tap(state => {
@@ -47,75 +50,82 @@ export class MyTripsListComponent implements OnInit {
             this.totalElements = state.page.totalElements;
             this.totalPages = state.page.totalPages;
             this.currentPage = state.page.number;
-            this.isLoading = false;
           }
+          this.isLoading = false;
         })
-      ).subscribe();
+      )
+      .subscribe()
+  );
 
+  // Suscripción al rol del usuario
+  this.subscriptions.add(
     this.authService.role$.subscribe(role => {
       this.role = role;
 
-      if (this.role === 'organizer') {
+      if (this.role === 'organizer' || this.role === 'admin') {
         this.filterGroups = [
-          {
-            title: 'Creados',
-            options: ['Todos', 'Próximos', 'Pasados']
-          },
-          {
-            title: 'Asistente',
-            options: ['Todos', 'Próximos', 'Pasados']
-          }
+          { title: 'Creados', options: ['Todos', 'Próximos', 'Pasados'] },
+          { title: 'Asistente', options: ['Todos', 'Próximos', 'Pasados'] }
         ];
         this.activeFilter = 'Creados - Todos';
         this.loadTripsByGroup('Creados');
       } else {
         this.filterGroups = [
-          {
-            title: 'Asistente',
-            options: ['Todos', 'Próximos', 'Pasados']
-          }
+          { title: 'Asistente', options: ['Todos', 'Próximos', 'Pasados'] }
         ];
         this.activeFilter = 'Asistente - Todos';
         this.loadTripsByGroup('Asistente');
       }
-    });
+    })
+  );
+}
+
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    this.tripsService.resetTripsPageState(this.tripsService._myTripsPageState);
+    this.isLoading = true;
+
   }
 
 private loadTripsByGroup(group: string): void {
-    this.isLoading = true;
-    this.searchTerm = ''; 
-    
-    const [_, option] = this.activeFilter.split(' - ');
-    const timeFilter = this.getTimeFilter(option);
+  this.isLoading = true;
+  this.searchTerm = '';
 
-    const errorCallback = (error: any) => {
-      console.error('Error completo al cargar viajes:', error);
-      this.paginatedTrips = [];
-      this.totalElements = 0;
-      this.totalPages = 0;
-      this.isLoading = false;
-    };
+  const [_, option] = this.activeFilter.split(' - ');
+  const timeFilter = this.getTimeFilter(option);
 
-    if (group === 'Creados') {
-      this.tripsService.getTripsByOrganizer(
-        this.currentUserId, 
-        this.currentPage, 
-        this.itemsPerPage,
-        'startDate', 
-        'DESC',
-        timeFilter
-      ).subscribe({ error: errorCallback });
-    } else if (group === 'Asistente') {
-      this.tripsService.getTripParticipationsByUser(
-        this.authService.username, 
-        this.currentPage, 
-        this.itemsPerPage,
-        'startDate', 
-        'DESC',
-        timeFilter
-      ).subscribe({ error: errorCallback });
-    }
+  const handleResponse = (response: TripPageResponse) => {
+    this.paginatedTrips = response.content;
+    this.totalElements = response.page.totalElements;
+    this.totalPages = response.page.totalPages;
+    this.currentPage = response.page.number;
+    this.isLoading = false;
+  };
+
+  const errorCallback = (error: any) => {
+    console.error('Error completo al cargar viajes:', error);
+    this.paginatedTrips = [];
+    this.totalElements = 0;
+    this.totalPages = 0;
+    this.isLoading = false;
+  };
+
+  if (group === 'Creados') {
+    this.subscriptions.add(
+      this.tripsService.getTripsByOrganizer(this.currentUserId, this.currentPage, this.itemsPerPage, 'startDate', 'DESC', timeFilter)
+        .subscribe({ next: handleResponse, error: errorCallback })
+    );
+  } else if (group === 'Asistente') {
+    this.subscriptions.add(
+      this.tripsService.getTripParticipationsByUser(this.authService.username, this.currentPage, this.itemsPerPage, 'startDate', 'DESC', timeFilter)
+        .subscribe({ next: handleResponse, error: errorCallback })
+    );
   }
+}
+
+
+
 
   private getTimeFilter(option: string): string | undefined {
     switch (option) {
@@ -241,7 +251,7 @@ private loadTripsByGroup(group: string): void {
       confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.tripsService.deleteTrip(trip.idTrip).subscribe({
+        this.tripsService.deleteTripFromMyTrips(trip.idTrip).subscribe({
           next: () => {
             Swal.fire({
               title: "¡Viaje Eliminado!",

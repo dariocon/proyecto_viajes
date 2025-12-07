@@ -45,7 +45,7 @@ export class TripsListComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.tripsService.getCategories().subscribe(cats => {
       this.tripCategories = cats;
-      
+      this.isHeroImageLoading = false;
       this.isCategoriesLoading = false;
       this.loadTrips();
     });
@@ -97,7 +97,7 @@ export class TripsListComponent implements OnChanges, OnInit {
 
     // Prioridad: 1) Búsqueda, 2) Categoría, 3) Todos
     if (this.term) {
-      this.tripsService.getTripsBySearchTerm(this.term, this.currentPage, this.itemsPerPage, this.sortBy, this.sortDir)
+      this.tripsService.searchTripsAvailable(this.term, this.currentPage, this.itemsPerPage, this.sortBy, this.sortDir)
         .subscribe({ next: handlePageResponse, error: handleError });
     } else if (this.category) {
       this.tripsService.getTripByIdCategory(this.category, this.currentPage, this.itemsPerPage, this.sortBy, this.sortDir,timeFilter)
@@ -135,6 +135,14 @@ export class TripsListComponent implements OnChanges, OnInit {
 
   onTimeFilterChange(): void {
     this.currentPage = 0; // Resetear a página 0
+
+    // Si hay búsqueda activa, limpiarla primero. Si he buscado y pulso en un filtro temporal, que no se aplique a la búsqueda.
+    if (this.term && this.term.trim()) {
+      this.term = undefined;
+      this.router.navigate(['/viajes']); // Limpia query params
+      return; // para evitar llamar loadTrips() dos veces
+    }
+
     this.loadTrips();
   }
 

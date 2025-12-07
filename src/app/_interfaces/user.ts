@@ -34,6 +34,16 @@ export interface UsuariosDto {
   birthDate: string;
 }
 
+export interface UserPageResponse {
+    content: UsuariosDto[];
+    page: {
+        size: number;
+        number: number;
+        totalElements: number;
+        totalPages: number;
+    };
+}
+
 export interface UserLoginResponse {
    
     message:    string;
@@ -82,7 +92,7 @@ export interface UserEdit {
     username: string,
     name: string,
     surname: string,
-    email: string,
+    email?: string,
     password: string,
     gender: string,
     birthDate: string,

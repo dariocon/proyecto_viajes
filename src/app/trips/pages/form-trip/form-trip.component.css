@@ -1,9 +1,7 @@
-
-
 .new-trip-container {
     margin-top: 30px;
     display: flex;
-    min-height: calc(100vh - 48px); 
+    min-height: calc(100vh - 48px);
     width: 100%;
     padding: 0;
     margin-bottom: 70px;
@@ -97,7 +95,6 @@
 .input-error { border: 1px solid #dc3545 !important; outline: none; }
 .input-error-message { color: #dc3545 !important; font-size: 0.875rem; }
 
-/* Selects */
 select.input-field { color: #333; }
 select.input-field.placeholder { color: #a0aec0; }
 select.input-field option[disabled] { color: #a0aec0; }
@@ -105,13 +102,42 @@ select.input-field option:not([disabled]) { color: #333; }
 
 
 
+.back-button {
+    background-color: #e3e3e3;
+    color: #008080;
+    font-weight: 700;
+    padding: 9px 16px;
+    font-size: 16px; 
+    line-height: 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    text-decoration: none;
+    
+}
 
-.login-button {
-    width: 100%;
+.back-button:hover {
+    background-color: #ededed;
+    color: #666;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    margin-top: 30px;
+}
+.submit-button {
     max-width: 300px;
-    display: block;
-    margin: 20px auto 0;
-    padding: 12px;
+    padding: 12px 20px;
     border: none;
     border-radius: 8px;
     background: linear-gradient(135deg, #F95596, #FE7079);
@@ -123,15 +149,11 @@ select.input-field option:not([disabled]) { color: #333; }
     box-shadow: 0 4px 10px rgba(254, 112, 121, 0.4);
 }
 
-.login-button:hover {
+.submit-button:hover {
     opacity: 0.9;
     transform: translateY(-1px);
 }
 
-/* 
-  grid del formulario */
-
-/* Contenedor Flex para la cuadrícula principal en pantallas grandes */
 @media (min-width: 640px) {
     .form-grid-layout {
         display: flex;
@@ -146,7 +168,6 @@ select.input-field option:not([disabled]) { color: #333; }
         margin-bottom: 20px;
     }
 
-    /* Asegura que los grupos sin grid (ej: Descripción, HR, Previsualización) usen el ancho completo */
     .new-trip-form > .input-group {
         margin-bottom: 20px;
     }
@@ -171,7 +192,7 @@ select.input-field option:not([disabled]) { color: #333; }
 
 .itinerary-list.full-width-in-grid {
     padding: 0 12px;
-    margin-top: 10px; 
+    margin-top: 10px;
 }
 
 .activity-item {
@@ -199,7 +220,7 @@ select.input-field option:not([disabled]) { color: #333; }
 .activity-title {
     font-size: 18px;
     font-weight: 600;
-    color: #F95596; 
+    color: #F95596;
 }
 
 .remove-activity-btn {
@@ -208,7 +229,7 @@ select.input-field option:not([disabled]) { color: #333; }
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0 0 5px 10px; 
+    padding: 0 0 5px 10px;
     line-height: 1;
     transition: transform 0.2s;
 }
@@ -268,12 +289,10 @@ select.input-field option:not([disabled]) { color: #333; }
 
 
 
-/* Contenedor principal de previsualización (ocupa todo el ancho del grid) */
 .preview-panel {
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
 }
 
-/* Contenedor de Previsualización (Grande) de la Portada */
 .large-preview-container {
     padding: 15px;
     border: 1px solid #e2e8f0;
@@ -291,13 +310,13 @@ select.input-field option:not([disabled]) { color: #333; }
 }
 
 .image-preview-large {
-    max-width: 100%; 
-    max-height: 280px; 
-    object-fit: cover; 
+    max-width: 100%;
+    max-height: 280px;
+    object-fit: cover;
     height: auto;
     border-radius: 8px;
     display: block;
-    margin: 0 auto; 
+    margin: 0 auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -305,14 +324,12 @@ select.input-field option:not([disabled]) { color: #333; }
 
 .image-list-grid {
     display: grid;
-    /* En móviles (por defecto): una columna */
     grid-template-columns: 1fr;
     gap: 10px;
     margin-top: 10px;
 }
 
 @media (min-width: 640px) {
-    /* En tablets/escritorio: dos columnas */
     .image-list-grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 15px;
@@ -322,17 +339,13 @@ select.input-field option:not([disabled]) { color: #333; }
 .image-item {
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 10px 15px; 
-    background-color: #fafafa;
-    
-    /* Distribución horizontal: info a la izq, acciones a la dcha */
+    padding: 10px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
     position: relative;
     transition: box-shadow 0.3s;
-    cursor: pointer; /* Indica que es clickeable */
+    cursor: pointer;
 }
 
 .image-item.is-cover {
@@ -341,31 +354,29 @@ select.input-field option:not([disabled]) { color: #333; }
     border-width: 2px;
 }
 
-/* Contenedor para la miniatura, el nombre y el tag */
 .image-info {
     display: flex;
-    align-items: center; 
+    align-items: center;
     gap: 10px;
     flex-grow: 1;
     overflow: hidden;
     margin-right: 15px;
 }
 
-/* Miniatura de previsualización */
 .image-preview-thumbnail {
     width: 40px;
     height: 40px;
-    object-fit: cover; 
+    object-fit: cover;
     border-radius: 4px;
     border: 1px solid #cbd5e1;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 .text-info-wrapper {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 2px; 
+    gap: 2px;
     flex-grow: 1;
     overflow: hidden;
 }
@@ -397,10 +408,9 @@ select.input-field option:not([disabled]) { color: #333; }
     background-color: #64748b;
 }
 
-/* Contenedor para los botones */
 .image-actions {
     display: flex;
-    gap: 5px; 
+    gap: 5px;
     flex-shrink: 0;
 }
 
@@ -436,7 +446,7 @@ select.input-field option:not([disabled]) { color: #333; }
 .delete-image-btn {
     background-color: #fecaca;
     color: #dc2626;
-    line-height: 1.2; 
+    line-height: 1.2;
 }
 
 .delete-image-btn:hover {

@@ -17,14 +17,16 @@ import { TripParticipantsComponent } from './trips/pages/trip-participants/trip-
 import { NotificationComponent } from './profile-data/notification/notification.component';
 import { tripResolver } from './trips/pages/trip-detail/trip.resolver';
 import { OrganizerProfileComponent } from './profile-data/organizer-profile/organizer-profile.component';
+import { AdministrationComponent } from './admin/administration/administration.component';
 export const routes: Routes = [
 
     { path:'', component: TripsListComponent }, //HomeComponent
     { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [loggedGuard] },
+    { path: 'usuarios/create',component: RegisterComponent},
     { path: 'usuarios/:username', component: UserComponent, canMatch: [loginGuard], canActivate: [editGuard]},
     { path: 'create-trip', component: FormTripComponent, canMatch: [loginGuard, roleGuard], data: {roles:['organizer', 'admin']} },
-    
+
     { path: 'viajes/edit/:id/:username', 
     component: FormTripComponent, 
     canMatch: [loginGuard, roleGuard], 
@@ -42,6 +44,7 @@ export const routes: Routes = [
     { path: 'unauthorized', component: ErrorComponent, data: { error: 'unauthorized' } },
     { path: 'forbidden', component: ErrorComponent, data: { error: 'forbidden' } },
     { path: 'organizer/:organizerUsername', component: OrganizerProfileComponent},
+    { path: 'administration', component: AdministrationComponent},
     //{ path: 'unauthorized', component: ErrorComponent, data: { error: 'unauthorized' } },
     { path: '**', redirectTo: '/not-found' }
 

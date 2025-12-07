@@ -255,8 +255,17 @@
                     <button type="button" (click)="addActivity()" class="add-activity-btn">+ Añadir actividad</button>
                 </div>
 
-                <button type="submit" class="login-button">{{this.id ? 'Editar viaje' : 'Crear viaje'}}</button>
-
+                    <div class="form-actions full-width-in-grid">
+                        <button 
+                            type="button" 
+                            class="back-button" 
+                            (click)="goBack()"
+                            title="Volver a la página anterior">
+                            &larr; Volver
+                        </button>
+                        
+                        <button type="submit" class="submit-button">{{this.id ? 'Editar viaje' : 'Crear viaje'}}</button>
+                    </div>
             </form>
         </div>
     </section>

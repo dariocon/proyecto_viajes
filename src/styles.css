@@ -88,7 +88,7 @@ width: 22px; /* Mantener este tamaño para el área clicable */
     display: grid;
     /* Usa un grid dinámico basado en el estado del usuario.
        Por defecto, el grid tendrá 4 columnas. */
-    grid-template-columns: auto 1fr auto auto; /* 👈 Nuevo: Cuatro columnas */
+    grid-template-columns: auto 1fr auto;/* 👈 Nuevo: Cuatro columnas */
     align-items: center;
     padding: 12px 28px;
     width: 100%;
@@ -111,6 +111,7 @@ width: 22px; /* Mantener este tamaño para el área clicable */
 
 .nav-desktop {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 2890px)); 
     grid-auto-flow: column;
     justify-content: end;
     gap: 21px;
@@ -185,6 +186,27 @@ width: 22px; /* Mantener este tamaño para el área clicable */
   width: 530px;
   margin-right: 139px;
   margin-left: 20px;
+}
+
+.small-search {
+    max-width: 300px;   /* más pequeño que el wide-search */
+    margin-right: 20px; /* ajusta según lo que quieras */
+    margin-left: 20px;
+    justify-self: end;
+}
+
+.search-container.small-search .search-input {
+     margin-left: 40px;
+     
+}
+
+.search-container.small-search .search-btn {
+    position: absolute;
+    left: 304px;      /* separación del borde derecho */
+    top: 50%;         /* vertical centrado */
+    transform: translateY(-50%);
+    width: 20px;      /* o el tamaño que tenga el icono */
+    height: 20px;
 }
 
 /*

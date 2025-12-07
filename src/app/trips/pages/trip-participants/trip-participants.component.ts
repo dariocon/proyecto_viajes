@@ -205,4 +205,14 @@ private _executeSendNotificationToAll(content: string): void {
     }
 }
 
+    goBack(): void {
+        history.back(); 
+        // Alternativamente, para forzar una navegación a una ruta conocida si el historial está vacío:
+        // if (window.history.length > 1) {
+        //     history.back();
+        // } else {
+        //     this.router.navigate(['/mis-viajes']); // Ruta de fallback, puedes ajustarla
+        // }
+    }
+
 }

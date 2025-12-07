@@ -36,17 +36,23 @@ export class NavbarComponent {
       this.notificationService.refreshNotifications();
     }
   }
+  
+  onSearch(inputElement: HTMLInputElement): void {
+    const searchTerm = inputElement.value.trim();
+    
+    // Actualizar el BehaviorSubject en el servicio
+    this.tripsService.setSearchTerm(searchTerm);
+    
+    // Navegar a la página de viajes con el término de búsqueda
+    this.router.navigate(['/viajes'], { 
+      queryParams: searchTerm ? { term: searchTerm } : {} 
+    });
 
-onSearch(inputElement: HTMLInputElement): void {
-  const searchTerm = inputElement.value;
-
- 
-  this.router.navigate(['/viajes'], { queryParams: { term: searchTerm } });
-
-  if (searchTerm) {
-    inputElement.value = '';
+    // Limpiar el input después de buscar
+    if (searchTerm) {
+      inputElement.value = '';
+    }
   }
-}
 
 
   // Cierra el desplegable del icono de perfil cuando el usuario hace clic fuera de él

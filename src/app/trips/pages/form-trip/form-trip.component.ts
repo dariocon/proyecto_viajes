@@ -496,5 +496,9 @@ export class FormTripComponent implements OnInit {
         return start.getTime() > now.getTime();
     }
 
+    goBack(): void {
+        history.back(); 
+    }
+
 
 }

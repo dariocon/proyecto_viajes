@@ -1,0 +1,68 @@
+<h2 class="section-title">Gestión de Usuarios</h2>
+
+<div class="table-actions">
+  <input type="text" placeholder="Buscar usuario..." class="search-input"
+         #userSearchBox (input)="onUserSearch(userSearchBox.value)">
+    <button class="add-button" [routerLink]="['/usuarios/create']" [queryParams]="{ admin: true }">
+        Añadir
+    </button>
+
+</div>
+
+<div class="participants-list-wrapper">
+  <table class="participants-table">
+    <thead>
+      <tr>
+        <th class="header-cell" (click)="toggleSortUsers('username')">Username
+          <span *ngIf="usersSortColumn==='username'">{{ sortColumnDirection==='ASC' ? '↑':'↓' }}</span>
+        </th>
+        <th class="header-cell" (click)="toggleSortUsers('name')">Nombre
+          <span *ngIf="usersSortColumn==='name'">{{ sortColumnDirection==='ASC' ? '↑':'↓' }}</span>
+        </th>
+        <th class="header-cell" (click)="toggleSortUsers('email')">Email
+          <span *ngIf="usersSortColumn==='email'">{{ sortColumnDirection==='ASC' ? '↑':'↓' }}</span>
+        </th>
+        <th class="header-cell" (click)="toggleSortUsers('role')">Rol
+          <span *ngIf="usersSortColumn==='role'">{{ sortColumnDirection==='ASC' ? '↑':'↓' }}</span>
+        </th>
+        <th class="header-cell" (click)="toggleSortUsers('userStatus')">Estatus
+          <span *ngIf="usersSortColumn==='userStatus'">{{ sortColumnDirection==='ASC' ? '↑':'↓' }}</span>
+        </th>
+        <th class="header-cell header-actions">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of paginatedUsers" class="data-row">
+        <td class="data-cell hash-cell">{{ user.username }}</td>
+        <td class="data-cell date-cell">{{ user.name + " " + user.surname }}</td>
+        <td class="data-cell date-cell">{{ user.email }}</td>
+        <td class="data-cell date-cell">
+          <select title="role" [(ngModel)]="user.role" (change)="changeUserRole(user, user.role)">
+            <option value="admin">admin</option>
+            <option value="user">user</option>
+            <option value="organizer">organizer</option>
+          </select>
+        </td>
+        <td class="data-cell date-cell">
+          <select title="select" [(ngModel)]="user.userStatus" (change)="changeUserStatus(user, user.userStatus)">
+            <option value="ACTIVO">ACTIVO</option>
+            <option value="INACTIVO">INACTIVO</option>
+            <option value="BANEADO">BANEADO</option>
+          </select>
+        </td>
+        <td class="data-cell actions-cell">
+          <button class="btn-action btn-edit" title="Editar Usuario" [routerLink]="['/usuarios', user.username]"><span class="icon-edit"></span></button>
+          <button class="btn-action btn-delete" title="Eliminar Usuario" (click)="deleteUser(user)"><span class="icon-delete"></span></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Paginación Usuarios -->
+<div class="pagination-controls" *ngIf="usersTotalPages>1">
+  <button class="page-btn nav-btn" [disabled]="usersCurrentPage===0" (click)="changeUserPage(displayUserCurrentPage-1)">&larr; Anterior</button>
+  <button *ngFor="let page of getUserPageNumbers()" class="page-btn" [class.active]="page===displayUserCurrentPage" (click)="changeUserPage(page)">{{ page }}</button>
+  <button class="page-btn nav-btn" [disabled]="usersCurrentPage===usersTotalPages-1" (click)="changeUserPage(displayUserCurrentPage+1)">Siguiente &rarr;</button>
+</div>
+

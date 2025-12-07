@@ -1,0 +1,23 @@
+<div class="admin-panel-container">
+
+  <aside class="main-sidebar">
+    <div class="logo">
+      <h2>Administración</h2>
+    </div>
+
+    <nav class="main-nav">
+      <a class="nav-item" [class.active]="activeSection==='trips'" (click)="activeSection='trips'">
+        <span class="icon-trips"></span> Viajes
+      </a>
+      <a class="nav-item" [class.active]="activeSection==='users'" (click)="activeSection='users'">
+        <span class="icon-users"></span> Usuarios
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content-area">
+    <app-table-trips *ngIf="activeSection==='trips'"></app-table-trips>
+    <app-table-users *ngIf="activeSection==='users'"></app-table-users>
+  </main>
+
+</div>

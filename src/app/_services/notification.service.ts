@@ -19,7 +19,6 @@ export class NotificationService {
   public hasUnread = signal<boolean>(false);
 
   constructor() {
-    // Actualiza automáticamente el signal cada vez que cambian las notificaciones
     this.notifications$.subscribe(nots => {
       this.hasUnread.set(nots.some(n => !n.isRead));
     });

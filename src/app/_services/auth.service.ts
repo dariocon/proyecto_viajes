@@ -220,13 +220,11 @@ resendVerification(token: string): Observable<any> {
 }
 
 
-editUserWithPasswordVerification(userEdit: UserEdit, currentPassword: string): Observable<UserEdit> {
-const url = `${this.apiUrl}/usuarios/${this._username}`;
-return this.http.put<UserEdit>(url, {
-    ...userEdit,
-    currentPassword: currentPassword 
-});
+editUserWithPasswordVerification(userEdit: UserEdit, currentPassword: string, username: string): Observable<UserEdit> {
+  const url = `${this.apiUrl}/usuarios/${username}`;
+  return this.http.put<UserEdit>(url, { ...userEdit, currentPassword });
 }
+
 
 usernameIsRegistered (username: string): Observable<boolean> {
 const url = `${this.apiUrl}/register/check-username/${encodeURIComponent(username)}`;
@@ -235,6 +233,9 @@ return this.http.get<boolean>(url).pipe(
 );
 }
 
+getUserByUsername(username: string): Observable<UserEdit> {
+  return this.http.get<UserEdit>(`${this.apiUrl}/usuarios/${username}`);
+}
 
 
 emailIsRegistered (email: string): Observable<boolean> {

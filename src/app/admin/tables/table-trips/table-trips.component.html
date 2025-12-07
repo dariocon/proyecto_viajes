@@ -1,0 +1,53 @@
+<h2 class="section-title">Gestión de Viajes</h2>
+
+<div class="table-actions">
+  <input type="text" placeholder="Buscar viaje..." class="search-input"
+         #searchBox (input)="onSearchInput(searchBox.value)">
+  <button class="add-button" [routerLink]="['/create-trip']">Añadir</button>
+</div>
+
+<div class="participants-list-wrapper">
+  <table class="participants-table">
+    <thead>
+      <tr>
+        <th class="header-cell header-hash">ID</th>
+        <th class="header-cell" (click)="toggleSort('title')">Título
+          <span *ngIf="tripsSortColumn==='title'">{{ sortColumnDirection==='ASC' ? '↑':'↓' }}</span>
+        </th>
+        <th class="header-cell header-date" (click)="toggleSort('organizerUsername')">Organizador
+          <span *ngIf="tripsSortColumn==='organizerUsername'">{{ sortColumnDirection==='ASC' ? '↑':'↓' }}</span>
+        </th>
+        <th class="header-cell" (click)="toggleSort('startDate')">Fecha
+          <span *ngIf="tripsSortColumn==='startDate'">{{ sortColumnDirection==='ASC' ? '↑':'↓' }}</span>
+        </th>
+        <th class="header-cell" (click)="toggleSort('proximo')">Estado
+          <span *ngIf="['proximo','en curso','pasado'].includes(tripsSortColumn)">{{ tripsSortColumn | titlecase }}</span>
+        </th>
+        <th class="header-cell header-actions">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let trip of paginatedTrips" class="data-row">
+        <td class="data-cell hash-cell">{{ trip.idTrip }}</td>
+        <td class="data-cell date-cell">{{ trip.title }}</td>
+        <td class="data-cell date-cell">{{ trip.organizerUsername }}</td>
+        <td class="data-cell">{{ trip.startDate }} <br> {{ trip.endDate }}</td>
+        <td class="data-cell">{{ getTripStatus(trip) }}</td>
+        <td class="data-cell actions-cell">
+          <button class="btn-action btn-view" title="Ver Detalles" [routerLink]="['/viajes/', trip.idTrip]"><span class="icon-view"></span></button>
+          <button class="btn-action btn-edit" title="Editar Viaje" (click)="editTrip(trip)"><span class="icon-edit"></span></button>
+          <button class="btn-action btn-participants" title="Ver Participantes" [routerLink]="['/viajes/participants', trip.idTrip]"><span class="icon-participants"></span></button>
+          <button class="btn-action btn-delete" title="Eliminar Viaje" (click)="deleteTrip(trip)"><span class="icon-delete"></span></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Paginación Viajes -->
+<div class="pagination-controls" *ngIf="tripsTotalPages>1">
+  <button class="page-btn nav-btn" [disabled]="tripsCurrentPage===0" (click)="changeTripPage(displayTripCurrentPage-1)">&larr; Anterior</button>
+  <button *ngFor="let page of getTripPageNumbers()" class="page-btn" [class.active]="page===displayTripCurrentPage" (click)="changeTripPage(page)">{{ page }}</button>
+  <button class="page-btn nav-btn" [disabled]="tripsCurrentPage===tripsTotalPages-1" (click)="changeTripPage(displayTripCurrentPage+1)">Siguiente &rarr;</button>
+</div>
+
