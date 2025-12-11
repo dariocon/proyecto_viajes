@@ -11,7 +11,7 @@ providedIn: 'root'
 })
 export class AuthService {
 
-private apiUrl = 'http://localhost:8080';
+private apiUrl = 'https://apiviajes.onrender.com';
 http: HttpClient = inject(HttpClient);
 //private isLoggedSubject = new BehaviorSubject<boolean>(false)
 private isLoggedSignal = signal<boolean>(false)

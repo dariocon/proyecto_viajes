@@ -10,8 +10,8 @@ import { Client, Stomp } from '@stomp/stompjs';
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationService {
-  private apiUrl = 'http://localhost:8080/notifications';
+export class NotificationService { 
+  private apiUrl = 'https://apiviajes.onrender.com/notifications';
   private http: HttpClient = inject(HttpClient);
   private authService = inject(AuthService);
   private stompClient!: Client;

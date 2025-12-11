@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class RatingsService {
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'https://apiviajes.onrender.com';
   private http: HttpClient = inject(HttpClient);
   private authService = inject(AuthService);
 

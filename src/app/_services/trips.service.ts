@@ -15,7 +15,7 @@ providedIn: 'root'
 })
 export class TripsService {
 
-private apiUrl = 'http://localhost:8080';
+private apiUrl = 'https://apiviajes.onrender.com';
 http: HttpClient = inject(HttpClient);
 private searchTermSubject = new BehaviorSubject<string>('');
 public currentSearchTerm: Observable<string> = this.searchTermSubject.asObservable();
