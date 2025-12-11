@@ -19,7 +19,7 @@ export class TripsListComponent implements OnChanges, OnInit {
   @Input() category?: number;
 
   tripCategories: Categoria[] = [];
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   isHeroImageLoading: boolean = true;
   isCategoriesLoading: boolean = true;
 
