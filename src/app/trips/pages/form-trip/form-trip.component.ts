@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form-trip',
-  imports: [ReactiveFormsModule, FormsModule, NgClass, NgStyle],
+  standalone: false,
   templateUrl: './form-trip.component.html',
   styleUrl: './form-trip.component.css'
 })
@@ -63,7 +63,7 @@ export class FormTripComponent implements OnInit {
                             text: 'Este viaje ya comenzó o terminó, por lo que no puede modificarse.',
                             icon: 'info',
                             confirmButtonText: 'Entendido'
-                        }).then(() => this.router.navigate(['/viajes', this.id]));
+                        }).then(() => this.router.navigate(['/trips', this.id]));
                         return;
                 }
 
@@ -468,7 +468,7 @@ export class FormTripComponent implements OnInit {
                         color: 'white',
                         iconColor: 'white',
                         confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
-                    }).then(() => this.router.navigate(['/viajes/', this.id])); 
+                    }).then(() => this.router.navigate(['/trips/', this.id])); 
                 },
                 error: (error) => {
                         Swal.fire({

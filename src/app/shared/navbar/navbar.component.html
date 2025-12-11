@@ -24,12 +24,12 @@
         </div>
       }
       <div class="nav-item">
-        <a class="nav-link" [routerLink]="['/mis-viajes']" routerLinkActive="active-link">Mis viajes</a>
+        <a class="nav-link" [routerLink]="['/trips/mis-viajes']" routerLinkActive="active-link">Mis viajes</a>
       </div>
 
       @if (role === 'organizer' || role === 'admin') {
         <div class="nav-item">
-          <a class="nav-link" [routerLink]="['/create-trip']" routerLinkActive="active-link">Crear viajes</a>
+          <a class="nav-link" [routerLink]="['/trips/create-trip']" routerLinkActive="active-link">Crear viajes</a>
         </div>
       }
     }
@@ -65,15 +65,96 @@
     </div>
     } @else {
     
-        <button class="btn-login" [routerLink]="['/login']"  >Inicia sesión</button>
-        <button class="btn-register" [routerLink]="['/register']"  >Registro</button>
+        <button class="btn-login" [routerLink]="['/auth/login']"  >Inicia sesión</button>
+        <button class="btn-register" [routerLink]="['/auth/register']"  >Registro</button>
     
     }
 
 
     </nav>
 
-<div class="menu-mobile">
-    <i class="ti ti-menu-2"></i>
+<div class="mobile-top-right">
+  
+  <!-- Notificaciones -->
+  <app-notification
+    class="notification-mobile"
+    [isOpen]="isNotificationDropdownOpen"
+    (toggle)="toggleNotificationDropdown()">
+  </app-notification>
+
+
+  <!-- Menú hamburguesa -->
+  <div class="menu-mobile" (click)="toggleMobileMenu()">
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <path d="M3 6h18M3 12h18M3 18h18" stroke="#475569" stroke-width="2"
+            stroke-linecap="round"/>
+    </svg>
+  </div>
+
 </div>
+
+
+<nav class="nav-mobile" [class.active]="isMobileMenuOpen">
+
+<div class="mobile-search-container">
+  <input 
+    type="text" 
+    placeholder="Buscar viajes" 
+    class="search-input" 
+    #searchInputMobile 
+    (keyup.enter)="onSearch(searchInputMobile)"
+  >
+
+  <button class="mobile-search-btn" (click)="onSearch(searchInputMobile)">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path 
+        d="M19 19L13 13M15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z" 
+        stroke="#F95596" 
+        stroke-width="2" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+      />
+    </svg>
+  </button>
+</div>
+
+  
+    <div class="mobile-nav-item">
+        <a [routerLink]="['/viajes']" routerLinkActive="active-link" (click)="toggleMobileMenu()">Viajes</a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="authService.isLogged() && (role === 'organizer' || role === 'admin')">
+        <a [routerLink]="['/trips/create-trip']" routerLinkActive="active-link" (click)="toggleMobileMenu()">Crear viajes</a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="authService.isLogged() && role === 'admin'">
+        <a [routerLink]="['/administration']" routerLinkActive="active-link" (click)="toggleMobileMenu()">Administración</a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="authService.isLogged()">
+        <a [routerLink]="['/trips/mis-viajes']" routerLinkActive="active-link" (click)="toggleMobileMenu()">Mis viajes</a>
+    </div>
+    <div class="mobile-nav-item">
+        <a [routerLink]="['/contact']" routerLinkActive="active-link" (click)="toggleMobileMenu()">Contacto</a>
+    </div>
+    <div *ngIf="!authService.isLogged()" class="mobile-auth-buttons">
+        <button class="btn-login" [routerLink]="['/auth/login']" (click)="toggleMobileMenu()">Inicia sesión</button>
+        <button class="btn-register" [routerLink]="['/auth/register']" (click)="toggleMobileMenu()">Registro</button>
+    </div>
+
+
+
+
+<!-- Perfil -->
+<div class="mobile-nav-item" *ngIf="authService.isLogged()">
+  <a [routerLink]="['/usuarios', authService.username]" (click)="toggleMobileMenu()">
+    Mi perfil ({{authService.username}})
+  </a>
+</div>
+
+<!-- Cerrar sesión -->
+<div class="mobile-nav-item" *ngIf="authService.isLogged()">
+  <button class="btn-logout" (click)="logout(); toggleMobileMenu()">
+    Cerrar sesión
+  </button>
+</div>
+
+</nav>
 </header>

@@ -154,33 +154,77 @@ position: absolute;
 }
 
 @media (max-width: 768px) {
+    /* Contenedor principal de errores */
     .error-container {
         grid-template-columns: 1fr;
-        padding: 40px 20px;
+        padding: 30px 20px;
+        text-align: center;
+        gap: 20px;
+    }
+
+    /* Panel de texto */
+    .error-text-panel {
+        padding-left: 0;
+        margin: 0 auto;
         text-align: center;
     }
 
-    .error-text-panel {
-        padding-left: 0;
-        margin-top: 0; 
+    .error-status {
+        font-size: 48px; /* Reducimos tamaño en móvil */
     }
-    
+
+    .error-message-title {
+        font-size: 24px;
+    }
+
     .error-description {
-        margin: 0 auto 30px auto;
-        max-width: 100%;
+        font-size: 14px;
+        max-width: 90%;
+        margin: 0 auto 20px auto;
     }
-    
+
+    .go-back-link,
+    .home-button {
+        margin: 0 auto;
+        display: inline-block;
+    }
+
+    /* Panel de imagen */
+    .error-image-panel {
+        margin-top: 0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .error-illustration {
+        width: 100%;       /* Ocupa todo el ancho del contenedor */
+        max-width: 400px;  /* Limita el ancho para que no se salga */
+        height: auto;      /* Mantiene proporción */
+        object-fit: contain; /* Asegura que no se recorte */
+        margin-bottom: 15px; /* Pequeño espacio debajo antes del botón */
+        position: relative; /* Para que overlay funcione */
+    }
+    .not-found-image {
+        width: 100%;        /* Ocupa todo el ancho del contenedor */
+        height: 300px;      /* Cuadrada aproximada, ajusta según quieras */
+        object-fit: cover;  /* Corta los bordes si es necesario */
+        object-position: center; /* Centra la parte visible de la imagen */
+        margin-bottom: 10px; /* Espacio antes del botón */
+        position: relative;
+    }
+
+    /* Overlay del botón en 404 */
+    .not-found-overlay-content {
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px;
+    }
+
+    /* Ajustes generales de títulos y párrafos en móviles */
     .error-text-panel h1,
     .error-text-panel p {
         text-align: center;
     }
-    
-    .error-image-panel {
-        align-items: center; /* Centramos también en móviles */
-    }
-
-    .error-illustration {
-        height: auto; /* Restauramos la altura automática en móviles si es necesario */
-        max-height: 250px; /* Podrías limitar la altura máxima en móviles */
-    }
 }
+

@@ -1,25 +1,33 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { TripsService } from '../../_services/trips.service';
-import { TripDto } from '../../_interfaces/trip';
-import { UsuariosDto } from '../../_interfaces/user';
-import { UserService } from '../../_services/user.service';
-import { Subscription } from 'rxjs';
-import { NgClass , CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
-import Swal from 'sweetalert2';
-import { AuthService } from '../../_services/auth.service';
-import { TableUsersComponent } from "../tables/table-users/table-users.component";
-import { TableTripsComponent } from "../tables/table-trips/table-trips.component";
+import { Component } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+
 
 @Component({
   selector: 'app-administration',
-  imports: [NgClass, FormsModule, CommonModule, RouterLink, TableUsersComponent, TableTripsComponent],
   templateUrl: './administration.component.html',
-  styleUrl: './administration.component.css'
+  styleUrl: './administration.component.css',
+  standalone: false
 })
 export class AdministrationComponent  {
 
-  activeSection: 'trips' | 'users' = 'trips';
+  activeSection!: 'trips' | 'users';
 
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    // detectar sección actual al cargar el componente
+    const url = this.router.url;
+
+    this.activeSection = url.includes('/users') ? 'users' : 'trips';
+
+    // actualizar cuando cambie la navegación interna
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.activeSection = event.urlAfterRedirects.includes('/users')
+          ? 'users'
+          : 'trips';
+      });
+  }
 }

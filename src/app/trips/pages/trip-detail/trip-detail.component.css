@@ -1207,50 +1207,24 @@ body {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .header {
-        max-width: none;
-    }
-    .nav-desktop {
-        display: none;
-    }
-    .menu-mobile {
-        display: block;
-    }
-    .hero {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        padding: 30px 20px;
-    }
-    .hero-content {
-        align-items: center;
-        text-align: center;
-        justify-items: center;
-    }
-    .hero-title {
-        text-align: center;
-    }
-    .auth-buttons {
-        justify-items: center;
-    }
-    .trips-section,
-    .cta-section,
-    .stats-section,
-    .footer {
-        max-width: none;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-    .stats-section {
-        grid-template-columns: 1fr;
-        height: auto;
-        padding: 40px 20px;
-        gap: 40px;
-    }
-    .divider {
-        display: none;
-    }
+    
+    /* Header y navegación */
+    .header { max-width: none; }
+    .nav-desktop { display: none; }
+    .menu-mobile { display: block; }
 
-    /* Ajustes para la sección de detalles del viaje en móviles */
+    /* Hero */
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 30px 20px; }
+    .hero-content { align-items: center; text-align: center; justify-items: center; }
+    .hero-title { text-align: center; }
+    .auth-buttons { justify-items: center; }
+
+    /* Secciones generales */
+    .trips-section, .cta-section, .stats-section, .footer { max-width: none; padding-left: 20px; padding-right: 20px; }
+    .stats-section { grid-template-columns: 1fr; height: auto; padding: 40px 20px; gap: 40px; }
+    .divider { display: none; }
+
+    /* Detalle de viaje */
     .trip-detail-container {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
@@ -1261,90 +1235,110 @@ body {
         align-items: start;
     }
 
-    .trip-header-section {
-        grid-column: 1;
-        grid-row: 1;
-        padding: 0;
-    }
+    .trip-header-section { grid-column: 1; grid-row: 1; padding: 0; }
 
+    /* Carrusel e imagen */
     .trip-image-wrapper {
         width: 100%;
+        height: 250px;
         border-radius: 12px;
-        height: 250px; /* Reducir la altura en móvil */
+        overflow: hidden;
+        position: relative;
+        display: block;
     }
 
-    /* *** AJUSTES RESPONSIVE DEL CARRUSEL *** */
+    .blur-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        filter: blur(20px) brightness(0.9);
+        z-index: 1;
+        margin: 0;
+        border-radius: 12px;
+        pointer-events: none;
+    }
+
+    .carousel-track {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        position: relative;
+        transition: transform 0.5s ease-in-out;
+    }
+
     .carousel-slide-content {
-        /* No se centra, ocupa todo el espacio en móvil */
-        display: block; 
-        
+        flex-shrink: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
     }
 
     .trip-main-image {
-        /* Ocupa 100% en móvil, sin espacio para el blur lateral */
-        width: 100%; 
-        height: 100%;
-        object-fit: cover;
-        max-width: none; 
-        margin: 0; 
-        box-shadow: none; /* Quitamos la sombra de la imagen en móvil */
-
-    }
-/* Puedes eliminar la regla @view-transition-group completa a menos que NECESITES personalizarla */
-/* Si necesitas un efecto más lento o específico: */
-
-::view-transition-old(trip-img),
-::view-transition-new(trip-img) {
-    animation: none;
-    mix-blend-mode: normal;
-    height: 100%;
-    overflow: clip;
-    border-radius: 2rem;
-}
-
-
-
-    .blur-layer {
-        /* Se adapta al tamaño del wrapper */
-        margin: 0;
         width: 100%;
         height: 100%;
+        object-fit: cover;
+        max-width: none;
+        margin: 0;
         border-radius: 12px;
-        filter: blur(20px) brightness(0.9); /* Menos blur para móvil */
+        box-shadow: none;
     }
-    
-    /* La columna derecha ahora será una fila debajo de la descripción */
+
+    /* Flechas carrusel */
+    .arrow {
+        display: flex;
+        top: 50%;
+        transform: translateY(-50%);
+        position: absolute;
+        z-index: 10;
+        background: rgba(0,0,0,0.4);
+        color: white;
+        border-radius: 50%;
+        padding: 10px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    /* Columna derecha */
     .trip-right-column {
         grid-column: 1;
         grid-row: 3;
         grid-template-columns: 1fr;
         gap: 20px;
-        justify-self: stretch; /* En móvil, queremos que ocupe todo el ancho */
+        justify-self: stretch;
     }
 
-    .trip-booking-card {
-        max-width: none;
-        justify-self: stretch;
-        height: auto;
-        min-height: unset;
-        aspect-ratio: unset;
-    }
+    .trip-booking-card,
     .trip-description-card,
-    .trip-itinerary-card { 
+    .trip-itinerary-card {
         padding: 20px;
         gap: 10px;
         height: auto;
         min-height: unset;
     }
 
-    .trip-itinerary-card {
-        min-height: unset;
-    }
+    .trip-itinerary-card { min-height: unset; }
 
-    .trip-categories {
-        justify-content: center; /* Centrar las etiquetas en móvil */
+    .trip-categories { justify-content: center; }
+
+    /* View transition (si aplica) */
+    ::view-transition-old(trip-img),
+    ::view-transition-new(trip-img) {
+        animation: none;
+        mix-blend-mode: normal;
+        height: 100%;
+        overflow: clip;
+        border-radius: 2rem;
     }
 }
+
 
 @media (max-width: 768px) {
     .footer {

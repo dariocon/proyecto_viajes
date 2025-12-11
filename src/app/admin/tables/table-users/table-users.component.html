@@ -3,10 +3,10 @@
 <div class="table-actions">
   <input type="text" placeholder="Buscar usuario..." class="search-input"
          #userSearchBox (input)="onUserSearch(userSearchBox.value)">
-    <button class="add-button" [routerLink]="['/usuarios/create']" [queryParams]="{ admin: true }">
+    <button class="add-button" [routerLink]="['/auth/create-user']" [queryParams]="{ admin: true }">
         Añadir
     </button>
-
+<!--/usuarios/create-user-->
 </div>
 
 <div class="participants-list-wrapper">

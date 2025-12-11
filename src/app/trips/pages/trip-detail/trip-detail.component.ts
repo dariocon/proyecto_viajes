@@ -3,19 +3,17 @@ import { TripDto } from '../../../_interfaces/trip';
 import { AuthService } from '../../../_services/auth.service';
 import { TripsService } from '../../../_services/trips.service';
 import Swal from 'sweetalert2';
-import { RouterLink } from '@angular/router';
 import { Categoria } from '../../../_interfaces/categoria';
 import { switchMap, tap, of } from 'rxjs'; // <--- AÑADIDO 'of'
-import { DatePipe, registerLocaleData, CommonModule } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { ParticipationAdd } from '../../../_interfaces/user';
-import { TripRatingComponent } from '../trip-ratings/trip-ratings.component';
 import { RatingsService } from '../../../_services/rating.service';
 registerLocaleData(localeEs, 'es');
 
 @Component({
   selector: 'app-trip-detail',
-  imports: [RouterLink, DatePipe, CommonModule,TripRatingComponent ],
+  standalone: false,
   templateUrl: './trip-detail.component.html',
   styleUrl: './trip-detail.component.css',
   providers: [

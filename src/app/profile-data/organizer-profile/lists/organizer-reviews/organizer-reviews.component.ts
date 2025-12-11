@@ -1,17 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TripsService } from '../../../../_services/trips.service';
 import { RatingDto } from '../../../../_interfaces/rating';
 
 @Component({
   selector: 'app-organizer-reviews',
-  imports: [CommonModule, RouterLink],
   templateUrl: './organizer-reviews.component.html',
-  styleUrl: './organizer-reviews.component.css'
+  styleUrl: './organizer-reviews.component.css',
+  standalone: false
 })
 export class OrganizerReviewsComponent implements OnInit {
-  @Input() organizerUsername!: string;
+  organizerUsername!: string;
   
   reviews: RatingDto[] = [];
   page = 0;
@@ -19,10 +18,14 @@ export class OrganizerReviewsComponent implements OnInit {
   totalPages = 0;
   loadingReviews = true;
 
-  constructor(private tripsService: TripsService) {}
+  constructor(private tripsService: TripsService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loadOrganizerReviews();
+      this.route.parent?.params.subscribe(params => {
+        this.organizerUsername = params['organizerUsername'];
+        this.loadOrganizerReviews();
+    });
+    
   }
 
   loadOrganizerReviews(): void {

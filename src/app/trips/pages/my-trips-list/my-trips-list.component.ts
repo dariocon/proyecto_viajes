@@ -2,16 +2,15 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TripDto, TripPageResponse } from '../../../_interfaces/trip';
 import { TripsService } from '../../../_services/trips.service';
 import { AuthService } from '../../../_services/auth.service';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute,Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { tap } from 'rxjs/operators';
-import { CommonModule } from '@angular/common';
+
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-my-trips-list',
-  imports: [FormsModule, RouterLink, CommonModule],
+  standalone: false,
   templateUrl: './my-trips-list.component.html',
   styleUrl: './my-trips-list.component.css'
 })
@@ -227,7 +226,7 @@ private loadTripsByGroup(group: string): void {
       return;
     }
 
-    this.router.navigate(['/viajes/edit', trip.idTrip, this.authService.username]);
+    this.router.navigate(['/trips/edit', trip.idTrip, this.authService.username]);
   }
 
   deleteTrip(trip: TripDto): void {

@@ -10,7 +10,7 @@
 
   <div class="trips-grid">
     @for (trip of organizerTrips; track trip.idTrip) {
-    <div class="trip-card" [routerLink]="['/viajes', trip.idTrip]">
+    <div class="trip-card" [routerLink]="['/trips', trip.idTrip]">
       <div class="trip-image-container">
         <img [src]="getCoverImage(trip)" [alt]="trip.title" class="trip-image" 
              [style]="'view-transition-name: trip-img-' + trip.idTrip">

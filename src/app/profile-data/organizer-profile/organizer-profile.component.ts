@@ -1,18 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TripsService } from '../../_services/trips.service';
 import { UsuariosDto } from '../../_interfaces/user';
-import { CommonModule } from '@angular/common';
-import { RatingDto } from '../../_interfaces/rating';
-import { RouterLink } from '@angular/router';
-import { TripDto } from '../../_interfaces/trip';
-import { OrganizerTripsComponent } from './lists/organizer-trips/organizer-trips.component';
-import { OrganizerReviewsComponent } from './lists/organizer-reviews/organizer-reviews.component';
+
 
 @Component({
   selector: 'app-organizer-profile',
-  imports: [CommonModule,RouterLink, OrganizerTripsComponent, OrganizerReviewsComponent],
   templateUrl: './organizer-profile.component.html',
-  styleUrl: './organizer-profile.component.css'
+  styleUrl: './organizer-profile.component.css',
+  standalone: false
 })
 export class OrganizerProfileComponent implements OnInit {
   @Input() organizerUsername!: string;
@@ -30,6 +25,7 @@ export class OrganizerProfileComponent implements OnInit {
   switchTab(tab: 'trips' | 'reviews' | 'past'): void {
     this.activeTab = tab;
   }
+  
 
   loadOrganizer(): void {
     this.tripsService.getOrganizerByUsername(this.organizerUsername).subscribe({

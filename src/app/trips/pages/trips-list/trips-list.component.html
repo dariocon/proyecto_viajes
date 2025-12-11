@@ -17,20 +17,20 @@
             }
             <div class="hero-actions">
                 @if (!authService.isLogged()) {
-                    <button class="cta-button cta-main" [routerLink]="['/register']">Crea tu cuenta</button>
-                    <button class="cta-button cta-secondary" [routerLink]="['/login']">Inicia sesión</button>
+                    <button class="cta-button cta-main" [routerLink]="['/auth/register']">Crea tu cuenta</button>
+                    <button class="cta-button cta-secondary" [routerLink]="['/auth/login']">Inicia sesión</button>
                 }
                 @if (authService.isLogged()) {
                     @if (authService.role=='user') {
                         <button class="cta-button cta-main" [routerLink]="['/contact']">Crea tu aventura</button> 
                     } @else {
-                        <button class="cta-button cta-main" [routerLink]="['/create-trip']">Crea tu propio viaje</button> 
+                        <button class="cta-button cta-main" [routerLink]="['/trips/create-trip']">Crea tu propio viaje</button> 
                     }
                 }
             </div>
         </div>
         <div class="hero-image">
-            <img src="assets\Famous-cityscape-view-of-St-Peters-basilica-in-Rome-at-sunset-Italy (1).jpg" alt="Music Trip" class="hero-img">
+            <img src="assets\Famous-cityscape-view-of-St-Peters-basilica-in-Rome-at-sunset-Italy (1).webp" alt="Music Trip" class="hero-img">
         </div>
     </section>
 
@@ -124,7 +124,7 @@
             @if (!isLoading && paginatedTrips.length > 0) {
                 @for (trip of paginatedTrips; track trip.idTrip) { 
 
-                        <div class="trip-card" [routerLink]="['/viajes', trip.idTrip]" >
+                        <div class="trip-card" [routerLink]="['/trips', trip.idTrip]" >
 
       <div class="trip-image-container">
         <img [src]="getCoverImage(trip)" [alt]="trip.title" class="trip-image" [style]="'view-transition-name: trip-img-' + trip.idTrip">

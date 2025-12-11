@@ -60,20 +60,20 @@
     <!-- Tabs Navigation -->
     <div class="tabs-navigation">
       <div class="tabs-container">
-        <button class="tab-button" [class.active]="activeTab==='trips'" (click)="switchTab('trips')">
+        <button class="tab-button" [class.active]="activeTab==='trips'" (click)="switchTab('trips')"  routerLink="./trips/proximos">
           Viajes próximos
         </button>
-        <button class="tab-button" [class.active]="activeTab==='past'" (click)="switchTab('past')">
+        <button class="tab-button" [class.active]="activeTab==='past'" (click)="switchTab('past')" routerLink="./trips/pasados">
           Viajes pasados
         </button>
-        <button class="tab-button" [class.active]="activeTab==='reviews'" (click)="switchTab('reviews')">
+        <button class="tab-button" [class.active]="activeTab==='reviews'" (click)="switchTab('reviews')" routerLink="./reviews">
           Reseñas ({{ stats?.totalReviews }})
         </button>
       </div>
     </div>
-
+    <router-outlet></router-outlet>
     <!-- Child Components -->
-    @if (activeTab==='trips') {
+  <!-- @if (activeTab==='trips') {
       <app-organizer-trips [organizerUsername]="organizerUsername" [tripType]="'proximos'"></app-organizer-trips>
     }
 
@@ -83,7 +83,7 @@
 
     @if (activeTab==='reviews') {
       <app-organizer-reviews [organizerUsername]="organizerUsername"></app-organizer-reviews>
-    }
+    }-->
 
   </div>
   }

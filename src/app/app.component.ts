@@ -24,7 +24,7 @@ export class AppComponent {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         // Oculta el footer en /login, /register y páginas de error
-        this.showFooter = !(event.urlAfterRedirects === '/login' || event.urlAfterRedirects === '/register' 
+        this.showFooter = !(event.urlAfterRedirects === '/auth/login' || event.urlAfterRedirects === '/auth/register' 
           || event.urlAfterRedirects === '/not-found' || event.urlAfterRedirects === '/forbidden');
       });
   }

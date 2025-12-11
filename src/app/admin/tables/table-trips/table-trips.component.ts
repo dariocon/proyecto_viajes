@@ -2,16 +2,15 @@ import { Component, OnInit, OnDestroy, inject, } from '@angular/core';
 import { TripsService } from '../../../_services/trips.service';
 import { TripDto, TripPageResponse } from '../../../_interfaces/trip';
 import { Observable, Subscription } from 'rxjs';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../_services/auth.service';
-import { CommonModule, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-table-trips',
-  imports: [RouterLink,TitleCasePipe, CommonModule ],
   templateUrl: './table-trips.component.html',
-  styleUrl: './table-trips.component.css'
+  styleUrl: './table-trips.component.css',
+  standalone: false
 })
 export class TableTripsComponent implements OnInit, OnDestroy {
 
@@ -149,7 +148,7 @@ loadTrips(page: number = this.tripsCurrentPage): void {
       Swal.fire('Edición no permitida', 'Este viaje ya comenzó o terminó.', 'info');
       return;
     }
-    this.router.navigate(['/viajes/edit', trip.idTrip, this.authService.username]);
+    this.router.navigate(['/trips/edit', trip.idTrip, this.authService.username]);
   }
 
   changeTripPage(page: number): void {

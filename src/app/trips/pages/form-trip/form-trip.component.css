@@ -181,13 +181,50 @@ select.input-field option:not([disabled]) { color: #333; }
 
 
 @media (max-width: 768px) {
-    .new-trip-panel {
-        margin: 10px;
-        padding: 25px;
-        max-width: 100%;
+    .preview-panel {
+        margin: 0 10px 25px 10px;
+    }
+
+    .image-list-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* Una columna para que no se desborde */
+        gap: 10px;
+        width: 100%;
+        overflow-x: hidden; /* evita scroll horizontal */
+    }
+
+    .image-item {
+        flex-direction: column; /* Apilar info y botones verticalmente */
+        align-items: flex-start; 
+        width: 100%; /* asegura que no se salga del contenedor */
+        box-sizing: border-box;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .image-info {
+        flex-direction: row;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .text-info-wrapper {
+        max-width: calc(100% - 60px); /* deja espacio para la miniatura */
+    }
+
+    .image-actions {
+        flex-wrap: wrap; /* si no caben, van a la siguiente fila */
+        width: 100%;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .set-cover-btn,
+    .delete-image-btn {
+        white-space: normal; /* evita que el texto obligue a ensanchar el botón */
+        width: 48%; /* dos botones por fila */
     }
 }
-
 
 
 .itinerary-list.full-width-in-grid {

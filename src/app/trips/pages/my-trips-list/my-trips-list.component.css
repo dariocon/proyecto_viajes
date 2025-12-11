@@ -524,112 +524,94 @@ border-color: #000000;
 /* ------------------------------------- */
 
 @media (max-width: 768px) {
-    /* EL LAYOUT PRINCIPAL PASA A 1 COLUMNA */
+
     .web-frame {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .sidebar, .trips-section {
-        grid-column: 1 / -1; /* Ocupan todo el ancho */
+        grid-column: 1 / -1;
     }
-    
+
     .inicio {
-        padding: 40px 20px;
+        padding: 20px 10px;
     }
-    
-    /* El sidebar se muestra arriba del contenido, en formato horizontal (flex) */
+
+    /* ------------------------ */
+    /* SIDEBAR MÓVIL */
+    /* ------------------------ */
     .sidebar {
-        padding: 5px 0;
-        display: flex; 
-        flex-direction: row; /* Vuelve a ser horizontal */
-        justify-content: space-around;
-        gap: 10px;
+        flex-direction: column; /* Apilar grupos verticalmente */
+        gap: 15px;
+        overflow-x: hidden;     /* Nada de scroll horizontal */
     }
 
-        .filter-group-title {
-        display: none; 
-    }
-    
-    .filter-group {
-        display: contents; /* Desaparece el contenedor del grupo */
+    .filter-group-title {
+        display: block;       /* Mostrar títulos de grupo */
+        font-size: 14px;
+        font-weight: 700;
+        color: #475569;
+        padding-left: 5px;
+        text-align: center; 
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    /* Las subopciones se vuelven un elemento flexible y alineado en móvil */
     .filter-suboptions {
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        flex-grow: 1;
+        flex-direction: row;      /* Opciones en fila */
+        flex-wrap: wrap;          /* Si hay muchas, bajan a otra línea */
+        gap: 10px;
+        padding-left: 5px;
     }
-        .filter-suboptions .filter-item {
-        /* Eliminamos la sangría en móvil para usar todo el espacio */
-        padding: 8px 15px; 
-        font-size: 16px;
-        flex-grow: 1; 
-        text-align: center;
-    }
-    
+
     .filter-item {
-        padding: 8px 15px;
-        font-size: 16px;
-        flex-grow: 1; 
+        padding: 6px 12px;
         text-align: center;
+        min-width: 70px;
+        flex-shrink: 0;
     }
-    
-    .trips-section {
+
+    /* ------------------------ */
+    /* TRIPS HEADER MÓVIL */
+    /* ------------------------ */
+    .trips-header {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        justify-items: center;
+        margin-bottom: 30px;
         padding: 0;
     }
 
-    .trips-header {
-        /* Volvemos a un flujo normal en móvil (el título encima de 'Ver todos') */
-        position: relative; 
-        display: grid; /* Mantener grid para poder controlar los elementos */
-        grid-template-columns: 1fr; /* Una sola columna para apilar */
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 30px;
-        justify-items: center;
-        padding: 0; 
-        height: auto; /* Altura automática en móvil */
-    }
-
     .trips-title {
-        /* Estilos de título normal en móvil */
-        position: static;
-        transform: none;
-        width: 100%;
-        text-align: center; /* Centrado dentro de su 100% de ancho */
-        
         font-size: 20px;
         line-height: 28px;
-        grid-column: 1 / -1; /* Ocupa todo el ancho en móvil */
+        grid-column: 1 / -1;
+        text-align: center;
     }
 
     .view-all {
         font-size: 16px;
-        line-height: 24px;
-        padding-right: 0; 
-        justify-self: center; /* Centramos el botón "Ver todos" bajo el título */
-        grid-column: 1 / -1; /* Ocupa todo el ancho en móvil */
+        justify-self: center;
+        grid-column: 1 / -1;
     }
 
-    /* En móvil, volvemos a un grid flexible para los viajes */
+    /* ------------------------ */
+    /* TRIPS GRID MÓVIL */
+    /* ------------------------ */
     .trips-grid {
-        gap: 20px;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        justify-items: center;
-        padding: 0 10px;
+        gap: 16px;
+        padding: 0 5px;
+    }
+
+    .trip-card {
+        max-width: 100%;
     }
 
     .trip-image-container {
         height: 100px;
-    }
-
-    .trip-card {
-        height: auto;
-        width: 100%;
-        max-width: 250px;
     }
 
     .trip-content {
@@ -640,7 +622,44 @@ border-color: #000000;
         font-size: 14px;
         line-height: 20px;
     }
+
+    .trip-dates {
+        font-size: 12px;
+    }
+
+    .trip-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .trip-price-info, .trip-spots {
+        font-size: 12px;
+    }
+
+    .trip-management-actions {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .trip-btn, .edit-btn, .delete-trip-button, .participants-btn, .view-trip-btn {
+        font-size: 14px;
+        padding: 4px 10px;
+    }
+
+    /* ------------------------ */
+    /* SEARCH BAR MÓVIL */
+    /* ------------------------ */
+    .search-bar {
+        justify-content: center;
+    }
+
+    .search-input {
+        max-width: 200px;
+    }
 }
+
+
 /* ======================================= */
 /* SKELETON LOADING STYLES */
 /* ======================================= */

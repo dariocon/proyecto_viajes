@@ -60,7 +60,7 @@
                             <!--<img src="" alt="Logo del Guía Turístico" class="organizer-logo-inline">-->
                             <div class="organizer-details-inline">
                                 <span class="organizer-label-inline">ORGANIZADO POR</span>
-                                <a [routerLink]="['/organizer', trip.organizerUsername]" class="organizer-name-inline">{{ trip.organizerUsername }}</a>
+                                <a [routerLink]="['/organizer', trip.organizerUsername, 'trips', 'proximos']" class="organizer-name-inline">{{ trip.organizerUsername }}</a>
                             </div>
                         </div>
                         <div class="attendees-tag">
@@ -118,6 +118,10 @@
                                 <span class="booking-label">Duración:</span>
                                 <span class="booking-value">{{getNumberOfDays()}} días</span>
                             </div>
+                            <div class="booking-item">
+                                <span class="booking-label">Destino final:</span>
+                                <span class="booking-value">{{trip.destination}}</span>
+                            </div>
                             <div class="booking-item price-item">
                                 <span class="booking-value price">{{ trip.estimatedBudget > 0 ? trip.estimatedBudget + '€' : trip.estimatedBudget === 0 ? '0 €' : '' }}</span>
                                 @if (trip.estimatedBudget > 0) {
@@ -151,7 +155,7 @@
 
                         </div>
                         @if (!authService.isLogged()) {
-                            <button [routerLink]="['/login']" class="reserve-button"
+                            <button [routerLink]="['/auth/login']" class="reserve-button"
                                     [disabled]="(trip.maxCapacity && (trip.maxCapacity <= trip.participations.length)) || (isTripInThePast())"
                                     [ngClass]="{ 'disabled-button': (trip.maxCapacity && (trip.maxCapacity <= trip.participations.length)) || (isTripInThePast()) }">
                                 Únete para reservar tu plaza

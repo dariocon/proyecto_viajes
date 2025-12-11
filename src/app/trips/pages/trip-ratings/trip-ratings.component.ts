@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TripDto } from '../../../_interfaces/trip';
 import { AuthService } from '../../../_services/auth.service';
 import Swal from 'sweetalert2';
 import { RatingDto, RatingDtoAdd, RatingPageResponse } from '../../../_interfaces/rating';
 import { RatingsService } from '../../../_services/rating.service';
 import { TripsService } from '../../../_services/trips.service';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-trip-ratings',
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone:false,
   templateUrl: './trip-ratings.component.html',
   styleUrls: ['./trip-ratings.component.css', '../trip-detail/trip-detail.component.css']
 })

@@ -176,7 +176,7 @@ export class TripsListComponent implements OnChanges, OnInit {
     
     this.currentPage = backendPage;
     this.loadTrips();
-    document.querySelector('.trips-section')?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    document.querySelector('.categories-carousel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   getPageNumbers(): number[] {

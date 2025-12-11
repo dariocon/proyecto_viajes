@@ -20,8 +20,8 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   };
 
   const publicUrls = [
-    '/login',
-    '/register',
+    '/auth/login',
+    '/auth/register',
     '/refresh',
     '/categorias',
     '/verify',
@@ -73,7 +73,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
             console.error('Refresh token falló:', refreshError);
             isRefreshing = false;
             authService.logout();
-            router.navigate(['/login']);
+            router.navigate(['/auth/login']);
             return throwError(() => refreshError);
           })
         );

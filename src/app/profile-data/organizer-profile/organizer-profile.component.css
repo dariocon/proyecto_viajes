@@ -264,7 +264,18 @@
     }
 
     .stats-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+        grid-template-rows: repeat(2, auto);  /* Dos filas */
+        gap: 12px;                            /* Espacio entre cuadrados */
+        justify-items: center;                 /* Centrar contenido de cada cuadrado */
+        align-items: center;
+    }
+
+    .stat-card {
+        width: 100%; /* Asegura que ocupen todo el espacio de su celda */
+        max-width: 150px; /* Opcional: limitar tamaño máximo */
+        padding: 20px;
     }
 
     .tabs-container {

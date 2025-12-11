@@ -1,16 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
-import { NgClass, NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { UserLogin } from '../../_interfaces/user';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [FormsModule, NgIf, NgClass],
+  standalone: false,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

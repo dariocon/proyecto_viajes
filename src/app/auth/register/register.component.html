@@ -158,6 +158,7 @@
         </div>
 
         <div class="form-actions full-width-in-grid">
+          @if(admin) {
         <button 
             type="button" 
             class="back-button" 
@@ -165,7 +166,8 @@
             title="Volver a la página anterior">
             &larr; Volver
         </button>
-                <button type="submit" class="submit-button" >Enviar</button>
+      }
+          <button type="submit" class="submit-button" >Enviar</button>
     </div>
       </form>
     </div>

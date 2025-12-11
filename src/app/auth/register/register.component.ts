@@ -1,6 +1,6 @@
-import { NgClass, NgIf, NgStyle } from '@angular/common';
+
 import { Component, inject, Input } from '@angular/core';
-import { AbstractControl, Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import { UsernameValidatorService } from '../../_services/username-validator-ser
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, NgIf, NgClass, NgStyle],
+  standalone: false,
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -93,7 +93,7 @@ export class RegisterComponent {
                   iconColor: 'white',
                   confirmButtonColor: 'rgba(255, 255, 255, 0.3)'
               }).then(
-                () => this.router.navigate(['/login'])
+                () => this.router.navigate(['/auth/login'])
               )
           
          }else{

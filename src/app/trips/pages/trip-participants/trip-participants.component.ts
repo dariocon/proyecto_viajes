@@ -1,16 +1,16 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../_services/auth.service';
 import { TripsService } from '../../../_services/trips.service';
 import { ParticipationDto } from '../../../_interfaces/user';
 import { NotificationDtoAdd } from '../../../_interfaces/notification';
 import Swal from 'sweetalert2';
 import { NotificationService } from '../../../_services/notification.service';
-import { FormsModule } from '@angular/forms'; 
+
 
 @Component({
   selector: 'app-trip-participants',
-  imports: [FormsModule, RouterLink],
+  standalone: false,
   templateUrl: './trip-participants.component.html',
   styleUrl: './trip-participants.component.css'
 })

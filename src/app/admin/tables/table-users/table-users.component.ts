@@ -2,15 +2,13 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { UserService } from '../../../_services/user.service';
 import { UsuariosDto } from '../../../_interfaces/user';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-table-users',
-  imports: [RouterLink, CommonModule,FormsModule],
   templateUrl: './table-users.component.html',
-  styleUrl: './table-users.component.css'
+  styleUrl: './table-users.component.css',
+  standalone: false
 })
 export class TableUsersComponent implements OnInit, OnDestroy {
 

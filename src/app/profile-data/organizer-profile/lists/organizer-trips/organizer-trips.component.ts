@@ -1,19 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TripDto } from '../../../../_interfaces/trip';
 
 import { TripsService } from '../../../../_services/trips.service';
 
 @Component({
   selector: 'app-organizer-trips',
-  imports: [CommonModule, RouterLink],
   templateUrl: './organizer-trips.component.html',
-  styleUrl: './organizer-trips.component.css'
+  styleUrl: './organizer-trips.component.css',
+  standalone: false
 })
 export class OrganizerTripsComponent implements OnInit {
-  @Input() organizerUsername!: string;
-  @Input() tripType: 'proximos' | 'pasados' = 'proximos';
+  organizerUsername!: string;
+  tripType: 'proximos' | 'pasados' = 'proximos';
   
   organizerTrips: TripDto[] = [];
   page = 0;
@@ -21,11 +20,24 @@ export class OrganizerTripsComponent implements OnInit {
   totalPages = 0;
   loading = true;
 
-  constructor(private tripsService: TripsService) {}
+  constructor(private tripsService: TripsService, private route: ActivatedRoute) {}
 
-  ngOnInit(): void {
+ngOnInit(): void {
+  // Cogemos el parámetro de la ruta padre (organizerUsername)
+  this.route.parent?.params.subscribe(params => {
+    this.organizerUsername = params['organizerUsername'];
     this.loadTrips();
-  }
+  });
+
+  // Cogemos el tripType de la ruta hija si existe
+  this.route.params.subscribe(params => {
+    if (params['tripType']) {
+      this.tripType = params['tripType'];
+      this.loadTrips();
+    }
+  });
+}
+
 
   loadTrips(): void {
     this.loading = true;

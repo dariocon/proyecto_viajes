@@ -16,7 +16,7 @@
           <div class="review-top-line">
             <div class="review-author-details">
               <div class="review-author-name">{{ review.username }}</div>
-              <a class="review-trip-badge" [routerLink]="['/viajes', review.tripId]">{{ review.tripTitle }}</a>
+              <a class="review-trip-badge" [routerLink]="['/trips', review.tripId]">{{ review.tripTitle }}</a>
               <div class="review-meta">{{ review.tripId }} • {{ review.submissionDate | date:'mediumDate' }}</div>
             </div>
             <div class="review-rating">

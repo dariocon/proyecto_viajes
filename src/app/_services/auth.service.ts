@@ -202,7 +202,7 @@ logout() {
   localStorage.removeItem('refreshToken');
   this._username = '';
   this.isLoggedSignal.set(false);
-  this.router.navigateByUrl('/login')
+  this.router.navigateByUrl('/auth/login')
   this.roleSubject.next('');
 
 }
