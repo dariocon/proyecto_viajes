@@ -12,7 +12,7 @@
                             class="blur-layer"
                             [style.backgroundImage]="trip.images.length > 0 && currentImageIndex < trip.images.length 
                                 ? 'url(' + trip.images[currentImageIndex].imageUrl + ')' 
-                                : 'url(assets/images/default-trip.png)'">
+                                : 'url(assets/images/default-trip.webp)'">
                         </div>
 
                         <div class="carousel-track" 
@@ -33,7 +33,7 @@
                             } @else {
                                 <div class="carousel-slide-content">
                                     <img 
-                                        src="assets/images/default-trip.png" 
+                                        src="assets/images/default-trip.webp" 
                                         alt="Imagen por defecto del Viaje" 
                                         class="trip-main-image">
                                 </div>

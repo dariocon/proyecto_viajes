@@ -148,7 +148,7 @@ export class TripsListComponent implements OnChanges, OnInit {
   }
 
   getCoverImage(trip: TripDto): string {
-    const defaultImage = 'assets/images/default-trip.png';
+    const defaultImage = 'assets/images/default-trip.webp';
 
     if (!trip.images || trip.images.length === 0) {
       return defaultImage;
