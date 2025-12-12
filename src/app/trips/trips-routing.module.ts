@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-//import { TripsListComponent } from './pages/trips-list/trips-list.component';
 import { TripDetailComponent } from './pages/trip-detail/trip-detail.component';
 import { FormTripComponent } from './pages/form-trip/form-trip.component';
 import { MyTripsListComponent } from './pages/my-trips-list/my-trips-list.component';
@@ -12,10 +10,7 @@ import { roleGuard } from '../shared/guards/role.guard';
 import { editGuard } from '../shared/guards/edit-guard.guard';
 
 const routes: Routes = [
-  //{ path: '', component: TripsListComponent },
 
-
-  //{ path: 'viajes', component: TripsListComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
   { path: 'mis-viajes', component: MyTripsListComponent, canMatch: [loginGuard] },
 
   { path: 'create-trip',

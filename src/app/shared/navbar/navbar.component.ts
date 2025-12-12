@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.authService.role$.subscribe(role => {
       this.role = role;
-      this.cdr.markForCheck(); // asegura actualización en @if
+      this.cdr.markForCheck(); 
     });
   }
 
@@ -41,13 +41,13 @@ export class NavbarComponent implements OnInit {
     const newIsMobile = event.target.innerWidth <= 768;
     if (newIsMobile !== this.isMobile) {
       this.isMobile = newIsMobile;
-      this.cdr.markForCheck(); // fuerza re-render con @if
+      this.cdr.markForCheck();
     }
   }
 
   toggleDropdown(): void { 
     this.isDropdownVisible = !this.isDropdownVisible; 
-    this.cdr.markForCheck(); // importante si usamos @if
+    this.cdr.markForCheck(); 
   }
 
   toggleNotificationDropdown() {

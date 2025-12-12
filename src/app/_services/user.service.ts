@@ -1,12 +1,6 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
-import { LoginResponse, ParticipationAdd, ParticipationDto, RegisterResponse, Token,User,UserEdit,UserLogin,UserLoginResponse, UserRegister, VerifiedResponse } from '../_interfaces/user';
-import { Router } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Categoria } from '../_interfaces/categoria';
-import { TripPageResponse, TripAdd, TripDto } from '../_interfaces/trip';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { UserPageResponse } from '../_interfaces/user';
 

@@ -4,6 +4,7 @@ import { TripsService } from '../../../_services/trips.service';
 import { TripDto } from '../../../_interfaces/trip';
 
 export const tripResolver: ResolveFn<TripDto> = (
+  //Usado para facilitar la animación visual de view transition en la selección del viaje
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {

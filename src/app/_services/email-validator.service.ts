@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidator, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Observable, catchError, debounceTime, delay, distinctUntilChanged, map, of, switchMap } from 'rxjs';
+import { Observable, catchError, debounceTime, distinctUntilChanged, map, of, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({

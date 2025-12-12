@@ -1,10 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
-import { LoginResponse, RegisterResponse, Token,User,UserEdit,UserLogin,UserLoginResponse, UserRegister, VerifiedResponse } from '../_interfaces/user';
+import { BehaviorSubject, catchError, Observable, of, tap, throwError } from 'rxjs';
+import { LoginResponse, RegisterResponse, Token,UserEdit,UserLogin, UserRegister } from '../_interfaces/user';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 
 @Injectable({
 providedIn: 'root'

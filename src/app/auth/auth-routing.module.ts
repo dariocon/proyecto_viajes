@@ -7,19 +7,22 @@ import { loginGuard } from '../shared/guards/login.guard';
 import { roleGuard } from '../shared/guards/role.guard';
 
 const routes: Routes = [
+  
     {
-    path: 'create-user',
-    component: RegisterComponent,
-    canMatch: [loginGuard, roleGuard],
-    data: { roles: ['admin'] }
-  },
- // { path: '', component: RegisterComponent, canMatch: [loginGuard, roleGuard], data: { roles: ['admin'] } },
-  { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
-  { path: 'register', component: RegisterComponent, canActivate: [loggedGuard] },
+      path: 'create-user',
+      component: RegisterComponent,
+      canMatch: [loginGuard, roleGuard],
+      data: { roles: ['admin'] }
+    },
+
+    { path: 'login', component: LoginComponent, canActivate: [loggedGuard] },
+
+    { path: 'register', component: RegisterComponent, canActivate: [loggedGuard] },
+
     { path: 'create-user', component: RegisterComponent, canMatch: [loginGuard, roleGuard], data: { roles: ['admin'] } }
-,{ path: '', component: RegisterComponent }
-  // ruta adicional para uso desde Admin:
-  //{ path: 'create-user', component: RegisterComponent, canMatch: [loginGuard, roleGuard], data: { roles: ['admin'] } }
+    
+    ,{ path: '', component: RegisterComponent }
+ 
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
