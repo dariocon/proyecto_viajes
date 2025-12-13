@@ -26,13 +26,15 @@ ngOnInit(): void {
   // Cogemos el parámetro de la ruta padre (organizerUsername)
   this.route.parent?.params.subscribe(params => {
     this.organizerUsername = params['organizerUsername'];
-    this.loadTrips();
+
   });
 
   // Cogemos el tripType de la ruta hija si existe
   this.route.params.subscribe(params => {
     if (params['tripType']) {
       this.tripType = params['tripType'];
+      this.page = 0;
+      this.organizerTrips = [];
       this.loadTrips();
     }
   });
