@@ -133,6 +133,11 @@ getTripsBySearchTermAdmin(
   sortDir: string = 'ASC'
 ): Observable<TripPageResponse> {
   const finalTerm = (term || '').trim();
+
+  if (!finalTerm) {
+    return this.getTrips(page, size, sortDir, sortBy);
+  }
+
   let params = new HttpParams()
     .set('page', page.toString())
     .set('size', size.toString())
@@ -158,6 +163,11 @@ searchTripsAvailable(
   sortDir: string = 'ASC'
 ): Observable<TripPageResponse> {
   const finalTerm = (term || '').trim();
+
+  if (!finalTerm) {
+    return this.getTripsAvailable(page, size, sortBy, sortDir);
+  }
+
   let params = new HttpParams()
     .set('page', page.toString())
     .set('size', size.toString())

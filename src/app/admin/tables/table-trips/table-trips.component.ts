@@ -28,6 +28,7 @@ export class TableTripsComponent implements OnInit, OnDestroy {
   sortColumnDirection: 'ASC' | 'DESC' = 'DESC';
   tripsSearchTerm = '';
   isLoading = true;
+  private searchTimeout: any;
 
   ngOnInit(): void {
     this.subscriptions.add(
@@ -48,6 +49,9 @@ export class TableTripsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
     this.tripsService.resetTripsPageState(this.tripsService._adminTripsPageState)
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
   }
 
 loadTrips(page: number = this.tripsCurrentPage): void {
@@ -56,10 +60,11 @@ loadTrips(page: number = this.tripsCurrentPage): void {
   const order = ['proximo','en curso','pasado'].includes(this.tripsSortColumn) ? undefined : this.sortColumnDirection;
 
   let tripRequest: Observable<TripPageResponse>;
+  const trimmedSearch = this.tripsSearchTerm.trim();
 
   if (this.tripsSearchTerm.trim()) {
     tripRequest = this.tripsService.getTripsBySearchTermAdmin(
-      this.tripsSearchTerm, 
+      trimmedSearch, 
       page, 
       this.tripsItemsPerPage, 
       this.tripsSortColumn, 
@@ -78,6 +83,7 @@ loadTrips(page: number = this.tripsCurrentPage): void {
 }
 
   toggleSort(column: string): void {
+    this.tripsCurrentPage = 0;
     const estados = ['proximo','en curso','pasado'];
     if(estados.includes(column)) {
       const currentIndex = estados.indexOf(this.tripsSortColumn);
@@ -91,9 +97,15 @@ loadTrips(page: number = this.tripsCurrentPage): void {
   }
 
   onSearchInput(term: string): void {
-    this.tripsSearchTerm = term;
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+    this.tripsSearchTerm = term.trim();
     this.tripsCurrentPage = 0;
-    this.loadTrips();
+    this.searchTimeout = setTimeout(() => {
+        this.loadTrips();
+        console.log(`Buscando: "${this.tripsSearchTerm}"`);
+    }, 700);
   }
 
   deleteTrip(trip: TripDto): void {
