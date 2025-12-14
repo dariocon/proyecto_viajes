@@ -40,15 +40,14 @@
     <div class="nav-item">
         <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="active-link" >Contacto</a>
     </div>
-      @if (authService.isLogged()) {
-    <div class="nav-item notification-wrapper">
-      <app-notification
-        [isOpen]="isNotificationDropdownOpen"
-        (toggle)="toggleNotificationDropdown()">
-      </app-notification>
-    </div>
-  }
-    
+    @if (authService.isLogged()) {
+      <div class="nav-item notification-wrapper">
+        <app-notification
+          [isOpen]="isNotificationDropdownOpenDesktop"
+          (toggle)="toggleNotificationDropdownDesktop()">
+        </app-notification>
+      </div>
+    }
     @if (authService.isLogged()) {
     <div class="user-profile-container">
         <img src="assets/user-regular-full.svg" alt="Perfil" class="profile-icon" (click)="toggleDropdown()">
@@ -76,12 +75,13 @@
 <div class="mobile-top-right">
   
   <!-- Notificaciones -->
-  <app-notification
-    class="notification-mobile"
-    [isOpen]="isNotificationDropdownOpen"
-    (toggle)="toggleNotificationDropdown()">
-  </app-notification>
-
+  @if (authService.isLogged()) {
+    <app-notification
+      class="notification-mobile"
+      [isOpen]="isNotificationDropdownOpenMobile"
+      (toggle)="toggleNotificationDropdownMobile()">
+    </app-notification>
+  }
 
   <!-- Menú hamburguesa -->
   <div class="menu-mobile" (click)="toggleMobileMenu()">

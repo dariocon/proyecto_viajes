@@ -14,7 +14,8 @@ import { NotificationComponent } from "../../profile-data/notification/notificat
 })
 export class NavbarComponent implements OnInit {
 
-  isNotificationDropdownOpen = false;
+  isNotificationDropdownOpenDesktop = false;
+  isNotificationDropdownOpenMobile = false;
   isDropdownVisible = false;
   isMobileMenuOpen = false;
 
@@ -26,43 +27,56 @@ export class NavbarComponent implements OnInit {
     private tripsService: TripsService,
     private router: Router,
     public notificationService: NotificationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef // para actualizar manualmente la vista
   ){ }
 
   ngOnInit(): void {
     this.authService.role$.subscribe(role => {
       this.role = role;
-      this.cdr.markForCheck(); 
+      this.cdr.markForCheck();  // Actualiza la vista cuando cambia el rol
     });
   }
 
+  // Detecta cambios de tamaño de pantalla
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     const newIsMobile = event.target.innerWidth <= 768;
     if (newIsMobile !== this.isMobile) {
       this.isMobile = newIsMobile;
-      this.cdr.markForCheck();
+      this.cdr.markForCheck(); // Actualiza la vista cuando cambia el tamaño
     }
   }
 
+  // Abre/cierra el dropdown de perfil
   toggleDropdown(): void { 
     this.isDropdownVisible = !this.isDropdownVisible; 
-    this.cdr.markForCheck(); 
+    this.cdr.markForCheck();  // Actualiza la vista del dropdown
   }
 
-  toggleNotificationDropdown() {
-    this.isNotificationDropdownOpen = !this.isNotificationDropdownOpen;
-    if (this.isNotificationDropdownOpen) {
+  // Abre/cierra notificaciones en desktop
+  toggleNotificationDropdownDesktop() {
+    this.isNotificationDropdownOpenDesktop = !this.isNotificationDropdownOpenDesktop;
+    if (this.isNotificationDropdownOpenDesktop) {
+      this.notificationService.refreshNotifications();
+    }
+    this.cdr.markForCheck(); // Actualiza la vista de notificaciones desktop
+  }
+
+   // Abre/cierra notificaciones en móvil
+  toggleNotificationDropdownMobile() {
+    this.isNotificationDropdownOpenMobile = !this.isNotificationDropdownOpenMobile;
+    if (this.isNotificationDropdownOpenMobile) {
       this.notificationService.refreshNotifications();
       this.isMobileMenuOpen = false;
     }
-    this.cdr.markForCheck();
+    this.cdr.markForCheck();  // Actualiza la vista de notificaciones móvil
   }
 
+  // Abre/cierra menú hamburguesa en móvil
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    if (this.isMobileMenuOpen) this.isNotificationDropdownOpen = false;
-    this.cdr.markForCheck();
+    if (this.isMobileMenuOpen) this.isNotificationDropdownOpenMobile = false;
+    this.cdr.markForCheck(); // Actualiza la vista del menú móvil
   }
 
   onSearch(inputElement: HTMLInputElement): void {
@@ -72,11 +86,15 @@ export class NavbarComponent implements OnInit {
     if (searchTerm) inputElement.value = '';
   }
 
+  // Cierra dropdowns al hacer clic fuera
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.user-profile-container')) this.isDropdownVisible = false;
-    if (!target.closest('.notification-btn, .notification-dropdown')) this.isNotificationDropdownOpen = false;
+    if (!target.closest('.notification-btn, .notification-dropdown')) {
+      this.isNotificationDropdownOpenDesktop = false;
+      this.isNotificationDropdownOpenMobile = false;
+    }
     this.cdr.markForCheck();
   }
 
